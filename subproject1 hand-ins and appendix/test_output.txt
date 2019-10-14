@@ -22,7 +22,7 @@ select * from simple_search('nuget');
  28094568 | <p>You need to write that yourself, based on <code>Task.Delay</code> (which internally uses a <code>System.Threading.Timer</code>) that creates a task that completes after a certain time:</p>&#xA;&#xA;<pre><code>async Task AutoRefresh(TimeSpan interval, CancellationToken token)&#xA;{&#xA;    while (!token.IsCancellationRequested)&#xA;    {&#xA;        RefreshChart();&#xA;        await Task.Delay(interval);&#xA;    }&#xA;}&#xA;</code></pre>&#xA;&#xA;<p>You can call it at startup with the specific interval and a <code>CancellationToken</code> to signal when it should stop. This will return a task you can <code>await</code> at the end to make sure you don't have any unhandled exceptions:</p>&#xA;&#xA;<pre><code>// start&#xA;var interval = GetIntervalFromUser();&#xA;_cts = new CancellationTokenSource();&#xA;_autoRefreshTask = AutoRefresh(interval, cts.Token);&#xA;&#xA;// end&#xA;_cts.Cancel();&#xA;try&#xA;{&#xA;    await _autoRefreshTask;&#xA;}&#xA;catch (Exception e)&#xA;{&#xA;    // handle exception&#xA;}&#xA;</code></pre>&#xA;&#xA;<hr>&#xA;&#xA;<p>You can use <code>async-await</code> in .Net 4.0 with the <a href="https://www.nuget.org/packages/Microsoft.Bcl.Async/" rel="nofollow"><code>Microsoft.Bcl.Async</code> nuget</a></p>&#xA;
 (9 rows)
 
-Time: 244,569 ms
+Time: 248,409 ms
 
 
 -- D3
@@ -34,7 +34,7 @@ SELECT * from exact_match('regions', 'blocks', 'constructors');
    9063 | <p>My approach is similar to a few others here, using regions to organize code blocks into constructors, properties, events, etc.</p>&#xA;&#xA;<p>There's an excellent set of VS.NET macros by Roland Weigelt available from his blog entry, <a href="http://weblogs.asp.net/rweigelt/archive/2003/07/06/9741.aspx" rel="nofollow">Better Keyboard Support for #region ... #endregion</a>.  I've been using these for years, mapping ctrl+. to collapse the current region and ctrl++ to expand it.  Find that it works a lot better that the default VS.NET functionality which folds/unfolds everything.</p>&#xA;
 (1 row)
 
-Time: 587,680 ms
+Time: 622,483 ms
 
 
 -- D4
@@ -265,7 +265,7 @@ SELECT * from best_match('constructors', 'regions', 'blocks');
     64956 |    1 | <p>A lot of the magic you see in Rubyland has to do with metaprogramming, which is simply writing code that writes code for you. Ruby's <code>attr_accessor</code>, <code>attr_reader</code>, and <code>attr_writer</code> are all simple metaprogramming, in that they create two methods in one line, following a standard pattern. Rails does a whole lot of metaprogramming with their relationship-management methods like <code>has_one</code> and <code>belongs_to</code>.</p>&#xA;&#xA;<p>But it's pretty simple to create your own metaprogramming tricks using <code>class_eval</code> to execute dynamically-written code.</p>&#xA;&#xA;<p>The following example allows a wrapper object to forwards certain methods along to an internal object:</p>&#xA;&#xA;<pre><code>class Wrapper&#xA;  attr_accessor :internal&#xA;&#xA;  def self.forwards(*methods)&#xA;    methods.each do |method|&#xA;      define_method method do |*arguments, &amp;block|&#xA;        internal.send method, *arguments, &amp;block&#xA;      end&#xA;    end&#xA;  end&#xA;&#xA;  forwards :to_i, :length, :split&#xA;end&#xA;&#xA;w = Wrapper.new&#xA;w.internal = "12 13 14"&#xA;w.to_i        # =&gt; 12&#xA;w.length      # =&gt; 8&#xA;w.split('1')  # =&gt; ["", "2 ", "3 ", "4"]&#xA;</code></pre>&#xA;&#xA;<p>The method <code>Wrapper.forwards</code> takes symbols for the names of methods and stores them in the <code>methods</code> array. Then, for each of those given, we use <code>define_method</code> to create a new method whose job it is to send the message along, including all arguments and blocks.</p>&#xA;&#xA;<p>A great resource for metaprogramming issues is <a href="http://viewsourcecode.org/why/hacking/seeingMetaclassesClearly.html">Why the Lucky Stiff's "Seeing Metaprogramming Clearly"</a>.</p>&#xA;
 (220 rows)
 
-Time: 498,043 ms
+Time: 599,394 ms
 
 
 -- D6
@@ -315,7 +315,7 @@ SELECT * from best_match_weighted('chocolate', 'regions');
  27637752 | 0.150 | <p><strong>As to the correct way of finding the last used cell, one has first to decide what is considered <em>used</em>, and then select a suitable method</strong>. I conceive at least two meanings:</p>&#xA;&#xA;<ol>&#xA;<li><p>Used = non-blank, i.e., having <strong>data</strong>.</p></li>&#xA;<li><p>Used = "... in use, meaning the section that contains <strong>data or formatting</strong>."&#xA;<a href="http://support.microsoft.com/kb/244435" rel="nofollow">This is the criterion used by Excel at the time of saving</a>. See also <a href="https://support.office.com/en-sg/article/Locate-and-reset-the-last-cell-on-a-worksheet-c9e468a8-0fc3-4f69-8038-b3c1d86e99e9" rel="nofollow">this</a>.&#xA;This criterion usually produces unexpected results, but it may also be intentionally exploited (less often, surely), e.g., to highlight or print specific regions, which may eventually have no data. And, of course, it is desirable as a criterion for the range to use when saving a workbook.</p></li>&#xA;</ol>&#xA;&#xA;<p><strong>How to find the last used cell depends on what <em>you</em> want (your criterion)</strong>.</p>&#xA;&#xA;<p><em>For criterion 1, I suggest reading <a href="http://stackoverflow.com/a/11169920/2707864">this answer</a></em>.</p>&#xA;&#xA;<p><em>For criterion 2, <code>UsedRange</code> is the most reliable option</em>. It even makes it unnecessary to save a workbook to make sure that the last cell is updated.&#xA;<kbd>Ctrl</kbd>+<kbd>End</kbd> will go to a wrong cell prior to saving&#xA;(ΓÇ£The last cell is not reset until you save the worksheetΓÇ¥, from&#xA;<a href="http://msdn.microsoft.com/en-us/library/aa139976%28v=office.10%29.aspx" rel="nofollow">http://msdn.microsoft.com/en-us/library/aa139976%28v=office.10%29.aspx</a>.&#xA;It is an old reference, but in this respect valid).</p>&#xA;&#xA;<p>There is yet another pitfall:<br>&#xA;Criterion 2 does not account for Conditional Formatting. One may have formatted cells, based on formulas, which are not detected by <code>UsedRange</code> or <kbd>Ctrl</kbd>+<kbd>End</kbd>.&#xA;In the figure, the last cell is B3, since formatting was applied explicitly to it. Cells B6:D7 have a format derived from a Conditional Formatting rule, and this is not detected even by <code>UsedRange</code>.</p>&#xA;&#xA;<p><img src="http://i.stack.imgur.com/vhayX.jpg" alt="enter image description here"></p>&#xA;&#xA;<hr>&#xA;&#xA;<p><strong>As to your specific question</strong>:&#xA;<em>What's the reason behind this?</em></p>&#xA;&#xA;<p>Your code uses the first cell in your range E4:E48 as a trampoline, for <em>jumping</em> down with <code>End(xlDown)</code>.</p>&#xA;&#xA;<p>The "erroneous" output will obtain if there are no <em>non-blank</em> cells in your range other than perhaps the first. Then, you are <em>leaping in the dark</em>, i.e., down the worksheet&#xA;(you should note the difference between <em>blank</em> and <em>empty string</em>!). </p>&#xA;&#xA;<p>Note that:</p>&#xA;&#xA;<ol>&#xA;<li><p>If your range contains non-contiguous non-blank cells, then it will also give a wrong result.</p></li>&#xA;<li><p>If there is only one non-blank cell, but it is not the first one, your code will still give you the correct result.</p></li>&#xA;</ol>&#xA;
 (39 rows)
 
-Time: 392,082 ms
+Time: 342,906 ms
 
 
 -- D7
@@ -1415,7 +1415,7 @@ SELECT * from word_2_words('regions');
       1 | world
 (1089 rows)
 
-Time: 354,080 ms
+Time: 393,262 ms
 
 
 -- E.
@@ -1425,7 +1425,7 @@ Time: 354,080 ms
 drop index if exists wi_word_inx;
 
 DROP INDEX
-Time: 25,006 ms
+Time: 23,526 ms
 SELECT * from exact_match('regions', 'blocks', 'constructors');
 
  postid |                                                                                                                                                                                                                                                                                                      postbody                                                                                                                                                                                                                                                                                                       
@@ -1433,7 +1433,7 @@ SELECT * from exact_match('regions', 'blocks', 'constructors');
    9063 | <p>My approach is similar to a few others here, using regions to organize code blocks into constructors, properties, events, etc.</p>&#xA;&#xA;<p>There's an excellent set of VS.NET macros by Roland Weigelt available from his blog entry, <a href="http://weblogs.asp.net/rweigelt/archive/2003/07/06/9741.aspx" rel="nofollow">Better Keyboard Support for #region ... #endregion</a>.  I've been using these for years, mapping ctrl+. to collapse the current region and ctrl++ to expand it.  Find that it works a lot better that the default VS.NET functionality which folds/unfolds everything.</p>&#xA;
 (1 row)
 
-Time: 639,050 ms
+Time: 698,084 ms
 
 
 -- testing with script of D3 with indexing
@@ -1441,7 +1441,7 @@ Time: 639,050 ms
 create index wi_word_inx on wi (word);
 
 CREATE INDEX
-Time: 1983,666 ms (00:01,984)
+Time: 1876,754 ms (00:01,877)
 SELECT * from exact_match('regions', 'blocks', 'constructors');
 
  postid |                                                                                                                                                                                                                                                                                                      postbody                                                                                                                                                                                                                                                                                                       
@@ -1449,4 +1449,4 @@ SELECT * from exact_match('regions', 'blocks', 'constructors');
    9063 | <p>My approach is similar to a few others here, using regions to organize code blocks into constructors, properties, events, etc.</p>&#xA;&#xA;<p>There's an excellent set of VS.NET macros by Roland Weigelt available from his blog entry, <a href="http://weblogs.asp.net/rweigelt/archive/2003/07/06/9741.aspx" rel="nofollow">Better Keyboard Support for #region ... #endregion</a>.  I've been using these for years, mapping ctrl+. to collapse the current region and ctrl++ to expand it.  Find that it works a lot better that the default VS.NET functionality which folds/unfolds everything.</p>&#xA;
 (1 row)
 
-Time: 45,064 ms
+Time: 51,107 ms
