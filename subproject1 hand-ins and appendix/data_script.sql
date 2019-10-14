@@ -185,7 +185,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+select * from tags limit 5;
+
 select fill_q_tags();
+
+select * from tags limit 5;
 
 -- Update comments to have negative ids as some have the same id as posts (questions/answers)
 update words set id = id * (-1)

@@ -108,7 +108,6 @@ create table wi_weighted
     weight decimal(3, 3)
 );
 
-
 insert into wi_weighted(id, word, weight)
     (select id, lower(word) word, 0
      from words
@@ -120,6 +119,8 @@ insert into wi_weighted(id, word, weight)
 --remove stopwords
 delete from wi_weighted
 where wi_weighted.word in (select stopwords.word from stopwords);
+
+select * from wi_weighted limit 5;
 
 -- Assign weight based on if it is a title(0.3) or body(0.1)
 update wi_weighted
@@ -189,6 +190,8 @@ end;
 $$ LANGUAGE plpgsql;
 
 select adjust_weights();
+
+select * from wi_weighted limit 5;
 
 --d6
 drop function if exists best_match_weighted();
