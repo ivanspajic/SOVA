@@ -203,6 +203,100 @@ where word ~* '^[a-z][a-z0-9_]+$'
 and tablename = 'posts' and (what='title' or what='body')
 group by id,word;
 
+--d5
+drop table if exists wi_weighted;
+create table wi_weighted
+(
+    id     int4,
+    word   varchar,
+    weight decimal(3, 3)
+);
+
+insert into wi_weighted(id, word, weight)
+    (select id, lower(word) word, 0
+     from words
+     where word ~* '^[a-z][a-z0-9_]+$'
+       and tablename = 'posts'
+       and (what = 'title' or what = 'body')
+     group by id, word);
+
+--remove stopwords
+delete from wi_weighted
+where wi_weighted.word in (select stopwords.word from stopwords);
+
+select * from wi_weighted limit 5;
+
+-- Assign weight based on if it is a title(0.3) or body(0.1)
+update wi_weighted
+set weight = 0.1
+where (id, word) in (select wiw.id, wiw.word
+               from wi_weighted wiw
+                        join words w on wiw.word = lower(w.word)
+                   and wiw.id = w.id
+               where what = 'body'
+                 and tablename = 'posts');
+
+update wi_weighted
+set weight = 0.3 where weight = 0;
+
+-- Multiply weight if it is a noun by 1.5
+update wi_weighted
+set weight = weight * (1.5)
+where (id, word) in (select wiw.id, wiw.word
+               from wi_weighted wiw
+                        join words w on wiw.word = lower(w.word)
+                   and wiw.id = w.id
+               where pos like 'N%');
+
+-- Multiply weight if it is a verb by 1.2
+update wi_weighted
+set weight = weight * (1.2)
+where (id, word) in (select wiw.id, wiw.word
+               from wi_weighted wiw
+                        join words w on wiw.word = lower(w.word)
+                   and wiw.id = w.id
+               where pos like 'V%');
+
+--apply tfidf
+drop function if exists adjust_weights();
+create or replace function adjust_weights()
+returns void as
+$$
+
+begin
+
+create table temp_table as (select *, (word_freq/cast(word_count as decimal)) as ratio
+from
+(select id, count(word) as word_count
+from wi_weighted
+group by id) as t1
+natural join
+(select id, word, count(word) as word_freq, weight
+from wi_weighted
+group by id, word, weight) as t2
+natural join
+(select word, count(distinct id) as post_count
+from wi_weighted
+group by wi_weighted.word) as t3);
+
+
+
+update temp_table
+	set weight = weight  + log(1 + ratio) * (1 / post_count);
+
+UPDATE wi_weighted
+SET	weight = temp_table.weight
+FROM   temp_table
+WHERE  wi_weighted.id = temp_table.id  and wi_weighted.word = temp_table.word;
+
+drop table temp_table;
+end;
+$$ LANGUAGE plpgsql;
+
+select adjust_weights();
+
+select * from wi_weighted limit 5;
+
 -- drop original tables
 drop table if exists posts_universal;
 drop table if exists comments_universal;
