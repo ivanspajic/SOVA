@@ -10,29 +10,27 @@ namespace RDJTPServer.Helpers
             public string Name;
         }
 
-        public List<Category> Categories;
+        public List<Category> Categories = new List<Category>();
 
         public InMemoryDb()
         {
-            Categories = new List<Category>
+            Categories.Add(new Category
             {
-                new Category
-                {
-                    Cid = 1,
-                    Name = "Beverages"
-                },
+                Cid = 1,
+                Name = "Beverages"
+            });
+            Categories.Add(
                 new Category
                 {
                     Cid = 2,
                     Name = "Condiments"
-                },
+                });
+            Categories.Add(
                 new Category
                 {
                     Cid = 3,
                     Name = "Confections"
-                }
-            };
+                });
         }
     }
-
 }

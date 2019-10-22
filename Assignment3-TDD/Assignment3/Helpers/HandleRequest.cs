@@ -2,10 +2,16 @@
 {
     public class HandleRequest
     {
+        private InMemoryDb db;
+        public HandleRequest(InMemoryDb inMemDb)
+        {
+            db = inMemDb;
+        }
+
         public Response Respond(Request request)
         {
             var response = new Response();
-            var dbOperations = new DbOperations();
+            var dbOperations = new DbOperations(db);
             InMemoryDb.Category result;
             switch (request.Method)
             {

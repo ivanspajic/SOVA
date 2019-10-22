@@ -1,9 +1,16 @@
-﻿namespace RDJTPServer.Helpers
+﻿using System;
+
+namespace RDJTPServer.Helpers
 {
     public class DbOperations
 
     {
-        InMemoryDb db = new InMemoryDb();
+        private InMemoryDb db;
+
+        public DbOperations(InMemoryDb inMemDb)
+        {
+            db = inMemDb;
+        }
 
         public string GetAllCategories()
         {
@@ -13,17 +20,20 @@
         public InMemoryDb.Category ReadCategory(int id)
         {
             var categoryInDb = db.Categories.Find(v => v.Cid == id);
+            Console.WriteLine($"\n ---> Reading name of category with id '{id}'. \n Name: {categoryInDb.Name} \n");
             return categoryInDb;
         }
 
         public InMemoryDb.Category UpdateCategory(int id, string updateCategoryObject)
         {
-            var categoryInDb = ReadCategory(id);
+            var updateCategoryObjectDeserialized = updateCategoryObject.FromJson<InMemoryDb.Category>();
+            var categoryInDb = db.Categories.Find(v => v.Cid == id);
             if (categoryInDb == null)
             {
                 return null;
             }
-            categoryInDb.Name = updateCategoryObject.FromJson<InMemoryDb.Category>().Name;
+            Console.WriteLine($"\n ---> Updating name of category with id '{id}'. \n Old Name: {categoryInDb.Name} \n New Name: {updateCategoryObjectDeserialized.Name} \n");
+            categoryInDb.Name = updateCategoryObjectDeserialized.Name;
             return categoryInDb;
         }
 
