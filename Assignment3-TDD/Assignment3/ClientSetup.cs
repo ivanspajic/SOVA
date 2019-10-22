@@ -6,9 +6,15 @@ namespace RDJTPServer
 {
     public class ClientSetup
     {
+        private InMemoryDb db;
+
+        public ClientSetup(InMemoryDb inMemDb)
+        {
+            db = inMemDb;
+        }
         public void HandleClientRequests(object clientObject)
         {
-            var db = new InMemoryDb();
+            //var db = new InMemoryDb();
             var client = clientObject as TcpClient;
             var handleRequest = new HandleRequest(db);
             try

@@ -58,6 +58,7 @@ namespace RDJTPServer.Helpers
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"IsValidJson failed with error: {ex.Message}");
                 return false;
             }
         }
