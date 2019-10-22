@@ -1,7 +1,6 @@
 # TDD Assignment 3
 
-## Current status: 26 tests pass out of 28
-_Insert "I see this as an absolute win" gif here._
+## Current status: All tests pass
 
 Steps to reproduce: (Assuming you use Visual Studio)
 
