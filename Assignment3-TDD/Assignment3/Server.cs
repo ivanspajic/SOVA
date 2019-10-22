@@ -15,13 +15,14 @@ namespace RDJTPServer
             Console.WriteLine("RDJTP server is starting.");
             var server = new TcpListener(IPAddress.Loopback, 5000);
             server.Start();
+            InMemoryDb db = new InMemoryDb();
             try
             {
                 while (true)
                 {
                     Console.WriteLine("Server started. Waiting for a connection...");
                     var client = server.AcceptTcpClient();
-                    var clientSetup = new ClientSetup();
+                    var clientSetup = new ClientSetup(db);
                     Console.WriteLine("Connected.");
 
                     // Read more here: https://codinginfinite.com/multi-threaded-tcp-server-core-example-csharp/

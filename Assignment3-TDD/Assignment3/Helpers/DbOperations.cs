@@ -20,7 +20,10 @@ namespace RDJTPServer.Helpers
         public InMemoryDb.Category ReadCategory(int id)
         {
             var categoryInDb = db.Categories.Find(v => v.Cid == id);
-            Console.WriteLine($"\n ---> Reading name of category with id '{id}'. \n Name: {categoryInDb.Name} \n");
+            if (categoryInDb == null)
+            {
+                return null;
+            }
             return categoryInDb;
         }
 
@@ -32,7 +35,6 @@ namespace RDJTPServer.Helpers
             {
                 return null;
             }
-            Console.WriteLine($"\n ---> Updating name of category with id '{id}'. \n Old Name: {categoryInDb.Name} \n New Name: {updateCategoryObjectDeserialized.Name} \n");
             categoryInDb.Name = updateCategoryObjectDeserialized.Name;
             return categoryInDb;
         }
