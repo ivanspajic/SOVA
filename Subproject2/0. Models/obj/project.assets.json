@@ -8,23 +8,19 @@
     ".NETCoreApp,Version=v3.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Ivan Spajic\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Manish Shrestha\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ivan Spajic\\source\\repos\\SOVA\\Subproject2\\0. Models\\0. Models.csproj",
+      "projectUniqueName": "C:\\Users\\Manish Shrestha\\Projects\\SOVA\\Subproject2\\0. Models\\0. Models.csproj",
       "projectName": "0. Models",
-      "projectPath": "C:\\Users\\Ivan Spajic\\source\\repos\\SOVA\\Subproject2\\0. Models\\0. Models.csproj",
-      "packagesPath": "C:\\Users\\Ivan Spajic\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ivan Spajic\\source\\repos\\SOVA\\Subproject2\\0. Models\\obj\\",
+      "projectPath": "C:\\Users\\Manish Shrestha\\Projects\\SOVA\\Subproject2\\0. Models\\0. Models.csproj",
+      "packagesPath": "C:\\Users\\Manish Shrestha\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Manish Shrestha\\Projects\\SOVA\\Subproject2\\0. Models\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Ivan Spajic\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Manish Shrestha\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
