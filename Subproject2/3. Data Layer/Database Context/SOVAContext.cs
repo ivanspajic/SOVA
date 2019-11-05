@@ -51,12 +51,6 @@ namespace _3._Data_Layer.Database_Context
                         propertyName = property.Name.Substring(0, property.Name.Length - "String".Length).ToLower();
                     }
 
-                    if(tableName == "answers" || tableName == "questions"
-                        && property.Name == "Id")
-                    {
-                        propertyName = "submission_id";
-                    }
-
                     property.SetColumnName(propertyName);
                 }
             }
