@@ -31,7 +31,7 @@ namespace _3._Data_Layer.Database_Context
                 result = result + "_" + parts[i];
             }
 
-            return result.ToLower();
+            return result.ToLower().Replace("ı", "i");
         }
 
         public static void CreateMap(
@@ -48,7 +48,7 @@ namespace _3._Data_Layer.Database_Context
 
                     if (property.Name.Contains("String"))
                     {
-                        propertyName = property.Name.Substring(0, property.Name.Length - "String".Length);
+                        propertyName = property.Name.Substring(0, property.Name.Length - "String".Length).ToLower();
                     }
 
                     if(tableName == "answers" || tableName == "questions"
