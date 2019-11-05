@@ -11,42 +11,27 @@ namespace _3._Data_Layer.Database_Context
         public static string ModifyString(string str)
         {
             var count = 0;
-            var firstPart = "";
-            var secondPart = "";
-            var thirdPart = "";
+            string[] parts = { "", "", "" };
 
             foreach (char c in str)
             {
                 if (char.IsUpper(c))
                 {
                     count++;
-                    switch (count)
-                    {
-                        case 1:
-                            firstPart += c;
-                            break;
-                        case 2:
-                            secondPart += c;
-                            break;
-                        case 3:
-                            thirdPart += c;
-                            break;
-                    }
-
                 }
+                parts[count - 1] += c;
             }
 
-            if (count > 1)
+            var result = parts[0];
+
+            for (int i = 1; i < count; i++)
             {
-                firstPart = firstPart + "_" + secondPart;
+                if (parts[i] == "")
+                    break;
+                result = result + "_" + parts[i];
             }
 
-            if(count > 2)
-            {
-                firstPart = firstPart + "_" + thirdPart;
-            }
-
-            return firstPart.ToLower();
+            return result.ToLower();
 
         }
 
