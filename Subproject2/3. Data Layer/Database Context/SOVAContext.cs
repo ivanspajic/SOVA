@@ -32,7 +32,6 @@ namespace _3._Data_Layer.Database_Context
             }
 
             return result.ToLower();
-
         }
 
         public static void CreateMap(
@@ -46,9 +45,20 @@ namespace _3._Data_Layer.Database_Context
                 foreach (var property in entityType.GetProperties())
                 {
                     var propertyName = ModifyString(property.Name);
+
+                    if (property.Name.Contains("String"))
+                    {
+                        propertyName = property.Name.Substring(0, property.Name.Length - "String".Length);
+                    }
+
+                    if(tableName == "answers" || tableName == "questions"
+                        && property.Name == "Id")
+                    {
+                        propertyName = "submission_id";
+                    }
+
                     property.SetColumnName(propertyName);
                 }
-
             }
         }
     }
@@ -78,6 +88,5 @@ namespace _3._Data_Layer.Database_Context
         {
             modelBuilder.CreateMap();
         }
-
     }
 }
