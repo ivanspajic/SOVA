@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\özge\\SOVA\\Subproject2\\0. Models\\0. Models.csproj": {}
+    "C:\\Users\\özge\\source\\repos\\SOVA\\0. Models\\0. Models.csproj": {}
   },
   "projects": {
-    "C:\\Users\\özge\\SOVA\\Subproject2\\0. Models\\0. Models.csproj": {
+    "C:\\Users\\özge\\source\\repos\\SOVA\\0. Models\\0. Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\özge\\SOVA\\Subproject2\\0. Models\\0. Models.csproj",
+        "projectUniqueName": "C:\\Users\\özge\\source\\repos\\SOVA\\0. Models\\0. Models.csproj",
         "projectName": "0. Models",
-        "projectPath": "C:\\Users\\özge\\SOVA\\Subproject2\\0. Models\\0. Models.csproj",
+        "projectPath": "C:\\Users\\özge\\source\\repos\\SOVA\\0. Models\\0. Models.csproj",
         "packagesPath": "C:\\Users\\özge\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\özge\\SOVA\\Subproject2\\0. Models\\obj\\",
+        "outputPath": "C:\\Users\\özge\\source\\repos\\SOVA\\0. Models\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

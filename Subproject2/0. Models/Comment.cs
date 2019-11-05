@@ -4,8 +4,9 @@ using System.Text;
 
 namespace _0._Models
 {
-    public class Comment : Submission
+    public class Comment
     {
+        public int Id { get; set; }
         public int SubmissionId { get; set; }
         public Submission Submission { get; set; }
     }
