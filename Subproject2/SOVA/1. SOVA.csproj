@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\source\repos\SOVA\0. Models\0. Models.csproj" />
     <ProjectReference Include="..\2. Data Layer Abstractions\2. Data Layer Abstractions.csproj" />
     <ProjectReference Include="..\3. Data Layer\3. Data Layer.csproj" />
   </ItemGroup>
