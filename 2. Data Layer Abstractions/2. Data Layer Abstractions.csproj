@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RootNamespace>_2._Data_Layer_Abstractions</RootNamespace>
+  </PropertyGroup>
+
+</Project>
