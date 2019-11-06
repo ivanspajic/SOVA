@@ -1,21 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using _0._Models;
-using _2._Data_Layer_Abstractions;
 using _3._Data_Layer.Database_Context;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace _3._Data_Layer
 {
-    public class SubmissionRepository : ISubmissionRepository
+    public class QuestionRepository
     {
         private readonly SOVAContext databaseContext;
 
-        public SubmissionRepository(SOVAContext databaseContext)
+        public QuestionRepository(SOVAContext databaseContext)
         {
             this.databaseContext = databaseContext;
+
         }
+
+        public IEnumerable<Question> GetLatestTenQuestions()
+        {
+            return databaseContext.Questions.OrderByDescending(s => s.Submission.CreationDate).Take(10);
+        }
+
     }
 }
