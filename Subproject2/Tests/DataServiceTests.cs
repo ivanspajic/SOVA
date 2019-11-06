@@ -12,8 +12,8 @@ namespace Tests
         public void GetLatestTenQuestions()
         {
             using var db = new SOVAContext();
-            var service = new QuestionRepository(db);
-            var submissions = service.GetLatestTenQuestions().ToList();
+            var service = new SubmissionRepository(db);
+            var submissions = service.getLatestTenQuestions().ToList();
             Assert.Equal(10, submissions.Count);
         }
     }
