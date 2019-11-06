@@ -18,5 +18,10 @@ namespace _3._Data_Layer
             this.databaseContext = databaseContext;
         }
 
+        public IEnumerable<Submission> getLatestTenQuestions()
+        {
+            return databaseContext.Submissions.OrderByDescending(s => s.CreationDate).Take(10);
+        }
+
     }
 }
