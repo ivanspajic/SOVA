@@ -58,6 +58,11 @@ BenchmarkDotNet.Artifacts/
 
 # .NET Core
 project.lock.json
+*.assets.cache
+*.nuget.cache
+*.nuget.dgspec.json
+*.nuget.g.props
+*.assets.json
 project.fragment.lock.json
 artifacts/
 
@@ -354,3 +359,6 @@ MigrationBackup/
 
 *.dll
 *.cache
+Subproject2/0. Models/obj/Debug/netcoreapp3.0/0. Models.assets.cache
+Subproject2/0. Models/obj/0. Models.csproj.nuget.g.props
+Subproject2/0. Models/obj/Debug/netcoreapp3.0/0. Models.AssemblyInfo.cs

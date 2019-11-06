@@ -11,7 +11,7 @@ namespace _3._Data_Layer.Database_Context
         public static string ModifyString(string str)
         {
             var count = 0;
-            string[] parts = { "", "", "" };
+            string[] parts = { "", "", "", "" };
 
             foreach (char c in str)
             {
@@ -34,12 +34,11 @@ namespace _3._Data_Layer.Database_Context
             return result.ToLower().Replace("ı", "i");
         }
 
-        public static void CreateMap(
-            this ModelBuilder modelBuilder)
+        public static void CreateMap(this ModelBuilder modelBuilder)
         {
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
-                var tableName = ModifyString(entityType.GetTableName());                
+                var tableName = ModifyString(entityType.GetTableName());
                 entityType.SetTableName(tableName);
 
                 foreach (var property in entityType.GetProperties())
@@ -75,7 +74,7 @@ namespace _3._Data_Layer.Database_Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-             optionsBuilder.UseNpgsql(ConnectionString);
+            optionsBuilder.UseNpgsql(ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
