@@ -11,9 +11,9 @@ namespace _3._Data_Layer.Database_Context
         public static string ModifyString(string str)
         {
             var count = 0;
-            string[] parts = { "", "", "", "" };
+            var parts = new string[4];
 
-            foreach (char c in str)
+            foreach (var c in str)
             {
                 if (char.IsUpper(c))
                 {
@@ -24,7 +24,7 @@ namespace _3._Data_Layer.Database_Context
 
             var result = parts[0];
 
-            for (int i = 1; i < count; i++)
+            for (var i = 1; i < count; i++)
             {
                 if (parts[i] == "")
                     break;
@@ -57,12 +57,12 @@ namespace _3._Data_Layer.Database_Context
     }
     public class SOVAContext : DbContext
     {
-        private const string ConnectionString = "host=localhost;db=northwind;uid=postgres;pwd=";
+        private const string ConnectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
         public DbSet<Annotation> Annotations { get; set; }
         public DbSet<Answer> Answers { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+        //public DbSet<Comment> Comments { get; set; }
         public DbSet<History> History { get; set; }
-        public DbSet<LinkPost> LinkPosts { get; set; }
+        //public DbSet<LinkPost> LinkPosts { get; set; }
         public DbSet<Marking> Markings { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<QuestionsTag> QuestionsTags { get; set; }
@@ -80,6 +80,13 @@ namespace _3._Data_Layer.Database_Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.CreateMap();
+            modelBuilder.Entity<Annotation>().HasKey(a => new { a.SubmissionId, a.UserId });
+            modelBuilder.Entity<Question>().HasKey(q => new { q.SubmissionId });
+            modelBuilder.Entity<Answer>().HasKey(a => new { a.SubmissionId });
+            modelBuilder.Entity<Marking>().HasKey(m => new { m.UserId, m.SubmissionId });
+            modelBuilder.Entity<QuestionsTag>().HasKey(q => new { q.QuestionId, q.TagId });
+            modelBuilder.Entity<UserHistory>().HasKey(uh => new { uh.UserId, uh.HistoryId });
+
         }
     }
 }
