@@ -19,10 +19,6 @@ namespace _3._Data_Layer
 
         }
 
-        public IEnumerable<Answer> GetLatestTenAnswers()
-        {
-            return databaseContext.Answers.OrderByDescending(s => s.Submission.CreationDate).Take(10);
-        }
-
+       
     }
 }
