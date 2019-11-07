@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using _0._Models;
@@ -57,7 +57,11 @@ namespace _3._Data_Layer.Database_Context
     }
     public class SOVAContext : DbContext
     {
-        private const string ConnectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
+        private readonly string _connectionString;
+        public SOVAContext(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
         public DbSet<Annotation> Annotations { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -74,7 +78,7 @@ namespace _3._Data_Layer.Database_Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(ConnectionString);
+            optionsBuilder.UseNpgsql(_connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

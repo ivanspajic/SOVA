@@ -362,3 +362,4 @@ MigrationBackup/
 Subproject2/0. Models/obj/0. Models.csproj.nuget.g.props
 Subproject2/0. Models/obj/Debug/netcoreapp3.0/0. Models.AssemblyInfo.cs
 Subproject2/0. Models/obj/Debug/netcoreapp3.0/0. Models.assets.cache
+Subproject2/1. SOVA/appsettings.dbConnectionString.json
