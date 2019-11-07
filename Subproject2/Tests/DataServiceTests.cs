@@ -11,7 +11,7 @@ namespace Tests
         [Fact]
         public void GetRandomTenQuestions()
         {
-            using var db = new SovaContext();
+            using var db = new SOVAContext();
             var service = new QuestionRepository(db);
             var submissions = service.GetRandomTenQuestions().ToList();
             Assert.Equal(10, submissions.Count);

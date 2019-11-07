@@ -11,9 +11,9 @@ namespace _3._Data_Layer
 {
     public class QuestionRepository : IQuestionRepository
     {
-        private readonly SovaContext _databaseContext;
+        private readonly SOVAContext _databaseContext;
 
-        public QuestionRepository(SovaContext databaseContext)
+        public QuestionRepository(SOVAContext databaseContext)
         {
             this._databaseContext = databaseContext;
 
