@@ -57,7 +57,7 @@ namespace _3._Data_Layer.Database_Context
     }
     public class SOVAContext : DbContext
     {
-        private const string ConnectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=19130419200";
+        private const string ConnectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
         public DbSet<Annotation> Annotations { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Comment> Comments { get; set; }
