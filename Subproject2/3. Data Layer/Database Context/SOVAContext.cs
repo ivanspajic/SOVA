@@ -60,9 +60,9 @@ namespace _3._Data_Layer.Database_Context
         private const string ConnectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
         public DbSet<Annotation> Annotations { get; set; }
         public DbSet<Answer> Answers { get; set; }
-        //public DbSet<Comment> Comments { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<History> History { get; set; }
-        //public DbSet<LinkPost> LinkPosts { get; set; }
+        public DbSet<LinkPost> LinkPosts { get; set; }
         public DbSet<Marking> Markings { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<QuestionsTag> QuestionsTags { get; set; }
@@ -80,14 +80,28 @@ namespace _3._Data_Layer.Database_Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.CreateMap();
+
             modelBuilder.Entity<Annotation>().HasKey(a => new { a.SubmissionId, a.UserId });
             modelBuilder.Entity<Question>().HasKey(q => q.SubmissionId);
             modelBuilder.Entity<Answer>().HasKey(a => a.SubmissionId);
-            modelBuilder.Entity<Question>().HasOne(q => q.Submission).WithMany().HasForeignKey(q => q.SubmissionId).IsRequired(true);
-            modelBuilder.Entity<Answer>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId).IsRequired(true);
             modelBuilder.Entity<Marking>().HasKey(m => new { m.UserId, m.SubmissionId });
             modelBuilder.Entity<QuestionsTag>().HasKey(q => new { q.QuestionId, q.TagId });
             modelBuilder.Entity<UserHistory>().HasKey(uh => new { uh.UserId, uh.HistoryId });
+
+            modelBuilder.Entity<Annotation>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId);
+            modelBuilder.Entity<Annotation>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
+            modelBuilder.Entity<Answer>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId);
+            modelBuilder.Entity<Comment>().HasOne(c => c.PostSubmission).WithMany().HasForeignKey(c => c.SubmissionId);
+            modelBuilder.Entity<LinkPost>().HasOne(l => l.Question).WithMany().HasForeignKey(l => l.QuestionId);
+            modelBuilder.Entity<LinkPost>().HasOne(l => l.LinkedPost).WithMany().HasForeignKey(l => l.LinkPostId);
+            modelBuilder.Entity<Marking>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId);
+            modelBuilder.Entity<Marking>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
+            modelBuilder.Entity<Question>().HasOne(q => q.Submission).WithMany().HasForeignKey(q => q.SubmissionId);
+            modelBuilder.Entity<QuestionsTag>().HasOne(a => a.Question).WithMany().HasForeignKey(a => a.QuestionId);
+            modelBuilder.Entity<QuestionsTag>().HasOne(a => a.Tag).WithMany().HasForeignKey(a => a.TagId);
+            modelBuilder.Entity<Submission>().HasOne(a => a.SoMember).WithMany().HasForeignKey(a => a.SoMemberId);
+            modelBuilder.Entity<UserHistory>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
+            modelBuilder.Entity<UserHistory>().HasOne(a => a.History).WithMany().HasForeignKey(a => a.HistoryId);
         }
     }
 }
