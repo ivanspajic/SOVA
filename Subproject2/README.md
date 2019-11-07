@@ -16,4 +16,13 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 ----
 
 ## Current status:
-- Starting on 5 Nov, 2019
+🚀 **Started on 5 Nov, 2019.** Laying down architecture and kick starting the project.
+
+----
+
+## Steps to reproduce
+🚧 _Work in progress_ 🚧
+
+## 🔌 Connecting to database
+
+The server connects to the database by reading the connection string from a local JSON file. It is **not** checked in to GitHub as it contains passwords. [Follow this wiki to create the json file for connection string.](https://github.com/ivanspajic/SOVA/wiki/Set-up-db-connection)
