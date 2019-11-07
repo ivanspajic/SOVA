@@ -11,19 +11,14 @@ namespace _1._SOVA.Controllers
     [Route("api/Submissions")]
     public class SubmissionsController : ControllerBase
     {
-        private readonly IHistoryRepository historyRepository;
+        private readonly ISubmissionRepository submissionRepository;
 
-        public SubmissionsController(IHistoryRepository historyRepository)
+        public SubmissionsController(ISubmissionRepository submissionRepository)
         {
-            this.historyRepository = historyRepository;
+            this.submissionRepository = submissionRepository;
         }
 
-        [HttpGet]
-        [Route("{userId}")]
-        public IActionResult GetSubmissionsForUser(int userId)
-        {
-            return Ok(userId); //dummy code
-        }
+        
     }
 }
 

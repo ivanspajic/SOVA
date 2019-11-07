@@ -11,18 +11,13 @@ namespace _1._SOVA.Controllers
     [Route("api/Answers")]
     public class AnswersController : ControllerBase
     {
-        private readonly IHistoryRepository historyRepository;
+        private readonly IAnswerRepository answerRepository;
 
-        public AnswersController(IHistoryRepository historyRepository)
+        public AnswersController(IAnswerRepository answerRepository)
         {
-            this.historyRepository = historyRepository;
+            this.answerRepository = answerRepository;
         }
 
-        [HttpGet]
-        [Route("{userId}")]
-        public IActionResult GetAnswerForUser(int userId)
-        {
-            return Ok(userId); //dummy code
-        }
+       
     }
 }

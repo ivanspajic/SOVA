@@ -8,22 +8,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace _1._SOVA.Controllers
 {
     [ApiController]
-    [Route("api/Answers")]
+    [Route("api/Comment")]
     public class CommentsController : ControllerBase
     {
-        private readonly IHistoryRepository historyRepository;
+        private readonly ICommentRepository commentRepository;
 
-        public CommentsController(IHistoryRepository historyRepository)
+        public CommentsController(ICommentRepository commentRepository)
         {
-            this.historyRepository = historyRepository;
+            this.commentRepository = commentRepository;
         }
 
-        [HttpGet]
-        [Route("{userId}")]
-        public IActionResult GetAnswerForUser(int userId)
-        {
-            return Ok(userId); //dummy code
-        }
+        
     }
 }
 

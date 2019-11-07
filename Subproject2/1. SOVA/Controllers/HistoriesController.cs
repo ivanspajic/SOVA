@@ -19,10 +19,9 @@ namespace _1._SOVA.Controllers
         }
 
         [HttpGet]
-        [Route("{userId}")]
-        public IActionResult GetHistoryForUser(int userId)
+        public IActionResult GetHistoryForUser()
         {
-            return Ok(userId); //dummy code
+            return Ok();
         }
     }
 }
