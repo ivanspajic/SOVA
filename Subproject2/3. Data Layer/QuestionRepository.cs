@@ -18,9 +18,9 @@ namespace _3._Data_Layer
 
         }
 
-        public IEnumerable<Question> GetLatestTenQuestions()
+        public IEnumerable<Question> GetRandomTenQuestions()
         {
-            return databaseContext.Questions.OrderByDescending(s => s.Submission.CreationDate).Take(10);
+            return databaseContext.Questions.Take(10);
         }
 
     }
