@@ -15,10 +15,8 @@ namespace _1._SOVA.Controllers
 
         public CommentsController(ICommentRepository commentRepository)
         {
-            this._commentRepository = commentRepository;
+            _commentRepository = commentRepository;
         }
-
-        
     }
 }
 

@@ -15,7 +15,7 @@ namespace _1._SOVA.Controllers
 
         public HistoriesController(IHistoryRepository historyRepository)
         {
-            this._historyRepository = historyRepository;
+            _historyRepository = historyRepository;
         }
 
         [HttpGet]

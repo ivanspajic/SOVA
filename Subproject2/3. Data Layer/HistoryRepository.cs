@@ -15,7 +15,7 @@ namespace _3._Data_Layer
 
         public HistoryRepository(SOVAContext databaseContext)
         {
-            this._databaseContext = databaseContext;
+            _databaseContext = databaseContext;
         }
 
         public History GetSingleForUser(int id, string username)

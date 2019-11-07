@@ -11,14 +11,12 @@ namespace _1._SOVA.Controllers
     [Route("api/Questions")]
     public class QuestionsController : ControllerBase
     {
-        private readonly IQuestionRepository questionRepository;
+        private readonly IQuestionRepository _questionRepository;
 
         public QuestionsController(IQuestionRepository questionRepository)
         {
-            this.questionRepository = questionRepository;
+            _questionRepository = questionRepository;
         }
-
-        
     }
 }
 

@@ -15,9 +15,7 @@ namespace _1._SOVA.Controllers
 
         public AnswersController(IAnswerRepository answerRepository)
         {
-            this._answerRepository = answerRepository;
+            _answerRepository = answerRepository;
         }
-
-       
     }
 }
