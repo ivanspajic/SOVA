@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace _1._SOVA.Controllers
 {
+    [Route("api/Histories")]
     public class HistoriesController : ControllerBase
     {
         private readonly IHistoryRepository historyRepository;
@@ -14,6 +15,13 @@ namespace _1._SOVA.Controllers
         public HistoriesController(IHistoryRepository historyRepository)
         {
             this.historyRepository = historyRepository;
+        }
+
+        [Route("Test")]
+        [HttpGet]
+        public IActionResult GetTest()
+        {
+            return Ok("hey");
         }
     }
 }
