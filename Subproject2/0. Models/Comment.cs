@@ -8,7 +8,7 @@ namespace _0._Models
     {
         public int Id { get; set; }
         public Submission CommentSubmission { get; set; }
-        public Submission Submission { get; set; }
+        public Submission PostSubmission { get; set; }
         public int SubmissionId { get; set; }
     }
 }
