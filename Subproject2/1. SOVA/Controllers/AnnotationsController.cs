@@ -19,8 +19,8 @@ namespace _1._SOVA.Controllers
 
         public AnnotationsController(IAnnotationRepository annotationRepository, IMapper mapper)
         {
-            this._annotationRepository = annotationRepository;
-            this._mapper = mapper;
+            _annotationRepository = annotationRepository;
+            _mapper = mapper;
         }
     }
 }

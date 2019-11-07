@@ -15,8 +15,7 @@ namespace _3._Data_Layer
 
         public AnswerRepository(SOVAContext databaseContext)
         {
-            this._databaseContext = databaseContext;
-
+            _databaseContext = databaseContext;
         }
     }
 }

@@ -15,14 +15,12 @@ namespace _3._Data_Layer
 
         public QuestionRepository(SOVAContext databaseContext)
         {
-            this._databaseContext = databaseContext;
-
+            _databaseContext = databaseContext;
         }
 
         public IEnumerable<Question> GetRandomTenQuestions()
         {
             return _databaseContext.Questions.Take(10);
         }
-
     }
 }
