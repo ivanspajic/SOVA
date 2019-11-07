@@ -8,19 +8,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace _1._SOVA.Controllers
 {
     [ApiController]
-    [Route("api/Submissions")]
-    public class SubmissionsController : ControllerBase
+    [Route("api/Answers")]
+    public class CommentsController : ControllerBase
     {
         private readonly IHistoryRepository historyRepository;
 
-        public SubmissionsController(IHistoryRepository historyRepository)
+        public CommentsController(IHistoryRepository historyRepository)
         {
             this.historyRepository = historyRepository;
         }
 
         [HttpGet]
         [Route("{userId}")]
-        public IActionResult GetSubmissionsForUser(int userId)
+        public IActionResult GetAnswerForUser(int userId)
         {
             return Ok(userId); //dummy code
         }
