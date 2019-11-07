@@ -28,7 +28,7 @@ namespace _1._SOVA.Controllers
         [HttpGet(Name = nameof(GetQuestions))]
         public ActionResult GetQuestions()
         {
-            var questions = _questionRepository.GetRandomTenQuestions();
+            var questions = _questionRepository.GetTenRandomQuestions();
             return Ok(questions);
         }
     }
