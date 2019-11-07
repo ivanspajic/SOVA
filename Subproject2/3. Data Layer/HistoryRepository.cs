@@ -11,9 +11,9 @@ namespace _3._Data_Layer
 {
     public class HistoryRepository : IHistoryRepository
     {
-        private readonly SovaContext _databaseContext;
+        private readonly SOVAContext _databaseContext;
 
-        public HistoryRepository(SovaContext databaseContext)
+        public HistoryRepository(SOVAContext databaseContext)
         {
             this._databaseContext = databaseContext;
         }

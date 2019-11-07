@@ -23,7 +23,7 @@ namespace SOVA
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddTransient<IHistoryRepository>(provider => new HistoryRepository(new SovaContext()));
+            services.AddTransient<IHistoryRepository>(provider => new HistoryRepository(new SOVAContext()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
