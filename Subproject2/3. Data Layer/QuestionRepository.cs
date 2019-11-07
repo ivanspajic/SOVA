@@ -21,7 +21,7 @@ namespace _3._Data_Layer
 
         public IEnumerable<Question> GetLatestTenQuestions()
         {
-            return databaseContext.Questions.Include("Submission").Take(10);
+            return databaseContext.Questions.Take(10);
         }
 
     }
