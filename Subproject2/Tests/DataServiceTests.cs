@@ -15,7 +15,7 @@ namespace Tests
         {
             using var db = new SOVAContext("host=localhost;db=stackoverflow;uid=postgres;pwd=");
             var service = new QuestionRepository(db);
-            var submissions = service.GetRandomTenQuestions().ToList();
+            var submissions = service.GetTenRandomQuestions().ToList();
             Assert.Equal(10, submissions.Count);
         }
     }

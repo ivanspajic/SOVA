@@ -10,5 +10,6 @@ namespace _0._Models
         public bool Accepted { get; set; }
         public Submission Submission { get; set; }
         public int SubmissionId { get; set; }
+
     }
 }

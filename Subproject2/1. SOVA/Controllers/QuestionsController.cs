@@ -31,6 +31,13 @@ namespace _1._SOVA.Controllers
             var questions = _questionRepository.GetTenRandomQuestions();
             return Ok(questions);
         }
+
+        //[HttpGet("{queryString}", Name = nameof(SearchQuestion))]
+        //public ActionResult SearchQuestion(string queryString)
+        //{
+        //    var searchResults = _questionRepository.SearchQuestions(queryString);
+        //    return Ok(searchResults);
+        //}
     }
 }
 

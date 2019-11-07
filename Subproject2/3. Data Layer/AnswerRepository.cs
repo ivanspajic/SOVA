@@ -17,5 +17,10 @@ namespace _3._Data_Layer
         {
             _databaseContext = databaseContext;
         }
+
+        public IEnumerable<Answer> GetAnswerForQuestion(int questionId)
+        {
+            return _databaseContext.Answers.Include(a => a.Submission).Where(a => a.ParentId == questionId);
+        }
     }
 }
