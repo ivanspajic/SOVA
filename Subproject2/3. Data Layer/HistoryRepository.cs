@@ -11,16 +11,16 @@ namespace _3._Data_Layer
 {
     public class HistoryRepository : IHistoryRepository
     {
-        private readonly SOVAContext databaseContext;
+        private readonly SovaContext _databaseContext;
 
-        public HistoryRepository(SOVAContext databaseContext)
+        public HistoryRepository(SovaContext databaseContext)
         {
-            this.databaseContext = databaseContext;
+            this._databaseContext = databaseContext;
         }
 
         public History GetSingleForUser(int id, string username)
         {
-            return databaseContext.History.Include("").Where(h => h.Id == id).FirstOrDefault();
+            return _databaseContext.History.Include("").Where(h => h.Id == id).FirstOrDefault();
         }
     }
 }
