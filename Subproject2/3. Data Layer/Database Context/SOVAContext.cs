@@ -81,12 +81,13 @@ namespace _3._Data_Layer.Database_Context
         {
             modelBuilder.CreateMap();
             modelBuilder.Entity<Annotation>().HasKey(a => new { a.SubmissionId, a.UserId });
-            modelBuilder.Entity<Question>().HasKey(q => new { q.SubmissionId });
-            modelBuilder.Entity<Answer>().HasKey(a => new { a.SubmissionId });
+            modelBuilder.Entity<Question>().HasKey(q => q.SubmissionId);
+            modelBuilder.Entity<Answer>().HasKey(a => a.SubmissionId);
+            modelBuilder.Entity<Question>().HasOne(q => q.Submission).WithMany().HasForeignKey(q => q.SubmissionId).IsRequired(true);
+            modelBuilder.Entity<Answer>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId).IsRequired(true);
             modelBuilder.Entity<Marking>().HasKey(m => new { m.UserId, m.SubmissionId });
             modelBuilder.Entity<QuestionsTag>().HasKey(q => new { q.QuestionId, q.TagId });
             modelBuilder.Entity<UserHistory>().HasKey(uh => new { uh.UserId, uh.HistoryId });
-
         }
     }
 }
