@@ -1,4 +1,6 @@
-﻿using _2._Data_Layer_Abstractions;
+﻿using _0._Models;
+using _1._SOVA.Models;
+using _2._Data_Layer_Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,7 +22,5 @@ namespace _1._SOVA.Controllers
             this.annotationRepository = annotationRepository;
             this.mapper = mapper;
         }
-
-
     }
 }
