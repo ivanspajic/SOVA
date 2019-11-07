@@ -11,11 +11,11 @@ namespace _3._Data_Layer
 {
     public class AnswerRepository : IAnswerRepository
     {
-        private readonly SOVAContext databaseContext;
+        private readonly SovaContext _databaseContext;
 
-        public AnswerRepository(SOVAContext databaseContext)
+        public AnswerRepository(SovaContext databaseContext)
         {
-            this.databaseContext = databaseContext;
+            this._databaseContext = databaseContext;
 
         }
     }

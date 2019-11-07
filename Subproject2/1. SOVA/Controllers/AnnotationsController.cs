@@ -14,13 +14,13 @@ namespace _1._SOVA.Controllers
     [Route("api/Annotations")]
     public class AnnotationsController : ControllerBase
     {
-        private readonly IAnnotationRepository annotationRepository;
-        private IMapper mapper;
+        private readonly IAnnotationRepository _annotationRepository;
+        private IMapper _mapper;
 
         public AnnotationsController(IAnnotationRepository annotationRepository, IMapper mapper)
         {
-            this.annotationRepository = annotationRepository;
-            this.mapper = mapper;
+            this._annotationRepository = annotationRepository;
+            this._mapper = mapper;
         }
     }
 }

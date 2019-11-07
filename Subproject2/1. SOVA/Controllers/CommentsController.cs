@@ -11,11 +11,11 @@ namespace _1._SOVA.Controllers
     [Route("api/Comment")]
     public class CommentsController : ControllerBase
     {
-        private readonly ICommentRepository commentRepository;
+        private readonly ICommentRepository _commentRepository;
 
         public CommentsController(ICommentRepository commentRepository)
         {
-            this.commentRepository = commentRepository;
+            this._commentRepository = commentRepository;
         }
 
         

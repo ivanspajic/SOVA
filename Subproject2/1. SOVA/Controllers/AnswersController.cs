@@ -11,11 +11,11 @@ namespace _1._SOVA.Controllers
     [Route("api/Answers")]
     public class AnswersController : ControllerBase
     {
-        private readonly IAnswerRepository answerRepository;
+        private readonly IAnswerRepository _answerRepository;
 
         public AnswersController(IAnswerRepository answerRepository)
         {
-            this.answerRepository = answerRepository;
+            this._answerRepository = answerRepository;
         }
 
        

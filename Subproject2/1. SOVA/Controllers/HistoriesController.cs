@@ -11,11 +11,11 @@ namespace _1._SOVA.Controllers
     [Route("api/Histories")]
     public class HistoriesController : ControllerBase
     {
-        private readonly IHistoryRepository historyRepository;
+        private readonly IHistoryRepository _historyRepository;
 
         public HistoriesController(IHistoryRepository historyRepository)
         {
-            this.historyRepository = historyRepository;
+            this._historyRepository = historyRepository;
         }
 
         [HttpGet]

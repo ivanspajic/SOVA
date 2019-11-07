@@ -11,17 +11,17 @@ namespace _3._Data_Layer
 {
     public class QuestionRepository : IQuestionRepository
     {
-        private readonly SOVAContext databaseContext;
+        private readonly SovaContext _databaseContext;
 
-        public QuestionRepository(SOVAContext databaseContext)
+        public QuestionRepository(SovaContext databaseContext)
         {
-            this.databaseContext = databaseContext;
+            this._databaseContext = databaseContext;
 
         }
 
         public IEnumerable<Question> GetRandomTenQuestions()
         {
-            return databaseContext.Questions.Take(10);
+            return _databaseContext.Questions.Take(10);
         }
 
     }
