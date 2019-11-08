@@ -8,6 +8,7 @@ namespace _2._Data_Layer_Abstractions
     public interface IQuestionRepository
     {
         IEnumerable<Question> GetTenRandomQuestions();
+        Question GetById(int submissionId);
         //IEnumerable<Question> SearchQuestions(string queryString);
 
     }
