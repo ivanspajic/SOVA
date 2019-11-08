@@ -30,7 +30,7 @@ namespace _3._Data_Layer
 
         //public IEnumerable<Question> SearchQuestions(string queryString)
         //{
-        //    return _databaseContext.Questions.FromSqlRaw($"SELECT * from best_match({queryString})");
+        //    return _databaseContext.Questions.FromSqlRaw("SELECT * from best_match({0})", queryString);
         //}
 
     }
