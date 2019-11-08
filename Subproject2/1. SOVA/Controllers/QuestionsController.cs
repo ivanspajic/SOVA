@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using _0._Models;
 using _1._SOVA.Models;
 using _2._Data_Layer_Abstractions;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _1._SOVA.Controllers
@@ -15,18 +16,30 @@ namespace _1._SOVA.Controllers
     public class QuestionsController : ControllerBase
     {
         private readonly IQuestionRepository _questionRepository;
+        private IMapper _mapper;
 
-
-        public QuestionsController(IQuestionRepository questionRepository)
+        public QuestionsController(IQuestionRepository questionRepository, IMapper mapper)
         {
             _questionRepository = questionRepository;
+            _mapper = mapper;
         }
 
         [HttpGet(Name = nameof(GetQuestions))]
         public ActionResult GetQuestions()
         {
             var questions = _questionRepository.GetTenRandomQuestions();
-            return Ok(questions);
+            return Ok(CreateResult(questions));
+        }
+
+        [HttpGet("{questionId}", Name = nameof(GetQuestion))]
+        public ActionResult GetQuestion(int questionId)
+        {
+            var question = _questionRepository.GetById(questionId);
+            if (question == null)
+            {
+                return NotFound();
+            }
+            return Ok(CreateQuestionDto(question));
         }
 
         //[HttpGet("{queryString}", Name = nameof(SearchQuestion))]
@@ -35,6 +48,26 @@ namespace _1._SOVA.Controllers
         //    var searchResults = _questionRepository.SearchQuestions(queryString);
         //    return Ok(searchResults);
         //}
+
+        ///////////////////
+        //
+        // Helpers
+        //
+        ///////////////////
+
+        private QuestionDto CreateQuestionDto(Question question)
+        {
+            var dto = _mapper.Map<QuestionDto>(question);
+            dto.Link = Url.Link(
+                    nameof(GetQuestion),
+                    new { questionId = question.SubmissionId });
+            return dto;
+        }
+
+        private IEnumerable<QuestionDto> CreateResult(IEnumerable<Question> questions)
+        {
+            return questions.Select(q => CreateQuestionDto(q));
+        }
     }
 }
 

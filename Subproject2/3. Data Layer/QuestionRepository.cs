@@ -26,6 +26,11 @@ namespace _3._Data_Layer
             return _databaseContext.Questions.Skip(randomOffSet).Take(10);
         }
 
+        public Question GetById(int submissionId)
+        {
+            return _databaseContext.Questions.Find(submissionId);
+        }
+
         // TODO: Fix this function call. Currently it fails with error: `column "chocholate" does not exist`
 
         //public IEnumerable<Question> SearchQuestions(string queryString)

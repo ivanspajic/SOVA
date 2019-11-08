@@ -12,5 +12,6 @@ namespace _1._SOVA.Models
         public string Title { get; set; }
         public DateTime? ClosedDate { get; set; }
         public Submission Submission { get; set; }
+        public int SubmissionId { get; set; }
     }
 }

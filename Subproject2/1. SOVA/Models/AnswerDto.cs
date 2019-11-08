@@ -13,6 +13,6 @@ namespace _1._SOVA.Models
         public bool Accepted { get; set; }
         public Submission Submission { get; set; }
         public string AnswerBody => Submission.Body;
-
+        public int SubmissionId { get; set; }
     }
 }
