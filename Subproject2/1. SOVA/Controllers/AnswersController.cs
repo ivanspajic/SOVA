@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace _1._SOVA.Controllers
 {
     [ApiController]
-    [Route("api/Answers")]
+    [Route("api/{questionId}/answer")]
     public class AnswersController : ControllerBase
     {
         private readonly IAnswerRepository _answerRepository;
@@ -16,6 +16,13 @@ namespace _1._SOVA.Controllers
         public AnswersController(IAnswerRepository answerRepository)
         {
             _answerRepository = answerRepository;
+        }
+
+        [HttpGet(Name = nameof(GetAnswersForQuestion))]
+        public ActionResult GetAnswersForQuestion(int questionId)
+        {
+            var answers = _answerRepository.GetAnswersForQuestionById(questionId);
+            return Ok(answers);
         }
     }
 }

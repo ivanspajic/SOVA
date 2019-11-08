@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using _0._Models;
 using _1._SOVA.Models;
 using _2._Data_Layer_Abstractions;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _1._SOVA.Controllers
@@ -16,21 +15,26 @@ namespace _1._SOVA.Controllers
     public class QuestionsController : ControllerBase
     {
         private readonly IQuestionRepository _questionRepository;
-        private IMapper _mapper;
 
 
-        public QuestionsController(IQuestionRepository questionRepository, IMapper mapper)
+        public QuestionsController(IQuestionRepository questionRepository)
         {
             _questionRepository = questionRepository;
-            _mapper = mapper;
         }
 
         [HttpGet(Name = nameof(GetQuestions))]
         public ActionResult GetQuestions()
         {
-            var questions = _questionRepository.GetRandomTenQuestions();
+            var questions = _questionRepository.GetTenRandomQuestions();
             return Ok(questions);
         }
+
+        //[HttpGet("{queryString}", Name = nameof(SearchQuestion))]
+        //public ActionResult SearchQuestion(string queryString)
+        //{
+        //    var searchResults = _questionRepository.SearchQuestions(queryString);
+        //    return Ok(searchResults);
+        //}
     }
 }
 
