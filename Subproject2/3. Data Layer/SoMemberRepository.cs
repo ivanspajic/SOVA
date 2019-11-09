@@ -20,15 +20,9 @@ namespace _3._Data_Layer
             _databaseContext = databaseContext;
         }
 
-        public IEnumerable<SoMember> GetTenRandomSoMembers()
+        public SoMember GetSoMemberById(int soMemberId)
         {
-            var randomOffSet = new Random().Next(1, 1000);
-            return _databaseContext.SoMembers.Skip(randomOffSet).Take(10);
-        }
-
-        public SoMember GetById(int submissionId)
-        {
-            return _databaseContext.SoMembers.Find(submissionId);
+            return _databaseContext.SoMembers.FirstOrDefault(s => s.Id == soMemberId);
         }
     }
 }

@@ -20,15 +20,9 @@ namespace _3._Data_Layer
             _databaseContext = databaseContext;
         }
 
-        public IEnumerable<Comment> GetTenRandomComments()
+        public Comment GetCommentById(int commentId)
         {
-            var randomOffSet = new Random().Next(1, 1000);
-            return _databaseContext.Comments.Skip(randomOffSet).Take(10);
-        }
-
-        public Comment GetById(int submissionId)
-        {
-            return _databaseContext.Comments.Find(submissionId);
+            return _databaseContext.Comments.FirstOrDefault(c => c.Id == commentId);
         }
     }
 }

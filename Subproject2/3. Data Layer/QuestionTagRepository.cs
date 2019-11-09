@@ -19,16 +19,5 @@ namespace _3._Data_Layer
         {
             _databaseContext = databaseContext;
         }
-
-        public IEnumerable<QuestionsTag> GetTenRandomQuestionsTag()
-        {
-            var randomOffSet = new Random().Next(1, 1000);
-            return _databaseContext.QuestionsTags.Skip(randomOffSet).Take(10);
-        }
-
-        public QuestionsTag GetById(int submissionId)
-        {
-            return _databaseContext.QuestionsTags.Find(submissionId);
-        }
     }
 }

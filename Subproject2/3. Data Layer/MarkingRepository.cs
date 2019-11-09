@@ -19,16 +19,5 @@ namespace _3._Data_Layer
         {
             _databaseContext = databaseContext;
         }
-
-        public IEnumerable<Marking> GetTenRandomMarking()
-        {
-            var randomOffSet = new Random().Next(1, 1000);
-            return _databaseContext.Markings.Skip(randomOffSet).Take(10);
-        }
-
-        public Marking GetById(int submissionId)
-        {
-            return _databaseContext.Markings.Find(submissionId);
-        }
     }
 }

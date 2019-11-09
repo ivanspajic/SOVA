@@ -19,16 +19,5 @@ namespace _3._Data_Layer
         {
             _databaseContext = databaseContext;
         }
-
-        public IEnumerable<Annotation> GetTenRandomAnnotation()
-        {
-            var randomOffSet = new Random().Next(1, 1000);
-            return _databaseContext.Annotations.Skip(randomOffSet).Take(10);
-        }
-
-        public Annotation GetById(int submissionId)
-        {
-            return _databaseContext.Annotations.Find(submissionId);
-        }
     }
 }
