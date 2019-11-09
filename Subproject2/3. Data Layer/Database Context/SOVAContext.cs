@@ -91,6 +91,7 @@ namespace _3._Data_Layer.Database_Context
             modelBuilder.Entity<Marking>().HasKey(m => new { m.UserId, m.SubmissionId });
             modelBuilder.Entity<QuestionsTag>().HasKey(q => new { q.QuestionId, q.TagId });
             modelBuilder.Entity<UserHistory>().HasKey(uh => new { uh.UserId, uh.HistoryId });
+            modelBuilder.Entity<Comment>().HasKey(c => c.Id);
 
             modelBuilder.Entity<Annotation>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId);
             modelBuilder.Entity<Annotation>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
