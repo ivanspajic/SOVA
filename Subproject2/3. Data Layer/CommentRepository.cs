@@ -22,7 +22,7 @@ namespace _3._Data_Layer
 
         public IEnumerable<Comment> GetAllCommentsByParentId(int parentId)
         {
-            return _databaseContext.Comments.Include(c => c.PostSubmission).Where(c => c.SubmissionId == parentId);
+            return _databaseContext.Comments.Include(c => c.PostSubmission).Where(p => p.PostSubmission.Id == parentId);
         }
 
         public Comment GetCommentById(int commentId)
