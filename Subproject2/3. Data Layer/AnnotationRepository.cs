@@ -19,5 +19,43 @@ namespace _3._Data_Layer
         {
             _databaseContext = databaseContext;
         }
+
+        public Annotation Create(string annotation, int submissionId)
+        {
+            Delete(submissionId); //only allow 1 annotation at a time
+
+            var ant = new Annotation
+            {
+                SubmissionId = submissionId,
+                AnnotationString = annotation
+            };
+
+            _databaseContext.Annotations.Add(ant);
+
+            _databaseContext.SaveChanges();
+
+            return ant;
+        }
+
+        public bool Delete(int submissionId)
+        {
+            if (_databaseContext.Annotations.Find(submissionId) != null)
+            {
+                _databaseContext.Annotations.Remove(_databaseContext.Annotations.Find(submissionId));
+                _databaseContext.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
+
+        public Annotation GetBySubmissionId(int submissionId)
+        {
+            var ant = _databaseContext.Annotations.Find(submissionId);
+
+            return ant;
+        }
+
+
     }
 }
