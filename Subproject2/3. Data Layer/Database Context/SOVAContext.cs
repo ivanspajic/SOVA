@@ -116,6 +116,9 @@ namespace _3._Data_Layer.Database_Context
             modelBuilder.Entity<Submission>().HasOne(a => a.SoMember).WithMany().HasForeignKey(a => a.SoMemberId);
             modelBuilder.Entity<UserHistory>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
             modelBuilder.Entity<UserHistory>().HasOne(a => a.History).WithMany().HasForeignKey(a => a.HistoryId);
+
+            modelBuilder.Entity<User>().Property(u => u.Username).HasColumnName("name");
+
         }
     }
 }

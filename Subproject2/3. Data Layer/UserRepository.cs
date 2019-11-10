@@ -32,14 +32,13 @@ namespace _3._Data_Layer
         {
             return _databaseContext.Users.FirstOrDefault(u => u.Username == username);
         }
-        public User CreateUser(string username, string password, string salt)
+        public User CreateUser(string username, string password)
         {
             var user = new User()
             {
-                Id = _databaseContext.Users.Max(x => x.Id) + 1,
+                Id = 1,//_databaseContext.Users.Max(x => x.Id),
                 Username = username,
                 Password = password,
-                Salt = salt
             };
             _databaseContext.Users.Add(user);
             return user;
