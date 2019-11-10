@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace _1._SOVA.Controllers
 {
     [ApiController]
-    [Route("api/{parentId}/comments")]
+    [Route("api/{submissionId}/comments")]
     public class CommentsController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
@@ -23,12 +23,10 @@ namespace _1._SOVA.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet(Name = nameof(GetAllCommentsByParentId))]
-        public ActionResult GetAllCommentsByParentId(int parentId)
+        [HttpGet(Name = nameof(GetAllCommentsBySubmissionId))]
+        public ActionResult GetAllCommentsBySubmissionId(int submissionId)
         {
-            // One of the expected result is:
-            // -2323170	19	-2323170	codegolf much??	2010-02-28 04:01:06.000000	0	69742
-            var comments = _commentRepository.GetAllCommentsByParentId(parentId);
+            var comments = _commentRepository.GetAllCommentsBySubmissionId(submissionId);
             return Ok(CreateResult(comments));
         }
 
@@ -42,7 +40,7 @@ namespace _1._SOVA.Controllers
         {
             var dto = _mapper.Map<CommentDto>(comment);
             dto.Link = Url.Link(
-                nameof(GetAllCommentsByParentId),
+                nameof(GetAllCommentsBySubmissionId),
                 new { commentId = comment.Id });
             return dto;
         }

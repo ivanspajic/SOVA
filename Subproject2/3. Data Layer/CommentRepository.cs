@@ -20,14 +20,14 @@ namespace _3._Data_Layer
             _databaseContext = databaseContext;
         }
 
-        public IEnumerable<Comment> GetAllCommentsByParentId(int parentId)
+        public IEnumerable<Comment> GetAllCommentsBySubmissionId(int submissionId)
         {
-            return _databaseContext.Comments.Include(c => c.CommentSubmission).Where(c => c.SubmissionId == parentId);
+            return _databaseContext.Comments.Include(c => c.CommentSubmission).Where(c => c.SubmissionId == submissionId);
         }
 
         public Comment GetCommentById(int commentId)
         {
-            return _databaseContext.Comments.Include(c => c.SubmissionId).FirstOrDefault(c => c.SubmissionId == commentId);
+            return _databaseContext.Comments.Include(c => c.CommentSubmission).FirstOrDefault(c => c.SubmissionId == commentId);
         }
     }
 }
