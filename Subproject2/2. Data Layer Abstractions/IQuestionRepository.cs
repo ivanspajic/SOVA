@@ -9,7 +9,6 @@ namespace _2._Data_Layer_Abstractions
     {
         IEnumerable<Question> GetTenRandomQuestions();
         Question GetById(int submissionId);
-        //IEnumerable<Question> SearchQuestions(string queryString);
-
+        IEnumerable<SearchResult> SearchQuestions(string queryString);
     }
 }

@@ -42,12 +42,12 @@ namespace _1._SOVA.Controllers
             return Ok(CreateQuestionDto(question));
         }
 
-        //[HttpGet("{queryString}", Name = nameof(SearchQuestion))]
-        //public ActionResult SearchQuestion(string queryString)
-        //{
-        //    var searchResults = _questionRepository.SearchQuestions(queryString);
-        //    return Ok(searchResults);
-        //}
+        [HttpGet("query/{queryString}", Name = nameof(SearchQuestion))]
+        public ActionResult SearchQuestion(string queryString)
+        {
+            var searchResults = _questionRepository.SearchQuestions(queryString);
+            return Ok(searchResults);
+        }
 
         ///////////////////
         //
