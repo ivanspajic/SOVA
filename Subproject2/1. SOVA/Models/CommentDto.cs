@@ -11,6 +11,5 @@ namespace _1._SOVA.Models
         public string Link { get; set; }
         public int Id { get; set; }
         public Submission CommentSubmission { get; set; }
-        public Submission PostSubmission { get; set; }
     }
 }
