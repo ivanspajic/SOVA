@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace _1._SOVA.Controllers
 {
     [ApiController]
-    [Route("api/Annotations")]
+    [Route("api/annotation")]
     public class AnnotationsController : ControllerBase
     {
         private readonly IAnnotationRepository _annotationRepository;
@@ -80,7 +80,7 @@ namespace _1._SOVA.Controllers
             var dto = _mapper.Map<AnnotationDto>(annotation);
             dto.Link = Url.Link(
                     nameof(GetAnnotation),
-                    new { annotationId = annotation.SubmissionId });
+                    new { submissionId = annotation.SubmissionId });
             return dto;
         }
     }
