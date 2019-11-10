@@ -40,10 +40,7 @@ namespace _1._SOVA.Controllers
             return Ok(CreateQuestionDto(question));
         }
 
-        [HttpGet("" +
-                 "query" +
-                 "" +
-                 "/{queryString}", Name = nameof(SearchQuestion))]
+        [HttpGet("query/{queryString}", Name = nameof(SearchQuestion))]
         public ActionResult SearchQuestion([FromQuery] PagingAttributes pagingAttributes, string queryString)
         {
             var searchResults = _questionRepository.SearchQuestions(queryString, pagingAttributes);

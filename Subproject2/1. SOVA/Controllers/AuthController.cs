@@ -44,11 +44,8 @@ namespace _1._SOVA.Controllers
             }
 
             var salt = PasswordService.GenerateSalt(size);
-
             var pwd = PasswordService.HashPassword(dto.Password, salt, size);
-
             _userRepository.CreateUser(dto.Username, dto.Password, salt);
-
             return CreatedAtRoute(null, dto.Username);
         }
 
@@ -92,14 +89,9 @@ namespace _1._SOVA.Controllers
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)
             };
-
             var securityToken = tokenHandler.CreateToken(tokenDescription);
-
             var token = tokenHandler.WriteToken(securityToken);
-
             return Ok(new { user.Username, token });
-
         }
-
     }
 }
