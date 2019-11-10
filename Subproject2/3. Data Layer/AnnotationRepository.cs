@@ -56,6 +56,18 @@ namespace _3._Data_Layer
             return ant;
         }
 
+        public bool Update(string annotation, int submissionId)
+        {
+            var ant = _databaseContext.Annotations.Find(submissionId);
+            if (ant != null)
+            {
+                ant.AnnotationString = annotation;
 
+                _databaseContext.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
     }
 }

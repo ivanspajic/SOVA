@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace _1._SOVA.Controllers
 {
     [ApiController]
-    [Route("api/{questionId}/answer")]
+    [Route("api/{questionId}/answers")]
     public class AnswersController : ControllerBase
     {
         private readonly IAnswerRepository _answerRepository;

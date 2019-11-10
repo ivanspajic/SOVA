@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace _1._SOVA.Controllers
 {
     [ApiController]
-    [Route("api/Comment")]
+    [Route("api/comments")]
     public class CommentsController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
