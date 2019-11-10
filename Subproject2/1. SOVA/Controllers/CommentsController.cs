@@ -26,6 +26,8 @@ namespace _1._SOVA.Controllers
         [HttpGet(Name = nameof(GetAllCommentsByParentId))]
         public ActionResult GetAllCommentsByParentId(int parentId)
         {
+            // One of the expected result is:
+            // -2323170	19	-2323170	codegolf much??	2010-02-28 04:01:06.000000	0	69742
             var comments = _commentRepository.GetAllCommentsByParentId(parentId);
             return Ok(CreateResult(comments));
         }
