@@ -20,14 +20,27 @@ namespace _3._Data_Layer
             _databaseContext = databaseContext;
         }
 
-        public IEnumerable<Comment> GetAllCommentsBySubmissionId(int submissionId)
+        public IEnumerable<Comment> GetAllCommentsBySubmissionId(int submissionId, PagingAttributes pagingAttributes)
         {
-            return _databaseContext.Comments.Include(c => c.CommentSubmission).Where(c => c.SubmissionId == submissionId);
+            return _databaseContext.Comments
+                .Include(c => c.CommentSubmission)
+                .Where(c => c.SubmissionId == submissionId)
+                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize)
+                .ToList();
         }
 
         public Comment GetCommentById(int commentId)
         {
             return _databaseContext.Comments.Include(c => c.CommentSubmission).FirstOrDefault(c => c.SubmissionId == commentId);
+        }
+
+        public int NoOfComments(int submissionId)
+        {
+            return _databaseContext.Comments
+                .Include(c => c.CommentSubmission)
+                .Where(c => c.SubmissionId == submissionId)
+                .Count();
         }
     }
 }

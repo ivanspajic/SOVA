@@ -7,7 +7,8 @@ namespace _2._Data_Layer_Abstractions
 {
     public interface ICommentRepository
     {
-        IEnumerable<Comment> GetAllCommentsBySubmissionId(int parentId);
+        IEnumerable<Comment> GetAllCommentsBySubmissionId(int parentId, PagingAttributes pagingAttributes);
         Comment GetCommentById(int commentId);
+        int NoOfComments(int submissionId);
     }
 }
