@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace _1._SOVA.Controllers
 {
     [ApiController]
-    [Route("api/Histories")]
+    [Route("api/history")]
     public class HistoriesController : ControllerBase
     {
         private readonly IHistoryRepository _historyRepository;
