@@ -24,10 +24,10 @@ namespace _1._SOVA.Controllers
         }
 
         [HttpGet(Name = nameof(GetAnswersForQuestion))]
-        public ActionResult GetAnswersForQuestion(int questionId)
+        public ActionResult GetAnswersForQuestion([FromQuery] PagingAttributes pagingAttributes, int questionId)
         {
-            var answers = _answerRepository.GetAnswersForQuestionById(questionId);
-            return Ok(CreateResult(answers));
+            var answers = _answerRepository.GetAnswersForQuestionById(questionId, pagingAttributes);
+            return Ok(CreateResult(answers, questionId, pagingAttributes));
         }
 
 
@@ -49,6 +49,33 @@ namespace _1._SOVA.Controllers
         private IEnumerable<AnswerDto> CreateResult(IEnumerable<Answer> answers)
         {
             return answers.Select(a => CreateAnswerDto(a));
+        }
+
+        private object CreateResult(IEnumerable<Answer> answers, int questionId, PagingAttributes attr)
+        {
+            var totalItems = _answerRepository.NoOfAnswers(questionId);
+            var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
+
+            var prev = attr.Page > 0
+                ? CreatePagingLink(attr.Page - 1, attr.PageSize)
+                : null;
+            var next = attr.Page < numberOfPages - 1
+                ? CreatePagingLink(attr.Page + 1, attr.PageSize)
+                : null;
+
+            return new
+            {
+                totalItems,
+                numberOfPages,
+                prev,
+                next,
+                items = answers.Select(CreateAnswerDto)
+            };
+        }
+
+        private string CreatePagingLink(int page, int pageSize)
+        {
+            return Url.Link(nameof(GetAnswersForQuestion), new { page, pageSize });
         }
     }
 }
