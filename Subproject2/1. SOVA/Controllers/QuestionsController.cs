@@ -43,10 +43,10 @@ namespace _1._SOVA.Controllers
         }
 
         [HttpGet("query/{queryString}", Name = nameof(SearchQuestion))]
-        public ActionResult SearchQuestion(string queryString)
+        public ActionResult SearchQuestion([FromQuery] PagingAttributes pagingAttributes, string queryString)
         {
-            var searchResults = _questionRepository.SearchQuestions(queryString);
-            return Ok(searchResults);
+            var searchResults = _questionRepository.SearchQuestions(queryString, pagingAttributes);
+            return Ok(CreateResult(searchResults, queryString, pagingAttributes));
         }
 
         ///////////////////
@@ -67,6 +67,33 @@ namespace _1._SOVA.Controllers
         private IEnumerable<QuestionDto> CreateResult(IEnumerable<Question> questions)
         {
             return questions.Select(q => CreateQuestionDto(q));
+        }
+
+        private object CreateResult(IEnumerable<SearchResult> questions, string str, PagingAttributes attr)
+        {
+            var totalItems = _questionRepository.NoOfResults(str);
+            var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
+
+            var prev = attr.Page > 0
+                ? CreatePagingLink(attr.Page - 1, attr.PageSize)
+                : null;
+            var next = attr.Page < numberOfPages - 1
+                ? CreatePagingLink(attr.Page + 1, attr.PageSize)
+                : null;
+
+            return new
+            {
+                totalItems,
+                numberOfPages,
+                prev,
+                next,
+                items = questions
+            };
+        }
+
+        private string CreatePagingLink(int page, int pageSize)
+        {
+            return Url.Link(nameof(SearchQuestion), new { page, pageSize });
         }
     }
 }

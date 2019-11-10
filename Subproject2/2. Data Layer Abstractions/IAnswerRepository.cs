@@ -7,7 +7,7 @@ namespace _2._Data_Layer_Abstractions
 {
     public interface IAnswerRepository
     {
-        IEnumerable<Answer> GetAnswersForQuestionById(int questionId);
-
+        IEnumerable<Answer> GetAnswersForQuestionById(int questionId, PagingAttributes pagingAttributes);
+        int NoOfAnswers(int questionId);
     }
 }

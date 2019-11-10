@@ -31,10 +31,18 @@ namespace _3._Data_Layer
             return _databaseContext.Questions.Find(submissionId);
         }
 
-        public IEnumerable<SearchResult> SearchQuestions(string queryString)
+        public IEnumerable<SearchResult> SearchQuestions(string queryString, PagingAttributes pagingAttributes)
         {
-            return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0})", queryString);
+            return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0})", queryString)
+                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize)
+                .ToList();
         }
 
+        public int NoOfResults(string queryString)
+        {
+            return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0})", queryString)
+                .Count();
+        }
     }
 }
