@@ -41,6 +41,7 @@ namespace _1._SOVA
             services.AddTransient<IAnswerRepository>(provider => new AnswerRepository(new SOVAContext(dbConnectionString)));
             services.AddTransient<IHistoryRepository>(provider => new HistoryRepository(new SOVAContext(dbConnectionString)));
             services.AddTransient<ICommentRepository>(provider => new CommentRepository(new SOVAContext(dbConnectionString)));
+            services.AddTransient<IUserRepository>(provider => new UserRepository(new SOVAContext(dbConnectionString)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

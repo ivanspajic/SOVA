@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
-using System.Threading.Tasks;
 using _0._Models;
 using _1._SOVA.Models;
 using _2._Data_Layer_Abstractions;
@@ -42,7 +40,10 @@ namespace _1._SOVA.Controllers
             return Ok(CreateQuestionDto(question));
         }
 
-        [HttpGet("query/{queryString}", Name = nameof(SearchQuestion))]
+        [HttpGet("" +
+                 "query" +
+                 "" +
+                 "/{queryString}", Name = nameof(SearchQuestion))]
         public ActionResult SearchQuestion([FromQuery] PagingAttributes pagingAttributes, string queryString)
         {
             var searchResults = _questionRepository.SearchQuestions(queryString, pagingAttributes);
