@@ -57,7 +57,7 @@ namespace _1._SOVA
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("<h1 style='font-family:Helvetica;'> <img src='https://ruc.dk/sites/default/files/2017-05/ruc_logo_download_en.png' width=500px><br><br><div style='text-align: center;'><marquee>SOVA Webservice by raw4.</marquee></div><br><br><iframe style='display: block; margin:auto' width='560' height='315' src='https://www.youtube.com/embed/cvChjHcABPA' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></h1>");
                 });
                 endpoints.MapControllers();
             });
