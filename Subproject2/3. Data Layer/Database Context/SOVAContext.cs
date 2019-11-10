@@ -55,6 +55,7 @@ namespace _3._Data_Layer.Database_Context
             }
         }
     }
+
     public class SOVAContext : DbContext
     {
         private readonly string _connectionString;
@@ -62,6 +63,9 @@ namespace _3._Data_Layer.Database_Context
         {
             _connectionString = connectionString;
         }
+
+        public DbQuery<SearchResult> SearchResults { get; set; }
+
         public DbSet<Annotation> Annotations { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -84,6 +88,11 @@ namespace _3._Data_Layer.Database_Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.CreateMap();
+
+            modelBuilder.Query<SearchResult>().Property(x => x.Id).HasColumnName("postid");
+            modelBuilder.Query<SearchResult>().Property(x => x.Body).HasColumnName("body");
+            modelBuilder.Query<SearchResult>().Property(x => x.Rank).HasColumnName("rank");
+
 
             modelBuilder.Entity<Annotation>().HasKey(a => new { a.SubmissionId, a.UserId });
             modelBuilder.Entity<Question>().HasKey(q => q.SubmissionId);

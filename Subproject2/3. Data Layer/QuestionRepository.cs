@@ -33,10 +33,10 @@ namespace _3._Data_Layer
 
         // TODO: Fix this function call. Currently it fails with error: `column "chocholate" does not exist`
 
-        //public IEnumerable<Question> SearchQuestions(string queryString)
-        //{
-        //    return _databaseContext.Questions.FromSqlRaw("SELECT * from best_match({0})", queryString);
-        //}
+        public IEnumerable<SearchResult> SearchQuestions(string queryString)
+        {
+            return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match({0})", queryString);
+        }
 
     }
 }
