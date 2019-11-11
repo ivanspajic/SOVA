@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-using _1._SOVA;
 using _1._SOVA.Models;
 using _2._Data_Layer_Abstractions;
 using AutoMapper;
@@ -13,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace WebServiceToken.Controllers
+namespace _1._SOVA.Controllers
 {
     [ApiController]
     [Route("api/auth")]
@@ -22,12 +18,13 @@ namespace WebServiceToken.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
         private IMapper _mapper;
-
+        private int _size;
         public AuthController(IUserRepository userRepository, IConfiguration configuration, IMapper mapper)
         {
             _userRepository = userRepository;
             _configuration = configuration;
             _mapper = mapper;
+            GetAuthPasswordSizeFromConfig();
         }
 
         [HttpPost("users")]
@@ -35,23 +32,37 @@ namespace WebServiceToken.Controllers
         {
             if (_userRepository.GetUserByUsername(dto.Username) != null)
             {
-                return BadRequest();
+                return BadRequest("Username is already taken. Please choose another username.");
             }
 
-            int.TryParse(
-                _configuration.GetSection("Auth:PwdSize").Value,
-                out var size);
-
-            if (size == 0)
-            {
-                throw new ArgumentException();
-            }
-
-            var salt = PasswordService.GenerateSalt(size);
-            var pwd = PasswordService.HashPassword(dto.Password, salt, size);
+            var salt = PasswordService.GenerateSalt(_size);
+            var pwd = PasswordService.HashPassword(dto.Password, salt, _size);
             _userRepository.CreateUser(dto.Username, pwd, salt);
             return CreatedAtRoute(null, dto.Username);
         }
+
+        [HttpPatch("users/{userId}")]
+        public ActionResult UpdateUserById(int userId, [FromBody] UserForUpdate dto)
+        {
+            if (_userRepository.GetUserById(userId) == null)
+            {
+                return BadRequest();
+            }
+
+            var updatedUsername = dto.Username;
+            // Check if username is already taken in database.
+            if (_userRepository.GetUserByUsername(dto.Username) != null && _userRepository.GetUserByUsername(dto.Username).Username != dto.Username)
+            {
+                return BadRequest("Username is already taken. Please choose another username.");
+            }
+
+            var updatedSalt = dto.Password != null ? PasswordService.GenerateSalt(_size) : null;
+            var updatedPassword = dto.Password != null ? PasswordService.HashPassword(dto.Password, updatedSalt, _size) : null;
+            _userRepository.UpdateUser(userId, updatedUsername, updatedPassword, updatedSalt);
+
+            return Ok(dto.Username);
+        }
+
 
         [HttpPost("tokens")]
         public ActionResult Login([FromBody] UserDto dto)
@@ -61,17 +72,7 @@ namespace WebServiceToken.Controllers
             {
                 return BadRequest();
             }
-
-            int.TryParse(
-                _configuration.GetSection("Auth:PwdSize").Value,
-                out var size);
-
-            if (size == 0)
-            {
-                throw new ArgumentException();
-            }
-
-            var pwd = PasswordService.HashPassword(dto.Password, user.Salt, size);
+            var pwd = PasswordService.HashPassword(user.Password, user.Salt, _size);
 
             if (user.Password != pwd)
             {
@@ -96,6 +97,18 @@ namespace WebServiceToken.Controllers
             var securityToken = tokenHandler.CreateToken(tokenDescription);
             var token = tokenHandler.WriteToken(securityToken);
             return Ok(new { user.Username, token });
+        }
+
+        private void GetAuthPasswordSizeFromConfig()
+        {
+            int.TryParse(
+                _configuration.GetSection("Auth:PwdSize").Value,
+                out _size);
+
+            if (_size == 0)
+            {
+                throw new ArgumentException();
+            }
         }
     }
 }
