@@ -23,7 +23,7 @@ namespace _1._SOVA.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("questions/{questionId}/answers", Name = nameof(GetAnswersForQuestion))]
+        [HttpGet("question/{questionId}/answers", Name = nameof(GetAnswersForQuestion))]
         public ActionResult GetAnswersForQuestion([FromQuery] PagingAttributes pagingAttributes, int questionId)
         {
             var answers = _answerRepository.GetAnswersForQuestionById(questionId, pagingAttributes);
@@ -37,8 +37,6 @@ namespace _1._SOVA.Controllers
             return Ok(CreateAnswerDto(answers));
         }
 
-
-
         ///////////////////
         //
         // Helpers
@@ -49,7 +47,7 @@ namespace _1._SOVA.Controllers
         {
             var dto = _mapper.Map<AnswerDto>(answer);
             dto.Link = Url.Link(
-                    nameof(GetAnswersForQuestion),
+                    nameof(GetAnswerById),
                     new { answerId = answer.SubmissionId });
             return dto;
         }
