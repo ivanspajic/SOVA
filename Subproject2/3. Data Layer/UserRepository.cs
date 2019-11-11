@@ -49,16 +49,18 @@ namespace _3._Data_Layer
             return user;
         }
 
-        public User UpdateUser(int userId, string? updatedUsername = null, string? updatedPassword = null, string? updatedSalt = null)
+        public User UpdateUser(int userId, string? updatedUsername, string? updatedPassword, string? updatedSalt)
         {
             var user = GetUserById(userId);
-            if (user == null)
+            if (updatedUsername != null)
             {
-                return null;
+                user.Username = updatedUsername;
             }
-            user.Username = updatedUsername;
-            user.Password = updatedPassword;
-            user.Salt = updatedSalt;
+            if (updatedPassword != null || updatedSalt != null)
+            {
+                user.Password = updatedPassword;
+                user.Salt = updatedSalt;
+            }
             _databaseContext.Users.Update(user);
             _databaseContext.SaveChanges();
             return user;

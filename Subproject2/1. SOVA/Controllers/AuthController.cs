@@ -51,13 +51,15 @@ namespace _1._SOVA.Controllers
 
             var updatedUsername = dto.Username;
             // Check if username is already taken in database.
-            if (_userRepository.GetUserByUsername(dto.Username) != null)
+            if (_userRepository.GetUserByUsername(dto.Username) != null && _userRepository.GetUserByUsername(dto.Username).Username != dto.Username)
             {
                 return BadRequest("Username is already taken. Please choose another username.");
             }
-            var updatedSalt = PasswordService.GenerateSalt(_size);
-            var updatedPassword = PasswordService.HashPassword(dto.Password, updatedSalt, _size);
+
+            var updatedSalt = dto.Password != null ? PasswordService.GenerateSalt(_size) : null;
+            var updatedPassword = dto.Password != null ? PasswordService.HashPassword(dto.Password, updatedSalt, _size) : null;
             _userRepository.UpdateUser(userId, updatedUsername, updatedPassword, updatedSalt);
+
             return Ok(dto.Username);
         }
 
