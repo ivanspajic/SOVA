@@ -31,18 +31,18 @@ namespace _1._SOVA.Controllers
             return Ok(CreateResult(users));
         }
 
-        [HttpGet("username/{username}", Name = nameof(GetUserByUsername))]
-        public ActionResult GetUserByUsername(string username)
-        {
-            var userByUsername = _userRepository.GetUserByUsername(username);
-            if (userByUsername == null)
-            {
-                return NotFound($"Not found. Username: '{username}'");
-            }
-            return Ok(CreateUserDto(userByUsername));
-        }
+        //[HttpGet("username/{username}", Name = nameof(GetUserByUsername))]
+        //public ActionResult GetUserByUsername(string username)
+        //{
+        //    var userByUsername = _userRepository.GetUserByUsername(username);
+        //    if (userByUsername == null)
+        //    {
+        //        return NotFound($"Not found. Username: '{username}'");
+        //    }
+        //    return Ok(CreateUserDto(userByUsername));
+        //}
 
-        [HttpGet("id/{userId}", Name = nameof(GetUserById))]
+        [HttpGet("{userId}", Name = nameof(GetUserById))]
         public ActionResult GetUserById(int userId)
         {
             var userById = _userRepository.GetUserById(userId);

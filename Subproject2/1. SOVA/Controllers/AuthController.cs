@@ -18,12 +18,13 @@ namespace _1._SOVA.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
         private IMapper _mapper;
-
+        private int _size;
         public AuthController(IUserRepository userRepository, IConfiguration configuration, IMapper mapper)
         {
             _userRepository = userRepository;
             _configuration = configuration;
             _mapper = mapper;
+            GetAuthPasswordSizeFromConfig();
         }
 
         [HttpPost("users")]
@@ -31,23 +32,35 @@ namespace _1._SOVA.Controllers
         {
             if (_userRepository.GetUserByUsername(dto.Username) != null)
             {
-                return BadRequest();
+                return BadRequest("Username is already taken. Please choose another username.");
             }
 
-            int.TryParse(
-                _configuration.GetSection("Auth:PwdSize").Value,
-                out var size);
-
-            if (size == 0)
-            {
-                throw new ArgumentException();
-            }
-
-            var salt = PasswordService.GenerateSalt(size);
-            var pwd = PasswordService.HashPassword(dto.Password, salt, size);
+            var salt = PasswordService.GenerateSalt(_size);
+            var pwd = PasswordService.HashPassword(dto.Password, salt, _size);
             _userRepository.CreateUser(dto.Username, pwd, salt);
             return CreatedAtRoute(null, dto.Username);
         }
+
+        [HttpPatch("users/{userId}")]
+        public ActionResult UpdateUserById(int userId, [FromBody] UserForUpdate dto)
+        {
+            if (_userRepository.GetUserById(userId) == null)
+            {
+                return BadRequest();
+            }
+
+            var updatedUsername = dto.Username;
+            // Check if username is already taken in database.
+            if (_userRepository.GetUserByUsername(dto.Username) != null)
+            {
+                return BadRequest("Username is already taken. Please choose another username.");
+            }
+            var updatedSalt = PasswordService.GenerateSalt(_size);
+            var updatedPassword = PasswordService.HashPassword(dto.Password, updatedSalt, _size);
+            _userRepository.UpdateUser(userId, updatedUsername, updatedPassword, updatedSalt);
+            return Ok(dto.Username);
+        }
+
 
         [HttpPost("tokens")]
         public ActionResult Login([FromBody] UserDto dto)
@@ -57,17 +70,7 @@ namespace _1._SOVA.Controllers
             {
                 return BadRequest();
             }
-
-            int.TryParse(
-                _configuration.GetSection("Auth:PwdSize").Value,
-                out var size);
-
-            if (size == 0)
-            {
-                throw new ArgumentException();
-            }
-
-            var pwd = PasswordService.HashPassword(user.Password, user.Salt, size);
+            var pwd = PasswordService.HashPassword(user.Password, user.Salt, _size);
 
             if (user.Password != pwd)
             {
@@ -92,6 +95,18 @@ namespace _1._SOVA.Controllers
             var securityToken = tokenHandler.CreateToken(tokenDescription);
             var token = tokenHandler.WriteToken(securityToken);
             return Ok(new { user.Username, token });
+        }
+
+        private void GetAuthPasswordSizeFromConfig()
+        {
+            int.TryParse(
+                _configuration.GetSection("Auth:PwdSize").Value,
+                out _size);
+
+            if (_size == 0)
+            {
+                throw new ArgumentException();
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ namespace _2._Data_Layer_Abstractions
         User CreateUser(string username, string password, string salt);
         User GetUserById(int userId);
         User GetUserByUsername(string username);
+        User UpdateUser(int userId, string? username, string? password, string salt);
         IEnumerable<User> GetUsers();
     }
 }
