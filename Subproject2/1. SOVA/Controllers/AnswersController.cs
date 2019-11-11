@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace _1._SOVA.Controllers
 {
     [ApiController]
-    [Route("api/{questionId}/answers")]
+    [Route("api/")]
     public class AnswersController : ControllerBase
     {
         private readonly IAnswerRepository _answerRepository;
@@ -23,12 +23,20 @@ namespace _1._SOVA.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet(Name = nameof(GetAnswersForQuestion))]
+        [HttpGet("questions/{questionId}/answers", Name = nameof(GetAnswersForQuestion))]
         public ActionResult GetAnswersForQuestion([FromQuery] PagingAttributes pagingAttributes, int questionId)
         {
             var answers = _answerRepository.GetAnswersForQuestionById(questionId, pagingAttributes);
             return Ok(CreateResult(answers, questionId, pagingAttributes));
         }
+
+        [HttpGet("answers/{answerId}", Name = nameof(GetAnswerById))]
+        public ActionResult GetAnswerById(int answerId)
+        {
+            var answers = _answerRepository.GetAnswerById(answerId);
+            return Ok(CreateAnswerDto(answers));
+        }
+
 
 
         ///////////////////
