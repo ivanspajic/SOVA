@@ -42,18 +42,61 @@ namespace Tests
             _userRepository = new UserRepository(new SOVAContext(_connectionString));
         }
 
-        [Fact]
-        public void CreateAnnotation_ValidSubmissionId_ValidAnnotation()
+        [Theory]
+        [InlineData("Test Annotation", 19, 1)]
+        public void CreateAnnotation_ValidArguments(string annotation, int submissionId, int userId)
         {
-            // Arrange
-            string annotation = "Test Annotation";
-            int submissionId = 19;
-
             // Act
-            Annotation actualAnnotation = _annotationRepository.Create(annotation, submissionId);
+            Annotation actualAnnotation = _annotationRepository.Create(annotation, submissionId, userId);
 
             // Assert
             Assert.Equal(annotation, actualAnnotation.AnnotationString);
+            Assert.Equal(submissionId, actualAnnotation.SubmissionId);
+            Assert.Equal(userId, actualAnnotation.UserId);
+        }
+
+        [Theory]
+        [InlineData("", 19, 1)]
+        [InlineData(" ", 19, 1)]
+        [InlineData(null, 19, 1)]
+        [InlineData("Test Annotation", 0, 1)]
+        [InlineData("Test Annotation", -1, 1)]
+        [InlineData("Test Annotation", 19, 0)]
+        [InlineData("Test Annotation", 19, -1)]
+        [InlineData("", 0, 0)]
+        public void CreateAnnotationOnSubmissionForUser_InvalidArguments(string annotation, int submissionId, int userId)
+        {
+            // Act
+            Annotation actualAnnotation = _annotationRepository.Create(annotation, submissionId, userId);
+
+            // Assert
+            Assert.Equal(default, actualAnnotation);
+        }
+
+        [Theory]
+        [InlineData(19, 1)]
+        public void DeleteExistentAnnotationOnSubmissionForUser_ValidArguments(int submissionId, int userId)
+        {
+            // Act
+            bool deleted = _annotationRepository.Delete(submissionId, userId);
+
+            // Assert
+            Assert.True(deleted);
+        }
+
+        [Theory]
+        [InlineData(0, 1)]
+        [InlineData(-1, 1)]
+        [InlineData(19, 0)]
+        [InlineData(19, -1)]
+        [InlineData(0, 0)]
+        public void DeleteExistentAnnotationOnSubmissionForUser_InvalidArguments(int submissionId, int userId)
+        {
+            // Act
+            bool deleted = _annotationRepository.Delete(submissionId, userId);
+
+            // Assert
+            Assert.False(deleted);
         }
     }
 }

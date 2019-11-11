@@ -20,9 +20,9 @@ namespace _3._Data_Layer
             _databaseContext = databaseContext;
         }
 
-        public Annotation Create(string annotation, int submissionId)
+        public Annotation Create(string annotation, int submissionId, int userId)
         {
-            Delete(submissionId); //only allow 1 annotation at a time
+            Delete(submissionId, userId); //only allow 1 annotation at a time
 
             var ant = new Annotation
             {
@@ -37,11 +37,12 @@ namespace _3._Data_Layer
             return ant;
         }
 
-        public bool Delete(int submissionId)
+        public bool Delete(int submissionId, int userId)
         {
-            if (_databaseContext.Annotations.Find(submissionId) != null)
+            Annotation annotationToDelete = _databaseContext.Annotations.Find(submissionId, userId);
+            if (annotationToDelete != null)
             {
-                _databaseContext.Annotations.Remove(_databaseContext.Annotations.Find(submissionId));
+                _databaseContext.Annotations.Remove(annotationToDelete);
                 _databaseContext.SaveChanges();
 
                 return true;
@@ -49,14 +50,14 @@ namespace _3._Data_Layer
             return false;
         }
 
-        public Annotation GetBySubmissionId(int submissionId)
+        public Annotation GetBySubmissionAndUserIds(int submissionId, int userId)
         {
             var ant = _databaseContext.Annotations.Find(submissionId);
 
             return ant;
         }
 
-        public bool Update(string annotation, int submissionId)
+        public bool Update(string annotation, int submissionId, int userId)
         {
             var ant = _databaseContext.Annotations.Find(submissionId);
             if (ant != null)
