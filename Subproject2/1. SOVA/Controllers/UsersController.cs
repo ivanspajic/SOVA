@@ -42,7 +42,7 @@ namespace _1._SOVA.Controllers
             return Ok(CreateUserDto(userByUsername));
         }
 
-        [HttpGet("userId/{userId}", Name = nameof(GetUserById))]
+        [HttpGet("id/{userId}", Name = nameof(GetUserById))]
         public ActionResult GetUserById(int userId)
         {
             var userById = _userRepository.GetUserById(userId);
