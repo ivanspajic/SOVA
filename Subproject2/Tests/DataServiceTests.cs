@@ -74,8 +74,63 @@ namespace Tests
         }
 
         [Theory]
+        [InlineData("Test Annotation", 19, 1)]
+        public void GetAnnotationBySubmissionAndUserId_ValidArguments(string annotation, int submissionId, int userId)
+        {
+            // Act
+            Annotation actualAnnotation = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
+
+            // Assert
+            Assert.Equal(annotation, actualAnnotation.AnnotationString);
+        }
+
+        [Theory]
+        [InlineData(0, 1)]
+        [InlineData(-1, 1)]
+        [InlineData(19, 0)]
+        [InlineData(19, -1)]
+        [InlineData(0, 0)]
+        public void GetAnnotationBySubmissionAndUserId_InvalidArguments(int submissionId, int userId)
+        {
+            // Act
+            Annotation actualAnnotation = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
+
+            // Assert
+            Assert.Equal(default, actualAnnotation);
+        }
+
+        [Theory]
+        [InlineData("Test Test", 19, 1)]
+        public void UpdateAnnotationOnSubmissionForUser_ValidArguments(string annotation, int submissionId, int userId)
+        {
+            // Act
+            bool updated = _annotationRepository.Update(annotation, submissionId, userId);
+
+            // Assert
+            Assert.True(updated);
+        }
+
+        [Theory]
+        [InlineData("", 19, 1)]
+        [InlineData(" ", 19, 1)]
+        [InlineData(null, 19, 1)]
+        [InlineData("Test Test", 0, 1)]
+        [InlineData("Test Test", -1, 1)]
+        [InlineData("Test Test", 19, 0)]
+        [InlineData("Test Test", 19, -1)]
+        [InlineData("", 0, 0)]
+        public void UpdateAnnotationOnSubmissionForUser_InvalidArguments(string annotation, int submissionId, int userId)
+        {
+            // Act
+            bool updated = _annotationRepository.Update(annotation, submissionId, userId);
+
+            // Assert
+            Assert.False(updated);
+        }
+
+        [Theory]
         [InlineData(19, 1)]
-        public void DeleteExistentAnnotationOnSubmissionForUser_ValidArguments(int submissionId, int userId)
+        public void DeleteAnnotationOnSubmissionForUser_ValidArguments(int submissionId, int userId)
         {
             // Act
             bool deleted = _annotationRepository.Delete(submissionId, userId);
@@ -90,7 +145,7 @@ namespace Tests
         [InlineData(19, 0)]
         [InlineData(19, -1)]
         [InlineData(0, 0)]
-        public void DeleteExistentAnnotationOnSubmissionForUser_InvalidArguments(int submissionId, int userId)
+        public void DeleteAnnotationOnSubmissionForUser_InvalidArguments(int submissionId, int userId)
         {
             // Act
             bool deleted = _annotationRepository.Delete(submissionId, userId);
