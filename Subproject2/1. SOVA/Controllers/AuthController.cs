@@ -21,7 +21,7 @@ namespace WebServiceToken.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
-        private readonly IMapper _mapper;
+        private IMapper _mapper;
 
         public AuthController(IUserRepository userRepository, IConfiguration configuration, IMapper mapper)
         {

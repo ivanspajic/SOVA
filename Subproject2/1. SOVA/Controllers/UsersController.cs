@@ -16,7 +16,7 @@ namespace _1._SOVA.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
+        private IMapper _mapper;
 
         public UsersController(IUserRepository userRepository, IMapper mapper)
         {
@@ -31,15 +31,26 @@ namespace _1._SOVA.Controllers
             return Ok(CreateResult(users));
         }
 
-        [HttpGet("{username}", Name = nameof(GetUserByUsername))]
+        [HttpGet("username/{username}", Name = nameof(GetUserByUsername))]
         public ActionResult GetUserByUsername(string username)
         {
             var userByUsername = _userRepository.GetUserByUsername(username);
             if (userByUsername == null)
             {
-                return NotFound(userByUsername);
+                return NotFound($"Not found. Username: '{username}'");
             }
             return Ok(CreateUserDto(userByUsername));
+        }
+
+        [HttpGet("userId/{userId}", Name = nameof(GetUserById))]
+        public ActionResult GetUserById(int userId)
+        {
+            var userById = _userRepository.GetUserById(userId);
+            if (userById == null)
+            {
+                return NotFound($"Not found. UserId: '{userId}'");
+            }
+            return Ok(CreateUserDto(userById));
         }
         ///////////////////
         //
@@ -61,7 +72,5 @@ namespace _1._SOVA.Controllers
         {
             return users.Select(u => CreateUserDto(u));
         }
-
     }
-
 }
