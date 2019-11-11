@@ -28,12 +28,16 @@ namespace _3._Data_Layer
                 .ToList();
         }
 
+        public Answer GetAnswerById(int answerId)
+        {
+            return _databaseContext.Answers.Include(a => a.Submission).FirstOrDefault(a => a.SubmissionId == answerId);
+        }
+
         public int NoOfAnswers(int questionId)
         {
             return _databaseContext.Answers
                 .Include(a => a.Submission)
-                .Where(a => a.ParentId == questionId)
-                .Count();
+                .Count(a => a.ParentId == questionId);
         }
     }
 }
