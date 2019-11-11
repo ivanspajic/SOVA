@@ -43,9 +43,9 @@ namespace _1._SOVA.Controllers
                 throw new ArgumentException();
             }
 
-            //var salt = PasswordService.GenerateSalt(size);
-            var pwd = PasswordService.HashPassword(dto.Password, size);
-            _userRepository.CreateUser(dto.Username, pwd);
+            var salt = PasswordService.GenerateSalt(size);
+            var pwd = PasswordService.HashPassword(dto.Password, salt, size);
+            _userRepository.CreateUser(dto.Username, pwd, salt);
             return CreatedAtRoute(null, dto.Username);
         }
 
@@ -68,7 +68,7 @@ namespace _1._SOVA.Controllers
                 throw new ArgumentException();
             }
 
-            var pwd = PasswordService.HashPassword(dto.Password, size);
+            var pwd = PasswordService.HashPassword(dto.Password, user.Salt, size);
 
             if (user.Password != pwd)
             {

@@ -19,11 +19,11 @@ namespace _1._SOVA
             return Convert.ToBase64String(buffer);
         }
 
-        public static string HashPassword(string pwd, int size)
+        public static string HashPassword(string pwd, string salt, int size)
         {
             return Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 pwd,
-                Encoding.UTF8.GetBytes("ThisIsAPlaceHolder"),
+                Encoding.UTF8.GetBytes(salt),
                 KeyDerivationPrf.HMACSHA256,
                 10000,
                 size));
