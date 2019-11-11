@@ -1,3 +1,4 @@
+using _0._Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -5,6 +6,7 @@ namespace _1._SOVA
 {
     public class Program
     {
+        public static User CurrentUser = null;
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();

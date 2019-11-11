@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebServiceSimple.Middleware;
 
 namespace _1._SOVA
 {
@@ -51,8 +52,8 @@ namespace _1._SOVA
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseRouting();
+            app.UseMiddleware<AuthService>();
 
             app.UseEndpoints(endpoints =>
             {

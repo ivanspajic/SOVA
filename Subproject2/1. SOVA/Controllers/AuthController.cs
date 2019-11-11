@@ -72,7 +72,7 @@ namespace _1._SOVA.Controllers
             {
                 return BadRequest();
             }
-            var pwd = PasswordService.HashPassword(user.Password, user.Salt, _size);
+            var pwd = PasswordService.HashPassword(dto.Password, user.Salt, _size);
 
             if (user.Password != pwd)
             {
