@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-using _1._SOVA;
 using _1._SOVA.Models;
 using _2._Data_Layer_Abstractions;
 using AutoMapper;
@@ -13,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace WebServiceToken.Controllers
+namespace _1._SOVA.Controllers
 {
     [ApiController]
     [Route("api/auth")]
@@ -71,7 +67,7 @@ namespace WebServiceToken.Controllers
                 throw new ArgumentException();
             }
 
-            var pwd = PasswordService.HashPassword(dto.Password, user.Salt, size);
+            var pwd = PasswordService.HashPassword(user.Password, user.Salt, size);
 
             if (user.Password != pwd)
             {
