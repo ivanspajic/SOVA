@@ -34,9 +34,11 @@ namespace _3._Data_Layer
         }
         public User CreateUser(string username, string password, string salt)
         {
+            // If the Users table is not empty, increment the existing ID by 1; else set the ID to 1.
+            var userId = _databaseContext.Users.Any() ? _databaseContext.Users.Max(x => x.Id) + 1 : 1;
             var user = new User()
             {
-                Id = 1,//_databaseContext.Users.Max(x => x.Id),
+                Id = userId,
                 Username = username,
                 Password = password,
                 Salt = salt

@@ -30,6 +30,17 @@ namespace _1._SOVA.Controllers
             var users = _userRepository.GetUsers();
             return Ok(CreateResult(users));
         }
+
+        [HttpGet("{username}", Name = nameof(GetUserByUsername))]
+        public ActionResult GetUserByUsername(string username)
+        {
+            var userByUsername = _userRepository.GetUserByUsername(username);
+            if (userByUsername == null)
+            {
+                return NotFound(userByUsername);
+            }
+            return Ok(CreateUserDto(userByUsername));
+        }
         ///////////////////
         //
         // Helpers
