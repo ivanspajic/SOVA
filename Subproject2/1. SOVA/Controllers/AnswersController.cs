@@ -54,11 +54,6 @@ namespace _1._SOVA.Controllers
             return dto;
         }
 
-        private IEnumerable<AnswerDto> CreateResult(IEnumerable<Answer> answers)
-        {
-            return answers.Select(a => CreateAnswerDto(a));
-        }
-
         private object CreateResult(IEnumerable<Answer> answers, int questionId, PagingAttributes attr)
         {
             var totalItems = _answerRepository.NoOfAnswers(questionId);
