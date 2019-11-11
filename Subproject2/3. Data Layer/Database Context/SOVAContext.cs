@@ -64,8 +64,7 @@ namespace _3._Data_Layer.Database_Context
             _connectionString = connectionString;
         }
 
-        public DbQuery<SearchResult> SearchResults { get; set; }
-
+        public DbSet<SearchResult> SearchResults { get; set; }
         public DbSet<Annotation> Annotations { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -89,10 +88,9 @@ namespace _3._Data_Layer.Database_Context
         {
             modelBuilder.CreateMap();
 
-            modelBuilder.Query<SearchResult>().Property(x => x.Id).HasColumnName("postid");
-            modelBuilder.Query<SearchResult>().Property(x => x.Body).HasColumnName("body");
-            modelBuilder.Query<SearchResult>().Property(x => x.Rank).HasColumnName("rank");
-
+            modelBuilder.Entity<SearchResult>().HasNoKey().Property(x => x.Id).HasColumnName("postid");
+            modelBuilder.Entity<SearchResult>().HasNoKey().Property(x => x.Body).HasColumnName("body");
+            modelBuilder.Entity<SearchResult>().HasNoKey().Property(x => x.Rank).HasColumnName("rank");
 
             modelBuilder.Entity<Annotation>().HasKey(a => new { a.SubmissionId, a.UserId });
             modelBuilder.Entity<Question>().HasKey(q => q.SubmissionId);
@@ -101,6 +99,7 @@ namespace _3._Data_Layer.Database_Context
             modelBuilder.Entity<QuestionsTag>().HasKey(q => new { q.QuestionId, q.TagId });
             modelBuilder.Entity<UserHistory>().HasKey(uh => new { uh.UserId, uh.HistoryId });
             modelBuilder.Entity<Comment>().HasKey(c => c.Id);
+            modelBuilder.Entity<User>().HasKey(u => u.Id);
 
             modelBuilder.Entity<Annotation>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId);
             modelBuilder.Entity<Annotation>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);

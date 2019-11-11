@@ -20,7 +20,7 @@ namespace _3._Data_Layer
 
         public History GetSingleForUser(int id, string username)
         {
-            return _databaseContext.History.Include("").Where(h => h.Id == id).FirstOrDefault();
+            return _databaseContext.History.Include("").FirstOrDefault(h => h.Id == id);
         }
     }
 }
