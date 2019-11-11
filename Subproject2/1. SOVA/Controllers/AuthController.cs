@@ -5,13 +5,15 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using _1._SOVA;
 using _1._SOVA.Models;
 using _2._Data_Layer_Abstractions;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace _1._SOVA.Controllers
+namespace WebServiceToken.Controllers
 {
     [ApiController]
     [Route("api/auth")]
@@ -19,15 +21,17 @@ namespace _1._SOVA.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public AuthController(IUserRepository userRepository, IConfiguration configuration)
+        public AuthController(IUserRepository userRepository, IConfiguration configuration, IMapper mapper)
         {
             _userRepository = userRepository;
             _configuration = configuration;
+            _mapper = mapper;
         }
 
         [HttpPost("users")]
-        public ActionResult CreateUser([FromBody] UserCreationDto dto)
+        public ActionResult CreateUser([FromBody] UserForCreation dto)
         {
             if (_userRepository.GetUserByUsername(dto.Username) != null)
             {
@@ -44,13 +48,16 @@ namespace _1._SOVA.Controllers
             }
 
             var salt = PasswordService.GenerateSalt(size);
+
             var pwd = PasswordService.HashPassword(dto.Password, salt, size);
+
             _userRepository.CreateUser(dto.Username, pwd, salt);
+
             return CreatedAtRoute(null, dto.Username);
         }
 
         [HttpPost("tokens")]
-        public ActionResult Login([FromBody] UserForLoginDto dto)
+        public ActionResult Login([FromBody] UserDto dto)
         {
             var user = _userRepository.GetUserByUsername(dto.Username);
 
@@ -89,9 +96,14 @@ namespace _1._SOVA.Controllers
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)
             };
+
             var securityToken = tokenHandler.CreateToken(tokenDescription);
+
             var token = tokenHandler.WriteToken(securityToken);
+
             return Ok(new { user.Username, token });
+
         }
+
     }
 }

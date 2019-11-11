@@ -43,6 +43,7 @@ namespace _3._Data_Layer
 
             };
             _databaseContext.Users.Add(user);
+            _databaseContext.SaveChanges();
             return user;
         }
     }

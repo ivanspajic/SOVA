@@ -16,7 +16,7 @@ namespace _1._SOVA.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public UsersController(IUserRepository userRepository, IMapper mapper)
         {
@@ -35,9 +35,9 @@ namespace _1._SOVA.Controllers
         // Helpers
         //
         ///////////////////
-        private UserForLoginDto CreateUserDto(User user)
+        private UserDto CreateUserDto(User user)
         {
-            var dto = _mapper.Map<UserForLoginDto>(user);
+            var dto = _mapper.Map<UserDto>(user);
             dto.Link = Url.Link(
                 nameof(GetUsers),
                 new
@@ -46,7 +46,7 @@ namespace _1._SOVA.Controllers
                 });
             return dto;
         }
-        private IEnumerable<UserForLoginDto> CreateResult(IEnumerable<User> users)
+        private IEnumerable<UserDto> CreateResult(IEnumerable<User> users)
         {
             return users.Select(u => CreateUserDto(u));
         }

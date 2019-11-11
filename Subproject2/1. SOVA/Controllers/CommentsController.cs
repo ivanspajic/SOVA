@@ -15,7 +15,7 @@ namespace _1._SOVA.Controllers
     public class CommentsController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public CommentsController(ICommentRepository commentRepository, IMapper mapper)
         {
