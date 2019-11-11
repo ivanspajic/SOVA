@@ -10,10 +10,11 @@ create table so_members (
 	creation_date timestamp not null
 );
 
-create table users (
-	id serial primary key not null unique,
-	name text not null unique,
-	password text not null
+create table users(
+    id serial primary key not null unique,
+    username text not null unique,
+    password text not null,
+    salt text not null
 );
 
 create table history (
