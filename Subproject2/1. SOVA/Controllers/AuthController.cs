@@ -48,11 +48,8 @@ namespace WebServiceToken.Controllers
             }
 
             var salt = PasswordService.GenerateSalt(size);
-
             var pwd = PasswordService.HashPassword(dto.Password, salt, size);
-
             _userRepository.CreateUser(dto.Username, pwd, salt);
-
             return CreatedAtRoute(null, dto.Username);
         }
 
@@ -60,7 +57,6 @@ namespace WebServiceToken.Controllers
         public ActionResult Login([FromBody] UserDto dto)
         {
             var user = _userRepository.GetUserByUsername(dto.Username);
-
             if (user == null)
             {
                 return BadRequest();
@@ -98,12 +94,8 @@ namespace WebServiceToken.Controllers
             };
 
             var securityToken = tokenHandler.CreateToken(tokenDescription);
-
             var token = tokenHandler.WriteToken(securityToken);
-
             return Ok(new { user.Username, token });
-
         }
-
     }
 }
