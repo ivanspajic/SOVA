@@ -64,7 +64,7 @@ namespace Tests
         [InlineData("Test Annotation", 19, 0)]
         [InlineData("Test Annotation", 19, -1)]
         [InlineData("", 0, 0)]
-        public void CreateAnnotation_InvalidArguments(string annotation, int submissionId, int userId)
+        public void CreateAnnotationOnSubmissionForUser_InvalidArguments(string annotation, int submissionId, int userId)
         {
             // Act
             Annotation actualAnnotation = _annotationRepository.Create(annotation, submissionId, userId);
@@ -75,7 +75,7 @@ namespace Tests
 
         [Theory]
         [InlineData(19, 1)]
-        public void DeleteExistentAnnotation_ValidArguments(int submissionId, int userId)
+        public void DeleteExistentAnnotationOnSubmissionForUser_ValidArguments(int submissionId, int userId)
         {
             // Act
             bool deleted = _annotationRepository.Delete(submissionId, userId);
@@ -90,7 +90,7 @@ namespace Tests
         [InlineData(19, 0)]
         [InlineData(19, -1)]
         [InlineData(0, 0)]
-        public void DeleteExistentAnnotation_InvalidArguments(int submissionId, int userId)
+        public void DeleteExistentAnnotationOnSubmissionForUser_InvalidArguments(int submissionId, int userId)
         {
             // Act
             bool deleted = _annotationRepository.Delete(submissionId, userId);
