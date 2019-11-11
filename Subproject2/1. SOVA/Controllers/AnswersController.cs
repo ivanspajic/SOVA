@@ -23,7 +23,7 @@ namespace _1._SOVA.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("question/{questionId}/answers", Name = nameof(GetAnswersForQuestion))]
+        [HttpGet("questions/{questionId}/answers", Name = nameof(GetAnswersForQuestion))]
         public ActionResult GetAnswersForQuestion([FromQuery] PagingAttributes pagingAttributes, int questionId)
         {
             var answers = _answerRepository.GetAnswersForQuestionById(questionId, pagingAttributes);
