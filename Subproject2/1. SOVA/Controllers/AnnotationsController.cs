@@ -23,10 +23,10 @@ namespace _1._SOVA.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{submissionId}", Name = nameof(GetAnnotation))]
-        public ActionResult GetAnnotation(int submissionId)
+        [HttpGet("{submissionId}/{userId}", Name = nameof(GetAnnotation))]
+        public ActionResult GetAnnotation(int submissionId, int userId)
         {
-            var ant = _annotationRepository.GetBySubmissionId(submissionId);
+            var ant = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
             if (ant == null)
             {
                 return NotFound();
@@ -34,35 +34,35 @@ namespace _1._SOVA.Controllers
             return Ok(CreateAnnotationDto(ant));
         }
 
-        [HttpPost("{submissionId}")]
-        public ActionResult CreateAnnotation(AnnotationForCreation antDto, int submissionId)
+        [HttpPost("{submissionId}/{userId}")]
+        public ActionResult CreateAnnotation(AnnotationForCreation antDto, int submissionId, int userId)
         {
             var ant = _mapper.Map<Annotation>(antDto);
             ant.SubmissionId = submissionId;
-            _annotationRepository.Create(ant.AnnotationString, submissionId);
+            _annotationRepository.Create(ant.AnnotationString, submissionId, userId);
             return CreatedAtRoute(
                 nameof(GetAnnotation),
-                new { submissionId = ant.SubmissionId },
+                new { submissionId = ant.SubmissionId, userId = ant.UserId },
                 CreateAnnotationDto(ant));
         }
 
-        [HttpPut("{submissionId}")]
-        public ActionResult UpdateAnnotation(
-            int submissionId, Annotation annotation)
+        [HttpPut("{submissionId}/{userId}")]
+        public ActionResult UpdateAnnotation(int submissionId, int userId, Annotation annotation)
         {
-            if (_annotationRepository.GetBySubmissionId(submissionId) == null)
+            var ant = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
+            if (ant == null)
             {
                 return NotFound();
             }
             annotation.SubmissionId = submissionId;
-            _annotationRepository.Update(annotation.AnnotationString, annotation.SubmissionId);
+            _annotationRepository.Update(annotation.AnnotationString, annotation.SubmissionId, annotation.UserId);
             return Ok();
         }
 
-        [HttpDelete("{submissionId}")]
-        public ActionResult DeleteAnnotation(int submissionId)
+        [HttpDelete("{submissionId}/{userId}")]
+        public ActionResult DeleteAnnotation(int submissionId, int userId)
         {
-            if (_annotationRepository.Delete(submissionId))
+            if (_annotationRepository.Delete(submissionId, userId))
             {
                 return Ok();
             }
@@ -80,7 +80,7 @@ namespace _1._SOVA.Controllers
             var dto = _mapper.Map<AnnotationDto>(annotation);
             dto.Link = Url.Link(
                     nameof(GetAnnotation),
-                    new { submissionId = annotation.SubmissionId });
+                    new { submissionId = annotation.SubmissionId, userId = annotation.UserId });
             return dto;
         }
     }
