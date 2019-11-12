@@ -23,15 +23,9 @@ namespace _1._SOVA.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
         [HttpGet(Name = nameof(GetQuestions))]
         public ActionResult GetQuestions()
         {
-            //if (Program.CurrentUser == null)
-            //    return Unauthorized();
-
-            int.TryParse(HttpContext.User.Identity.Name, out var id);
-            Console.WriteLine(id);
             var questions = _questionRepository.GetTenRandomQuestions();
             return Ok(CreateResult(questions));
         }

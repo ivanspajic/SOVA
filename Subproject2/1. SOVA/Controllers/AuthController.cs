@@ -88,7 +88,7 @@ namespace _1._SOVA.Controllers
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
                 }),
-                Expires = DateTime.Now.AddSeconds(20),
+                Expires = DateTime.Now.AddDays(1),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)

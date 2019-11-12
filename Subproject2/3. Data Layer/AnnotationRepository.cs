@@ -27,7 +27,8 @@ namespace _3._Data_Layer
             var ant = new Annotation
             {
                 SubmissionId = submissionId,
-                AnnotationString = annotation
+                AnnotationString = annotation,
+                UserId = userId
             };
 
             _databaseContext.Annotations.Add(ant);
@@ -39,6 +40,8 @@ namespace _3._Data_Layer
 
         public bool Delete(int submissionId, int userId)
         {
+            Console.WriteLine("******************");
+            Console.WriteLine(userId + submissionId);
             Annotation annotationToDelete = _databaseContext.Annotations.Find(submissionId, userId);
             if (annotationToDelete != null)
             {
@@ -52,20 +55,18 @@ namespace _3._Data_Layer
 
         public Annotation GetBySubmissionAndUserIds(int submissionId, int userId)
         {
-            var ant = _databaseContext.Annotations.Find(submissionId);
+            var ant = _databaseContext.Annotations.Find(submissionId, userId);
 
             return ant;
         }
 
         public bool Update(string annotation, int submissionId, int userId)
         {
-            var ant = _databaseContext.Annotations.Find(submissionId);
+            var ant = _databaseContext.Annotations.Find(submissionId, userId);
             if (ant != null)
             {
                 ant.AnnotationString = annotation;
-
                 _databaseContext.SaveChanges();
-
                 return true;
             }
             return false;
