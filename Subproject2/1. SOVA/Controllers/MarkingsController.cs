@@ -43,6 +43,12 @@ namespace _1._SOVA.Controllers
             return Ok();
         }
 
+        ///////////////////
+        //
+        // Helpers
+        //
+        ///////////////////
+
         private object CreateResult(IEnumerable<Submission> posts, int userId, PagingAttributes attr)
         {
             var totalItems = _markingRepository.NoOfMarkings(userId);
