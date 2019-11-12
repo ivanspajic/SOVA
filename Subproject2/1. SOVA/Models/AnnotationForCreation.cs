@@ -11,5 +11,4 @@ namespace _1._SOVA.Models
         [Required]
         public string AnnotationString { get; set; }
     }
-
 }

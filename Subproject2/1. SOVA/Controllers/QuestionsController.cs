@@ -5,7 +5,6 @@ using _0._Models;
 using _1._SOVA.Models;
 using _2._Data_Layer_Abstractions;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _1._SOVA.Controllers

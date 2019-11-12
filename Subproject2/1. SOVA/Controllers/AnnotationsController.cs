@@ -30,7 +30,6 @@ namespace _1._SOVA.Controllers
         {
             var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var ant = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
-            //return Ok(userId);
             if (ant == null)
             {
                 return NotFound();
