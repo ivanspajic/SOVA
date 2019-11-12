@@ -40,6 +40,13 @@ namespace _1._SOVA.Controllers
             return Ok(CreateQuestionDto(question));
         }
 
+        [HttpGet("{questionId}/answers", Name = nameof(GetAnswersForQuestion))]
+        public ActionResult GetAnswersForQuestion([FromQuery] PagingAttributes pagingAttributes, int questionId)
+        {
+            var answers = _questionRepository.GetAnswersForQuestionById(questionId, pagingAttributes);
+            return Ok(CreateResult(answers, questionId, pagingAttributes));
+        }
+
         [HttpGet("query/{queryString}", Name = nameof(SearchQuestion))]
         public ActionResult SearchQuestion([FromQuery] PagingAttributes pagingAttributes, string queryString)
         {
@@ -73,10 +80,10 @@ namespace _1._SOVA.Controllers
             var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
 
             var prev = attr.Page > 0
-                ? CreatePagingLink(attr.Page - 1, attr.PageSize)
+                ? CreatePagingLink(attr.Page - 1, attr.PageSize, nameof(SearchQuestion))
                 : null;
             var next = attr.Page < numberOfPages - 1
-                ? CreatePagingLink(attr.Page + 1, attr.PageSize)
+                ? CreatePagingLink(attr.Page + 1, attr.PageSize, nameof(SearchQuestion))
                 : null;
 
             return new
@@ -89,9 +96,40 @@ namespace _1._SOVA.Controllers
             };
         }
 
-        private string CreatePagingLink(int page, int pageSize)
+        private object CreateResult(IEnumerable<Answer> answers, int questionId, PagingAttributes attr)
         {
-            return Url.Link(nameof(SearchQuestion), new { page, pageSize });
+            var totalItems = _questionRepository.NoOfAnswers(questionId);
+            var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
+
+            var prev = attr.Page > 0
+                ? CreatePagingLink(attr.Page - 1, attr.PageSize, nameof(GetAnswersForQuestion))
+                : null;
+            var next = attr.Page < numberOfPages - 1
+                ? CreatePagingLink(attr.Page + 1, attr.PageSize, nameof(GetAnswersForQuestion))
+                : null;
+
+            return new
+            {
+                totalItems,
+                numberOfPages,
+                prev,
+                next,
+                items = answers.Select(CreateAnswerDto)
+            };
+        }
+
+        private AnswerDto CreateAnswerDto(Answer answer)
+        {
+            var dto = _mapper.Map<AnswerDto>(answer);
+            dto.Link = Url.Link(
+                    nameof(GetAnswersForQuestion),
+                    new { answerId = answer.SubmissionId });
+            return dto;
+        }
+
+        private string CreatePagingLink(int page, int pageSize, string str)
+        {
+            return Url.Link(str, new { page, pageSize });
         }
     }
 }
