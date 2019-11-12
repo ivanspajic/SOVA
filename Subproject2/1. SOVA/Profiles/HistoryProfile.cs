@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace _1._SOVA.Profiles
 {
-    public class HistoryProfile : Profile
+    public class UserHistoryProfile : Profile
     {
-        public HistoryProfile()
+        public UserHistoryProfile()
         {
-            CreateMap<History, UserHistoryDto>();
+            CreateMap<UserHistory, UserHistoryDto>();
         }
     }
 }
