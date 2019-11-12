@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace _1._SOVA.Controllers
 {
     [ApiController]
-    [Route("api/history")]
+    [Route("api/{userId}/history")]
     public class HistoriesController : ControllerBase
     {
         private readonly IHistoryRepository _historyRepository;
@@ -21,10 +21,10 @@ namespace _1._SOVA.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public IActionResult GetHistoryForUser()
+        [HttpGet(Name = nameof(GetHistoryForUser))]
+        public IActionResult GetHistoryForUser(int userId)
         {
-            return Ok();
+            return Ok(_historyRepository.GetHistoryForUser(userId));
         }
     }
 }

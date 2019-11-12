@@ -18,9 +18,9 @@ namespace _3._Data_Layer
             _databaseContext = databaseContext;
         }
 
-        public History GetSingleForUser(int id, string username)
+        public History GetHistoryForUser(int id)
         {
-            return _databaseContext.History.Include("").FirstOrDefault(h => h.Id == id);
+            return _databaseContext.History.FirstOrDefault(h => h.Id == id);
         }
     }
 }
