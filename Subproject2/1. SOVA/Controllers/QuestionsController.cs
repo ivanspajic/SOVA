@@ -47,10 +47,12 @@ namespace _1._SOVA.Controllers
             return Ok(CreateResult(answers, questionId, pagingAttributes));
         }
 
+        //[Authorize]
         [HttpGet("query/{queryString}", Name = nameof(SearchQuestion))]
         public ActionResult SearchQuestion([FromQuery] PagingAttributes pagingAttributes, string queryString)
         {
-            var searchResults = _questionRepository.SearchQuestions(queryString, pagingAttributes);
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            var searchResults = _questionRepository.SearchQuestions(queryString, userId, pagingAttributes);
             return Ok(CreateResult(searchResults, queryString, pagingAttributes));
         }
 

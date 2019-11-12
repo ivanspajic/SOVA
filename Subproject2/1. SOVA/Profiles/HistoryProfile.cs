@@ -12,7 +12,7 @@ namespace _1._SOVA.Profiles
     {
         public HistoryProfile()
         {
-            CreateMap<History, HistoryDto>();
+            CreateMap<History, UserHistoryDto>();
         }
     }
 }

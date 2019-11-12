@@ -42,7 +42,7 @@ namespace _3._Data_Layer
                 .ToList();
         }
 
-        public IEnumerable<SearchResult> SearchQuestions(string queryString, PagingAttributes pagingAttributes)
+        public IEnumerable<SearchResult> SearchQuestions(string queryString, int userId, PagingAttributes pagingAttributes)
         {
             return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0})", queryString)
                 .Skip(pagingAttributes.Page * pagingAttributes.PageSize)

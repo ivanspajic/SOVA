@@ -12,6 +12,6 @@ namespace _2._Data_Layer_Abstractions
         IEnumerable<Answer> GetAnswersForQuestionById(int questionId, PagingAttributes pagingAttributes);
         IEnumerable<Question> GetTenRandomQuestions();
         Question GetById(int submissionId);
-        IEnumerable<SearchResult> SearchQuestions(string queryString, PagingAttributes pagingAttributes);
+        IEnumerable<SearchResult> SearchQuestions(string queryString, int userId, PagingAttributes pagingAttributes);
     }
 }
