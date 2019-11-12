@@ -45,10 +45,11 @@ namespace _1._SOVA.Controllers
             var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var ant = _mapper.Map<Annotation>(antDto);
             ant.SubmissionId = submissionId;
+            ant.UserId = userId;
             _annotationRepository.Create(ant.AnnotationString, submissionId, userId);
             return CreatedAtRoute(
                 nameof(GetAnnotation),
-                new { submissionId = ant.SubmissionId, userId = ant.UserId },
+                new { submissionId = submissionId, userId = userId },
                 CreateAnnotationDto(ant));
         }
 
@@ -63,8 +64,9 @@ namespace _1._SOVA.Controllers
                 return NotFound();
             }
             annotation.SubmissionId = submissionId;
+            annotation.UserId = userId;
             _annotationRepository.Update(annotation.AnnotationString, submissionId, userId);
-            return Ok();
+            return Ok(annotation);
         }
 
         //[Authorize]
