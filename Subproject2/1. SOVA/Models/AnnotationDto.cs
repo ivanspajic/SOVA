@@ -10,7 +10,6 @@ namespace _1._SOVA.Models
     {
         public string Link { get; set; }
         public string AnnotationString { get; set; }
-        public Submission Submission { get; set; }
-        public User User { get; set; }
+
     }
 }

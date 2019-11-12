@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace _1._SOVA.Controllers
 {
@@ -23,9 +24,11 @@ namespace _1._SOVA.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{submissionId}/{userId}", Name = nameof(GetAnnotation))]
-        public ActionResult GetAnnotation(int submissionId, int userId)
+        //[Authorize]
+        [HttpGet("{submissionId}", Name = nameof(GetAnnotation))]
+        public ActionResult GetAnnotation(int submissionId)
         {
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var ant = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
             if (ant == null)
             {
@@ -34,34 +37,42 @@ namespace _1._SOVA.Controllers
             return Ok(CreateAnnotationDto(ant));
         }
 
-        [HttpPost("{submissionId}/{userId}")]
-        public ActionResult CreateAnnotation(AnnotationForCreation antDto, int submissionId, int userId)
+        //[Authorize]
+        [HttpPost("{submissionId}")]
+        public ActionResult CreateAnnotation(AnnotationForCreation antDto, int submissionId)
         {
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var ant = _mapper.Map<Annotation>(antDto);
             ant.SubmissionId = submissionId;
+            ant.UserId = userId;
             _annotationRepository.Create(ant.AnnotationString, submissionId, userId);
             return CreatedAtRoute(
                 nameof(GetAnnotation),
-                new { submissionId = ant.SubmissionId, userId = ant.UserId },
+                new { submissionId = submissionId, userId = userId },
                 CreateAnnotationDto(ant));
         }
 
-        [HttpPut("{submissionId}/{userId}")]
-        public ActionResult UpdateAnnotation(int submissionId, int userId, Annotation annotation)
+        //[Authorize]
+        [HttpPut("{submissionId}")]
+        public ActionResult UpdateAnnotation(int submissionId, Annotation annotation)
         {
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var ant = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
             if (ant == null)
             {
                 return NotFound();
             }
             annotation.SubmissionId = submissionId;
-            _annotationRepository.Update(annotation.AnnotationString, annotation.SubmissionId, annotation.UserId);
-            return Ok();
+            annotation.UserId = userId;
+            _annotationRepository.Update(annotation.AnnotationString, submissionId, userId);
+            return Ok(annotation);
         }
 
-        [HttpDelete("{submissionId}/{userId}")]
-        public ActionResult DeleteAnnotation(int submissionId, int userId)
+        //[Authorize]
+        [HttpDelete("{submissionId}")]
+        public ActionResult DeleteAnnotation(int submissionId)
         {
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             if (_annotationRepository.Delete(submissionId, userId))
             {
                 return Ok();

@@ -102,7 +102,7 @@ namespace _3._Data_Layer.Database_Context
             modelBuilder.Entity<User>().HasKey(u => u.Id);
 
             modelBuilder.Entity<Annotation>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId);
-            modelBuilder.Entity<Annotation>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
+            //modelBuilder.Entity<Annotation>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
             modelBuilder.Entity<Answer>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId);
             modelBuilder.Entity<Comment>().HasOne(c => c.CommentSubmission).WithMany().HasForeignKey(c => c.Id);
             modelBuilder.Entity<LinkPost>().HasOne(l => l.Question).WithMany().HasForeignKey(l => l.QuestionId);
