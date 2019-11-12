@@ -1,16 +1,18 @@
 using System;
 using System.IO;
+using System.Text;
 using _2._Data_Layer_Abstractions;
 using _3._Data_Layer;
 using _3._Data_Layer.Database_Context;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebServiceSimple.Middleware;
+using Microsoft.IdentityModel.Tokens;
 
 namespace _1._SOVA
 {
@@ -34,7 +36,6 @@ namespace _1._SOVA
                 .Build();
 
             var dbConnectionString = builder.GetSection("StackOverflow:ConnectionString").Value;
-
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -43,6 +44,22 @@ namespace _1._SOVA
             services.AddTransient<IHistoryRepository>(provider => new HistoryRepository(new SOVAContext(dbConnectionString)));
             services.AddTransient<ICommentRepository>(provider => new CommentRepository(new SOVAContext(dbConnectionString)));
             services.AddTransient<IUserRepository>(provider => new UserRepository(new SOVAContext(dbConnectionString)));
+
+            var key = Encoding.UTF8.GetBytes(builder.GetSection("Auth:Key").Value);
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateLifetime = true,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,8 +70,8 @@ namespace _1._SOVA
                 app.UseDeveloperExceptionPage();
             }
             app.UseRouting();
-            app.UseMiddleware<AuthService>();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", async context =>

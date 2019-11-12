@@ -5,6 +5,7 @@ using _0._Models;
 using _1._SOVA.Models;
 using _2._Data_Layer_Abstractions;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _1._SOVA.Controllers
@@ -22,9 +23,15 @@ namespace _1._SOVA.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet(Name = nameof(GetQuestions))]
         public ActionResult GetQuestions()
         {
+            //if (Program.CurrentUser == null)
+            //    return Unauthorized();
+
+            int.TryParse(HttpContext.User.Identity.Name, out var id);
+            Console.WriteLine(id);
             var questions = _questionRepository.GetTenRandomQuestions();
             return Ok(CreateResult(questions));
         }
