@@ -38,7 +38,6 @@ namespace _3._Data_Layer
         public int NoOfComments(int submissionId)
         {
             return _databaseContext.Comments
-                .Include(c => c.CommentSubmission)
                 .Where(c => c.SubmissionId == submissionId)
                 .Count();
         }
