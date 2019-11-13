@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using _0._Models;
 using _3._Data_Layer;
@@ -184,22 +185,22 @@ namespace Tests
 
         [Theory]
         [InlineData(106266)]
-        public void GetAnswerById_ValidArgument(int id)
+        public void GetAnswerById_ValidArgument(int answerId)
         {
             // Act
-            Answer answer = _answerRepository.GetAnswerById(id);
+            Answer answer = _answerRepository.GetAnswerById(answerId);
 
             // Assert
-            Assert.Equal(id, answer.SubmissionId);
+            Assert.Equal(answerId, answer.SubmissionId);
         }
 
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
-        public void GetAnswerById_InvalidArgument(int id)
+        public void GetAnswerById_InvalidArgument(int answerId)
         {
             // Act
-            Answer answer = _answerRepository.GetAnswerById(id);
+            Answer answer = _answerRepository.GetAnswerById(answerId);
 
             // Assert
             Assert.Equal(default, answer);
@@ -207,13 +208,91 @@ namespace Tests
 
         [Theory]
         [InlineData(106266)]
-        public void GetAnswerById_AnswerWithSubmission(int id)
+        public void GetAnswerById_AnswerWithSubmission(int answerId)
         {
             // Act
-            Answer answer = _answerRepository.GetAnswerById(id);
+            Answer answer = _answerRepository.GetAnswerById(answerId);
 
             // Assert
-            Assert.Equal(id, answer.Submission.Id);
+            Assert.Equal(answerId, answer.Submission.Id);
+        }
+
+        [Theory]
+        [InlineData(19)]
+        public void GetNumberOfCommentsOnSubmission_ArgumentValid(int submissionId)
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+
+            int expectedNumberOfComments = databaseContext.Comments.Where(comment => comment.SubmissionId == submissionId).Count();
+
+            // Act
+            int actualNumberOfComments = _commentRepository.NoOfComments(submissionId);
+
+            // Assert
+            Assert.Equal(expectedNumberOfComments, actualNumberOfComments);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetNumberOfCommentsOnSubmission_ArgumentInvalid(int submissionId)
+        {
+            // Act
+            int numberOfComments = _commentRepository.NoOfComments(submissionId);
+
+            // Assert
+            Assert.Equal(0, numberOfComments);
+        }
+
+        [Theory]
+        [InlineData(19, 20, 1)]
+        [InlineData(19, 5, 5)]
+        [InlineData(19, 2, 10)]
+        public void GetCommentsBySubmissionId_ArgumentsValid(int submissionId, int pageNumber, int pageSize)
+        {
+            // Arrange
+            PagingAttributes testAttributes = new PagingAttributes()
+            {
+                Page = pageNumber,
+                PageSize = pageSize
+            };
+
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            
+            IEnumerable<Comment> expectedComments = databaseContext.Comments
+                                                        .Where(comment => comment.SubmissionId == submissionId)
+                                                        .Skip((pageNumber - 1) * pageSize)
+                                                        .Take(pageSize);
+
+            // Act
+            IEnumerable<Comment> actualComments = _commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
+
+            // Assert
+            Assert.Equal(expectedComments, actualComments);
+        }
+
+        [Theory]
+        [InlineData(0, 1, 1)]
+        [InlineData(-1, 1, 1)]
+        [InlineData(19, 1, 0)]
+        [InlineData(19, 1, -2)]
+        [InlineData(19, -2, 1)]
+        [InlineData(-1, -1, -1)]
+        public void GetCommentsBySubmissionId_ArgumentsInvalid(int submissionId, int pageNumber, int pageSize)
+        {
+            // Arrange
+            PagingAttributes testAttributes = new PagingAttributes()
+            {
+                Page = pageNumber,
+                PageSize = pageSize
+            };
+
+            // Act
+            IEnumerable<Comment> comments = _commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
+
+            // Assert
+            Assert.Empty(comments);
         }
     }
 }
