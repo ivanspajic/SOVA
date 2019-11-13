@@ -318,6 +318,21 @@ namespace Tests
         }
 
         [Fact]
+        public void GetCommentsBySubmissionId_CommentsWithSubmissions()
+        {
+            // Arrange
+            int submissionId = 19;
+
+            PagingAttributes testAttributes = new PagingAttributes();
+
+            // Act
+            IEnumerable<Comment> comments = _commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
+
+            // Arrange
+            Assert.All(comments, (comment) => Assert.Equal(submissionId, comment.CommentSubmission.Id));
+        }
+
+        [Fact]
         public void GetHistoryById_ValidArgument()
         {
             // Arrange
