@@ -43,10 +43,14 @@ namespace Tests
             _userRepository = new UserRepository(new SOVAContext(_connectionString));
         }
 
-        [Theory]
-        [InlineData("Test Annotation", 19, 1)]
-        public void CreateAnnotation_ValidArguments(string annotation, int submissionId, int userId)
+        [Fact]
+        public void CreateAnnotation_ValidArguments()
         {
+            // Arrange
+            string annotation = "Test Annotation";
+            int submissionId = 19;
+            int userId = 1;
+
             // Act
             Annotation actualAnnotation = _annotationRepository.Create(annotation, submissionId, userId);
 
@@ -74,10 +78,14 @@ namespace Tests
             Assert.Equal(default, actualAnnotation);
         }
 
-        [Theory]
-        [InlineData("Test Annotation", 19, 1)]
-        public void GetAnnotationBySubmissionAndUserIds_ValidArguments(string annotation, int submissionId, int userId)
+        [Fact]
+        public void GetAnnotationBySubmissionAndUserIds_ValidArguments()
         {
+            // Arrange
+            string annotation = "Test Annotation";
+            int submissionId = 19;
+            int userId = 1;
+
             // Act
             Annotation actualAnnotation = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
 
@@ -102,10 +110,14 @@ namespace Tests
             Assert.Equal(default, actualAnnotation);
         }
 
-        [Theory]
-        [InlineData("Test Test", 19, 1)]
-        public void UpdateAnnotationOnSubmissionForUser_ValidArguments(string annotation, int submissionId, int userId)
+        [Fact]
+        public void UpdateAnnotationOnSubmissionForUser_ValidArguments()
         {
+            // Arrange
+            string annotation = "Test Test";
+            int submissionId = 19;
+            int userId = 1;
+
             // Act
             bool updated = _annotationRepository.Update(annotation, submissionId, userId);
 
@@ -131,10 +143,13 @@ namespace Tests
             Assert.False(updated);
         }
 
-        [Theory]
-        [InlineData(19, 1)]
-        public void DeleteAnnotationOnSubmissionForUser_ValidArguments(int submissionId, int userId)
+        [Fact]
+        public void DeleteAnnotationOnSubmissionForUser_ValidArguments()
         {
+            // Arrange
+            int submissionId = 19;
+            int userId = 1;
+
             // Act
             bool deleted = _annotationRepository.Delete(submissionId, userId);
 
@@ -172,10 +187,13 @@ namespace Tests
             Assert.True(databaseContext.Annotations.Count() <= 1);
         }
 
-        [Theory]
-        [InlineData(19, 1)]
-        public void GetAnnotationBySubmissionAndUserIds_AnnotationWithSubmission(int submissionId, int userId)
+        [Fact]
+        public void GetAnnotationBySubmissionAndUserIds_AnnotationWithSubmission()
         {
+            // Arrange
+            int submissionId = 19;
+            int userId = 1;
+
             // Act
             Annotation annotation = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
 
@@ -183,10 +201,12 @@ namespace Tests
             Assert.Equal(submissionId, annotation.Submission.Id);
         }
 
-        [Theory]
-        [InlineData(106266)]
-        public void GetAnswerById_ValidArgument(int answerId)
+        [Fact]
+        public void GetAnswerById_ValidArgument()
         {
+            // Arrange
+            int answerId = 106266;
+
             // Act
             Answer answer = _answerRepository.GetAnswerById(answerId);
 
@@ -206,10 +226,12 @@ namespace Tests
             Assert.Equal(default, answer);
         }
 
-        [Theory]
-        [InlineData(106266)]
-        public void GetAnswerById_AnswerWithSubmission(int answerId)
+        [Fact]
+        public void GetAnswerById_AnswerWithSubmission()
         {
+            // Arrange
+            int answerId = 106266;
+
             // Act
             Answer answer = _answerRepository.GetAnswerById(answerId);
 
@@ -217,13 +239,13 @@ namespace Tests
             Assert.Equal(answerId, answer.Submission.Id);
         }
 
-        [Theory]
-        [InlineData(19)]
-        public void GetNumberOfCommentsOnSubmission_ValidArgument(int submissionId)
+        [Fact]
+        public void GetNumberOfCommentsOnSubmission_ValidArgument()
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
 
+            int submissionId = 19;
             int expectedNumberOfComments = databaseContext.Comments.Where(comment => comment.SubmissionId == submissionId).Count();
 
             // Act
@@ -295,10 +317,12 @@ namespace Tests
             Assert.Empty(comments);
         }
 
-        [Theory]
-        [InlineData(1)]
-        public void GetHistoryById_ValidArgument(int historyId)
+        [Fact]
+        public void GetHistoryById_ValidArgument()
         {
+            // Arrange
+            int historyId = 1;
+
             // Act
             History history = _historyRepository.GetHistoryById(historyId);
 
