@@ -294,5 +294,28 @@ namespace Tests
             // Assert
             Assert.Empty(comments);
         }
+
+        [Theory]
+        [InlineData(1)]
+        public void GetHistoryById_ValidArgument(int historyId)
+        {
+            // Act
+            History history = _historyRepository.GetHistoryById(historyId);
+
+            // Assert
+            Assert.Equal(historyId, history.Id);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetHistoryById_InvalidArgument(int historyId)
+        {
+            // Act
+            History history = _historyRepository.GetHistoryById(historyId);
+
+            // Assert
+            Assert.Equal(default, history);
+        }
     }
 }
