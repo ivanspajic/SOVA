@@ -75,13 +75,15 @@ namespace Tests
 
         [Theory]
         [InlineData("Test Annotation", 19, 1)]
-        public void GetAnnotationBySubmissionAndUserId_ValidArguments(string annotation, int submissionId, int userId)
+        public void GetAnnotationBySubmissionAndUserIds_ValidArguments(string annotation, int submissionId, int userId)
         {
             // Act
             Annotation actualAnnotation = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
 
             // Assert
             Assert.Equal(annotation, actualAnnotation.AnnotationString);
+            Assert.Equal(submissionId, actualAnnotation.SubmissionId);
+            Assert.Equal(userId, actualAnnotation.UserId);
         }
 
         [Theory]
@@ -90,7 +92,7 @@ namespace Tests
         [InlineData(19, 0)]
         [InlineData(19, -1)]
         [InlineData(0, 0)]
-        public void GetAnnotationBySubmissionAndUserId_InvalidArguments(int submissionId, int userId)
+        public void GetAnnotationBySubmissionAndUserIds_InvalidArguments(int submissionId, int userId)
         {
             // Act
             Annotation actualAnnotation = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
@@ -157,7 +159,7 @@ namespace Tests
         [Theory]
         [InlineData("Something here", 19, 1)]
         [InlineData("Something else here", 19, 1)]
-        public void CheckThereIsAtMostOneAnnotationOnSubmissionForUser_CreateAnnotation(string annotation, int submissionId, int userId)
+        public void CheckAtMostOneAnnotationOnSubmissionForUser_CreateAnnotation(string annotation, int submissionId, int userId)
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
@@ -167,6 +169,50 @@ namespace Tests
 
             // Assert
             Assert.True(databaseContext.Annotations.Count() <= 1);
+        }
+        [Theory]
+        [InlineData(19, 1)]
+        public void GetAnnotationBySubmissionAndUserIds_AnnotationWithSubmission(int submissionId, int userId)
+        {
+            // Act
+            Annotation annotation = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
+
+            // Assert
+            Assert.Equal(submissionId, annotation.Submission.Id);
+        }
+
+        [Theory]
+        [InlineData(106266)]
+        public void GetAnswerById_ValidArgument(int id)
+        {
+            // Act
+            Answer answer = _answerRepository.GetAnswerById(id);
+
+            // Assert
+            Assert.Equal(id, answer.SubmissionId);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetAnswerById_InvalidArgument(int id)
+        {
+            // Act
+            Answer answer = _answerRepository.GetAnswerById(id);
+
+            // Assert
+            Assert.Equal(default, answer);
+        }
+
+        [Theory]
+        [InlineData(106266)]
+        public void GetAnswerById_AnswerWithSubmission(int id)
+        {
+            // Act
+            Answer answer = _answerRepository.GetAnswerById(id);
+
+            // Assert
+            Assert.Equal(id, answer.Submission.Id);
         }
     }
 }
