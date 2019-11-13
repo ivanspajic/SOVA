@@ -7,6 +7,6 @@ namespace _2._Data_Layer_Abstractions
 {
     public interface IHistoryRepository
     {
-        History GetHistoryForUser(int id);
+        History GetHistoryById(int id);
     }
 }

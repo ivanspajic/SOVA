@@ -18,7 +18,7 @@ namespace _3._Data_Layer
             _databaseContext = databaseContext;
         }
 
-        public History GetHistoryForUser(int id)
+        public History GetHistoryById(int id)
         {
             return _databaseContext.History.FirstOrDefault(h => h.Id == id);
         }

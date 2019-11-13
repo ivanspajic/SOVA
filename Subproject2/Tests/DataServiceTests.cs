@@ -219,7 +219,7 @@ namespace Tests
 
         [Theory]
         [InlineData(19)]
-        public void GetNumberOfCommentsOnSubmission_ArgumentValid(int submissionId)
+        public void GetNumberOfCommentsOnSubmission_ValidArgument(int submissionId)
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
@@ -236,7 +236,7 @@ namespace Tests
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
-        public void GetNumberOfCommentsOnSubmission_ArgumentInvalid(int submissionId)
+        public void GetNumberOfCommentsOnSubmission_InvalidArgument(int submissionId)
         {
             // Act
             int numberOfComments = _commentRepository.NoOfComments(submissionId);
@@ -249,7 +249,7 @@ namespace Tests
         [InlineData(19, 20, 1)]
         [InlineData(19, 5, 5)]
         [InlineData(19, 2, 10)]
-        public void GetCommentsBySubmissionId_ArgumentsValid(int submissionId, int pageNumber, int pageSize)
+        public void GetCommentsBySubmissionId_ValidArguments(int submissionId, int pageNumber, int pageSize)
         {
             // Arrange
             PagingAttributes testAttributes = new PagingAttributes()
@@ -279,7 +279,7 @@ namespace Tests
         [InlineData(19, 1, -2)]
         [InlineData(19, -2, 1)]
         [InlineData(-1, -1, -1)]
-        public void GetCommentsBySubmissionId_ArgumentsInvalid(int submissionId, int pageNumber, int pageSize)
+        public void GetCommentsBySubmissionId_InvalidArguments(int submissionId, int pageNumber, int pageSize)
         {
             // Arrange
             PagingAttributes testAttributes = new PagingAttributes()
