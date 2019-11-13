@@ -356,5 +356,49 @@ namespace Tests
             // Assert
             Assert.Equal(default, history);
         }
+
+        [Fact]
+        public void GetLinkPostByQuestionAndLinkedPostIds_ValidArgument()
+        {
+            // Arrange
+            int questionId = 6173;
+            int linkedPostId = 1732348;
+
+            // Act
+            LinkPost linkPost = _linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
+
+            // Assert
+            Assert.Equal(questionId, linkPost.QuestionId);
+            Assert.Equal(linkedPostId, linkPost.LinkPostId);
+        }
+
+        [Theory]
+        [InlineData(0, 1732348)]
+        [InlineData(-1, 1732348)]
+        [InlineData(6173, 0)]
+        [InlineData(6173, -1)]
+        [InlineData(-1, -1)]
+        public void GetLinkPostByQuestionAndLinkedPostIds_InvalidArgument(int questionId, int linkedPostId)
+        {
+            // Act
+            LinkPost linkPost = _linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
+
+            // Assert
+            Assert.Equal(default, linkPost);
+        }
+
+        [Fact]
+        public void GetLinkPostByQuestionAndLinkedPostIds_LinkPostWithLinkedPost()
+        {
+            // Arrange
+            int questionId = 6173;
+            int linkedPostId = 1732348;
+
+            // Act
+            LinkPost linkPost = _linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
+
+            // Assert
+            Assert.Equal(linkedPostId, linkPost.LinkedPost.Submission.Id);
+        }
     }
 }
