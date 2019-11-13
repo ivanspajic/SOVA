@@ -170,7 +170,6 @@ namespace Tests
             // Assert
             Assert.True(databaseContext.Annotations.Count() <= 1);
         }
-
         [Theory]
         [InlineData(19, 1)]
         public void GetAnnotationBySubmissionAndUserIds_AnnotationWithSubmission(int submissionId, int userId)
