@@ -153,5 +153,20 @@ namespace Tests
             // Assert
             Assert.False(deleted);
         }
+
+        [Theory]
+        [InlineData("Something here", 19, 1)]
+        [InlineData("Something else here", 19, 1)]
+        public void CheckThereIsAtMostOneAnnotationOnSubmissionForUser_CreateAnnotation(string annotation, int submissionId, int userId)
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+
+            // Act 
+            _annotationRepository.Create(annotation, submissionId, userId);
+
+            // Assert
+            Assert.True(databaseContext.Annotations.Count() <= 1);
+        }
     }
 }
