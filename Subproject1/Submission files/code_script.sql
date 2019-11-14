@@ -3,19 +3,40 @@
 \timing
 
 -- create a procedure to log the search term (i.e insert to history table)
-create or replace function log_search(string_to_log text)
+create or replace function log_search(string_to_log text, authenticated_user_id integer)
     returns void as
 $$
+declare
+    search_history_id int;
 begin
     insert into history(search_term, search_date)
     select string_to_log, now();
+    -- Users can still search without being logged in. But it won't get recorded in users_history since no user_id is present.
+    if authenticated_user_id notnull then
+        select id
+        into search_history_id
+        from history
+        where search_term = string_to_log
+        order by search_date desc
+        limit 1;
+        perform log_search_for_user(search_history_id, authenticated_user_id);
+    END IF;
+end
+$$ language plpgsql;
+
+create or replace function log_search_for_user(history_id int, authenticated_user_id integer)
+    returns void as
+$$
+begin
+    raise notice 'asdasd';
+    insert into user_history(history_id, user_id) values (history_id, authenticated_user_id);
 end
 $$ language plpgsql;
 
 -- D1. Simple search and adding it to history
 
 -- create a function to do the simple_search
-create or replace function simple_search(search_string text)
+create or replace function simple_search(search_string text, authenticated_user_id integer default null)
     returns table
             (
                 post_id int4,
@@ -30,43 +51,52 @@ begin
              (select id from wi where word like '%' || search_string || '%') t
         where s.id = t.id;
     -- call the previously created procedure
-    perform log_search(search_string);
+    perform log_search(search_string, authenticated_user_id);
 end ;
 $$ language plpgsql;
 
 --d3
 drop function if exists exact_match();
-CREATE OR REPLACE FUNCTION exact_match(VARIADIC w text[])
-RETURNS table(
-    postid int4,
-    postbody text
-)
-AS $$
+CREATE OR REPLACE FUNCTION exact_match(VARIADIC w text[], authenticated_user_id integer default null)
+    RETURNS table
+            (
+                postid   int4,
+                postbody text
+            )
+AS
+$$
 DECLARE
-w_elem text;
+    w_elem text;
 BEGIN
-create table temp_table(post_id int4);
-FOREACH w_elem IN ARRAY w
-LOOP
-insert into temp_table(post_id)
-    (select distinct id from wi where wi.word = w_elem);
-perform log_search(w_elem);
-END LOOP;
-FOREACH w_elem IN ARRAY w
-LOOP
-delete from temp_table
-    where post_id not in (select distinct id from wi where wi.word = w_elem);
-END LOOP;
-return query
-    (select distinct post_id, body from temp_table join submissions on post_id=submissions."id");
-drop table temp_table;
-END $$
-LANGUAGE 'plpgsql';
+    create table temp_table
+    (
+        post_id int4
+    );
+    FOREACH w_elem IN ARRAY w
+        LOOP
+            insert into temp_table(post_id)
+                    (select distinct id from wi where wi.word = w_elem);
+            perform log_search(w_elem, authenticated_user_id);
+        END LOOP;
+    FOREACH w_elem IN ARRAY w
+        LOOP
+            delete
+            from temp_table
+            where post_id not in (select distinct id from wi where wi.word = w_elem);
+        END LOOP;
+    return query
+        (select distinct post_id, body
+         from temp_table
+                  join submissions on post_id = submissions."id");
+    drop table temp_table;
+END
+$$
+    LANGUAGE 'plpgsql';
 
 
 --d4
 drop function if exists best_match();
-CREATE OR REPLACE FUNCTION best_match(VARIADIC w text[])
+CREATE OR REPLACE FUNCTION best_match(VARIADIC w text[], authenticated_user_id integer default null)
     RETURNS table
             (
                 postid int4,
@@ -86,7 +116,7 @@ BEGIN
         LOOP
             insert into temp_table(postid)
                     (select distinct id from wi where wi.word = w_elem);
-            perform log_search(w_elem);
+            perform log_search(w_elem, authenticated_user_id);
         END LOOP;
     return query
         (select temp_table.postid, count(temp_table.postid) as rank, submissions.body
@@ -101,51 +131,54 @@ $$
 
 --d6
 drop function if exists best_match_weighted();
-CREATE OR REPLACE FUNCTION best_match_weighted(VARIADIC w text[])
-	RETURNS table
-        	(
-            	postid int4,
-            	rank   decimal,
-            	body   text
-        	)
+CREATE OR REPLACE FUNCTION best_match_weighted(VARIADIC w text[], authenticated_user_id integer default null)
+    RETURNS table
+            (
+                postid int4,
+                rank   decimal,
+                body   text
+            )
 AS
 $$
 DECLARE
-	w_elem text;
+    w_elem text;
 BEGIN
-	create table temp_table
-	(
-    	postid int4 unique,
-   			 rank   decimal
-	);
-	FOREACH w_elem IN ARRAY w
-    	LOOP
-        	insert into temp_table(postid, rank)
-                	(select distinct id, 0 from wi_weighted where wi_weighted.word = w_elem
-   									 and id not in (select temp_table.postid from temp_table));
+    create table temp_table
+    (
+        postid int4 unique,
+        rank   decimal
+    );
+    FOREACH w_elem IN ARRAY w
+        LOOP
+            insert into temp_table(postid, rank)
+                (select distinct id, 0
+                 from wi_weighted
+                 where wi_weighted.word = w_elem
+                   and id not in (select temp_table.postid from temp_table));
 
-   					 update temp_table
-   					 set rank = temp_table.rank + wi_weighted.weight
-   					 from wi_weighted
-   					 where temp_table.postid=wi_weighted.id and wi_weighted.word=w_elem;
+            update temp_table
+            set rank = temp_table.rank + wi_weighted.weight
+            from wi_weighted
+            where temp_table.postid = wi_weighted.id
+              and wi_weighted.word = w_elem;
 
-        	perform log_search(w_elem);
-    	END LOOP;
-	return query
-    	(select distinct temp_table.postid, temp_table.rank as rank, submissions.body
-     	from temp_table
-              	join submissions on temp_table.postid = submissions.id
-     	group by temp_table.postid, submissions.body, temp_table.rank
-     	order by rank desc);
-	drop table temp_table;
+            perform log_search(w_elem, authenticated_user_id);
+        END LOOP;
+    return query
+        (select distinct temp_table.postid, temp_table.rank as rank, submissions.body
+         from temp_table
+                  join submissions on temp_table.postid = submissions.id
+         group by temp_table.postid, submissions.body, temp_table.rank
+         order by rank desc);
+    drop table temp_table;
 END
 $$
-	LANGUAGE 'plpgsql';
+    LANGUAGE 'plpgsql';
 
 
 --d7
 drop function if exists word_2_words();
-CREATE OR REPLACE FUNCTION word_2_words(VARIADIC w text[])
+CREATE OR REPLACE FUNCTION word_2_words(VARIADIC w text[], authenticated_user_id integer default null)
     RETURNS table
             (
                 weight bigint,
@@ -168,7 +201,7 @@ BEGIN
                  where wi.word = w_elem
                    and id not in (select temp_table.postid from temp_table));
 
-            perform log_search(w_elem);
+            perform log_search(w_elem, authenticated_user_id);
         END LOOP;
 
     return query
