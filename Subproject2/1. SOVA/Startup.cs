@@ -41,7 +41,7 @@ namespace _1._SOVA
 
             services.AddTransient<IQuestionRepository>(provider => new QuestionRepository(new SOVAContext(dbConnectionString)));
             services.AddTransient<IAnswerRepository>(provider => new AnswerRepository(new SOVAContext(dbConnectionString)));
-            services.AddTransient<IHistoryRepository>(provider => new HistoryRepository(new SOVAContext(dbConnectionString)));
+            services.AddTransient<IUserHistoryRepository>(provider => new UserHistoryRepository(new SOVAContext(dbConnectionString)));
             services.AddTransient<ICommentRepository>(provider => new CommentRepository(new SOVAContext(dbConnectionString)));
             services.AddTransient<IUserRepository>(provider => new UserRepository(new SOVAContext(dbConnectionString)));
             services.AddTransient<IAnnotationRepository>(provider => new AnnotationRepository(new SOVAContext(dbConnectionString)));

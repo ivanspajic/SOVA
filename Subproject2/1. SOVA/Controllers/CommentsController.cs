@@ -45,11 +45,6 @@ namespace _1._SOVA.Controllers
             return dto;
         }
 
-        private IEnumerable<CommentDto> CreateResult(IEnumerable<Comment> comments)
-        {
-            return comments.Select(c => CreateCommentDto(c));
-        }
-
         private object CreateResult(IEnumerable<Comment> comments, int submissionId, PagingAttributes attr)
         {
             var totalItems = _commentRepository.NoOfComments(submissionId);

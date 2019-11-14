@@ -49,6 +49,13 @@ namespace _3._Data_Layer
             return true;
         }
 
+        public int NoOfMarkings(int userId)
+        {
+            return _databaseContext.Markings
+                .Where(m => m.UserId == userId)
+                .Count();
+        }
+
         public IEnumerable<Submission> GetMarkedPosts(int userId, PagingAttributes pagingAttributes)
         {
             return _databaseContext.Markings
@@ -58,13 +65,5 @@ namespace _3._Data_Layer
                 .Take(pagingAttributes.PageSize)
                 .ToList();
         }
-
-        public int NoOfMarkings(int userId)
-        {
-            return _databaseContext.Markings
-                .Where(m => m.UserId == userId)
-                .Count();
-        }
-
     }
 }

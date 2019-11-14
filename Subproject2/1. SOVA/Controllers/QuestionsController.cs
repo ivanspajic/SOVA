@@ -16,10 +16,14 @@ namespace _1._SOVA.Controllers
         private readonly IQuestionRepository _questionRepository;
         private IMapper _mapper;
 
-        public QuestionsController(IQuestionRepository questionRepository, IMapper mapper)
+        private readonly IAnswerRepository _answerRepository; // this should not exist in this controller, it is a workaround
+
+        public QuestionsController(IQuestionRepository questionRepository, IMapper mapper, IAnswerRepository answerRepository) // workaround
         {
             _questionRepository = questionRepository;
             _mapper = mapper;
+
+            _answerRepository = answerRepository; //workaround
         }
 
         [HttpGet(Name = nameof(GetQuestions))]
@@ -43,15 +47,17 @@ namespace _1._SOVA.Controllers
         [HttpGet("{questionId}/answers", Name = nameof(GetAnswersForQuestion))]
         public ActionResult GetAnswersForQuestion([FromQuery] PagingAttributes pagingAttributes, int questionId)
         {
-            var answers = _questionRepository.GetAnswersForQuestionById(questionId, pagingAttributes);
+            var answers = _answerRepository.GetAnswersForQuestionById(questionId, pagingAttributes); // workaround
             return Ok(CreateResult(answers, questionId, pagingAttributes));
         }
 
+        //[Authorize]
         [HttpGet("query/{queryString}", Name = nameof(SearchQuestion))]
         public ActionResult SearchQuestion([FromQuery] PagingAttributes pagingAttributes, string queryString)
         {
-            var searchResults = _questionRepository.SearchQuestions(queryString, pagingAttributes);
-            return Ok(CreateResult(searchResults, queryString, pagingAttributes));
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            var searchResults = _questionRepository.SearchQuestions(queryString, userId, pagingAttributes);
+            return Ok(CreateResult(searchResults, queryString, userId, pagingAttributes));
         }
 
         ///////////////////
@@ -74,9 +80,9 @@ namespace _1._SOVA.Controllers
             return questions.Select(q => CreateQuestionDto(q));
         }
 
-        private object CreateResult(IEnumerable<SearchResult> questions, string str, PagingAttributes attr)
+        private object CreateResult(IEnumerable<SearchResult> questions, string str, int userId, PagingAttributes attr)
         {
-            var totalItems = _questionRepository.NoOfResults(str);
+            var totalItems = _questionRepository.NoOfResults(str, userId);
             var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
 
             var prev = attr.Page > 0
@@ -98,7 +104,7 @@ namespace _1._SOVA.Controllers
 
         private object CreateResult(IEnumerable<Answer> answers, int questionId, PagingAttributes attr)
         {
-            var totalItems = _questionRepository.NoOfAnswers(questionId);
+            var totalItems = _answerRepository.NoOfAnswers(questionId); // workaround
             var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
 
             var prev = attr.Page > 0

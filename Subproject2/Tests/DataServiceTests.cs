@@ -4,14 +4,13 @@ using System.Linq;
 using _0._Models;
 using _3._Data_Layer;
 using _3._Data_Layer.Database_Context;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Xunit;
 
 namespace Tests
 {
     public class DataServiceTests
     {
-        // Check if you can make the instances accessible from the Web API project,
-        // or supplied into this class via dependency injection through the constructor.
         private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
 
         private readonly AnnotationRepository _annotationRepository;
@@ -32,7 +31,7 @@ namespace Tests
             _annotationRepository = new AnnotationRepository(new SOVAContext(_connectionString));
             _answerRepository = new AnswerRepository(new SOVAContext(_connectionString));
             _commentRepository = new CommentRepository(new SOVAContext(_connectionString));
-            _historyRepository = new HistoryRepository(new SOVAContext(_connectionString));
+            //_historyRepository = new HistoryRepository(new SOVAContext(_connectionString));
             _linkPostRepository = new LinkPostRepository(new SOVAContext(_connectionString));
             _markingRepository = new MarkingRepository(new SOVAContext(_connectionString));
             _questionRepository = new QuestionRepository(new SOVAContext(_connectionString));
@@ -241,6 +240,63 @@ namespace Tests
         }
 
         [Fact]
+        public void GetAnswersByQuestionId_ValidArguments()
+        {
+            // Arrange
+            int questionId = 19;
+
+            PagingAttributes testAttributes = new PagingAttributes();
+
+            // Act
+            IEnumerable<Answer> answers = _answerRepository.GetAnswersForQuestionById(questionId, testAttributes);
+
+            // Assert
+            Assert.All(answers, (answer) => Assert.Equal(questionId, answer.ParentId));
+        }
+
+        [Theory]
+        [InlineData(0, 1, 1)]
+        [InlineData(-1, 1, 1)]
+        [InlineData(19, 1, 0)]
+        [InlineData(19, 1, -2)]
+        [InlineData(19, -2, 1)]
+        [InlineData(-1, -1, -1)]
+        public void GetAnswersByQuestionId_InvalidArguments(int questionId, int pageSize, int pageNumber)
+        {
+            // Arrange
+            PagingAttributes testAttributes = new PagingAttributes()
+            {
+                Page = pageNumber - 1,
+                PageSize = pageSize
+            };
+
+            // Act
+            IEnumerable<Answer> answers = _answerRepository.GetAnswersForQuestionById(questionId, testAttributes);
+
+            // Assert
+            Assert.Equal(default, answers);
+        }
+
+        [Fact]
+        public void GetAnswersByQuestionId_IncludesSubmission_IncludesComments()
+        {
+            // Arrange
+            int questionId = 19;
+
+            PagingAttributes testAttributes = new PagingAttributes();
+
+            // Act
+            IEnumerable<Answer> answers = _answerRepository.GetAnswersForQuestionById(questionId, testAttributes);
+
+            // Assert
+            Assert.All(answers, (answer) =>
+            {
+                Assert.NotNull(answer.Submission);
+                Assert.All(answer.Comments, (comment) => Assert.NotNull(comment.CommentSubmission));
+            });
+        }
+
+        [Fact]
         public void GetNumberOfCommentsOnSubmission_ValidArgument()
         {
             // Arrange
@@ -277,15 +333,15 @@ namespace Tests
             // Arrange
             PagingAttributes testAttributes = new PagingAttributes()
             {
-                Page = pageNumber,
+                Page = pageNumber - 1,
                 PageSize = pageSize
             };
 
             SOVAContext databaseContext = new SOVAContext(_connectionString);
-            
+
             IEnumerable<Comment> expectedComments = databaseContext.Comments
                                                         .Where(comment => comment.SubmissionId == submissionId)
-                                                        .Skip((pageNumber - 1) * pageSize)
+                                                        .Skip(pageNumber * pageSize)
                                                         .Take(pageSize);
 
             // Act
@@ -307,7 +363,7 @@ namespace Tests
             // Arrange
             PagingAttributes testAttributes = new PagingAttributes()
             {
-                Page = pageNumber,
+                Page = pageNumber - 1,
                 PageSize = pageSize
             };
 
@@ -333,30 +389,30 @@ namespace Tests
             Assert.All(comments, (comment) => Assert.NotNull(comment.CommentSubmission));
         }
 
-        [Fact]
-        public void GetHistoryById_ValidArgument()
-        {
-            // Arrange
-            int historyId = 1;
+        //[Fact]
+        //public void GetHistoryById_ValidArgument()
+        //{
+        //    // Arrange
+        //    int historyId = 1;
 
-            // Act
-            History history = _historyRepository.GetHistoryById(historyId);
+        //    // Act
+        //    History history = _historyRepository.GetUserHistoryByUserId(historyId);
 
-            // Assert
-            Assert.Equal(historyId, history.Id);
-        }
+        //    // Assert
+        //    Assert.Equal(historyId, history.Id);
+        //}
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void GetHistoryById_InvalidArgument(int historyId)
-        {
-            // Act
-            History history = _historyRepository.GetHistoryById(historyId);
+        //[Theory]
+        //[InlineData(0)]
+        //[InlineData(-1)]
+        //public void GetHistoryById_InvalidArgument(int historyId)
+        //{
+        //    // Act
+        //    History history = _historyRepository.GetHistoryById(historyId);
 
-            // Assert
-            Assert.Equal(default, history);
-        }
+        //    // Assert
+        //    Assert.Equal(default, history);
+        //}
 
         [Fact]
         public void GetLinkPostByQuestionAndLinkedPostIds_ValidArgument()
@@ -402,6 +458,116 @@ namespace Tests
             Assert.NotNull(linkPost.LinkedPost.Submission);
         }
 
+        [Fact]
+        public void GetBookmarkBySubmissionAndUserIds_ValidArguments()
+        {
+            // Arrange
+            int submissionId = 19;
+            int userId = 1;
 
+            // Act
+            bool bookmarked = _markingRepository.IsMarked(submissionId, userId);
+
+            // Assert
+            Assert.True(bookmarked);
+        }
+
+        [Theory]
+        [InlineData(0, 1)]
+        [InlineData(-1, 1)]
+        [InlineData(19, 0)]
+        [InlineData(19, -1)]
+        [InlineData(-1, -1)]
+        public void GetBookmarkBySubmissionAndUserIds_InvalidArguments(int submissionId, int userId)
+        {
+            // Act
+            bool bookmarked = _markingRepository.IsMarked(submissionId, userId);
+
+            // Assert
+            Assert.False(bookmarked);
+        }
+
+        [Fact]
+        public void GetNumberOfBookmarkedSubmissions_ValidArgument()
+        {
+            // Arrange
+            int userId = 1;
+
+            // Act
+            int bookmarkedSubmissions = _markingRepository.NoOfMarkings(userId);
+
+            // Assert
+            Assert.True(bookmarkedSubmissions > -1);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetNumberOfBookmarkedSubmissions_InvalidArgument(int userId)
+        {
+            // Act
+            int bookmarkedSubmissions = _markingRepository.NoOfMarkings(userId);
+
+            // Assert
+            Assert.Equal(0, bookmarkedSubmissions);
+        }
+
+        [Fact]
+        public void CreateBookmarkOnSubmissionForUser_ValidArguments()
+        {
+            // Arrange
+            int submissionId = 19;
+            int userId = 1;
+
+            // Act
+            bool bookmarked = _markingRepository.Bookmark(submissionId, userId);
+
+            // Assert
+            Assert.True(bookmarked);
+        }
+        
+        [Theory]
+        [InlineData(0, 1)]
+        [InlineData(-1, 1)]
+        [InlineData(19, 0)]
+        [InlineData(19, -1)]
+        [InlineData(-1, -1)]
+        public void CreateBookmarkOnSubmissionForUser_InvalidArguments(int submissionId, int userId)
+        {
+            // Act
+            bool bookmarked = _markingRepository.Bookmark(submissionId, userId);
+
+            // Assert
+            Assert.False(bookmarked);
+        }
+
+        [Fact]
+        public void DeleteBookmarkOnSubmissionForUser_ValidArguments()
+        {
+            // Arrange
+            int submissionId = 19;
+            int userId = 1;
+
+            // Act
+            bool bookmarked = _markingRepository.RemoveBookmark(submissionId, userId);
+
+            // Assert
+            Assert.True(bookmarked);
+        }
+
+        [Theory]
+        [InlineData(0, 1)]
+        [InlineData(-1, 1)]
+        [InlineData(19, 0)]
+        [InlineData(19, -1)]
+        [InlineData(-1, -1)]
+        public void DeleteBookmarkOnSubmissionForUser_InvalidArguments(int submissionId, int userId)
+        {
+            // Act
+            bool bookmarked = _markingRepository.RemoveBookmark(submissionId, userId);
+
+            // Assert
+            Assert.False(bookmarked);
+        }
     }
 }

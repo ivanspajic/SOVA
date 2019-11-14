@@ -22,5 +22,32 @@ namespace _3._Data_Layer
         {
             return _databaseContext.Answers.Include(a => a.Submission).FirstOrDefault(a => a.SubmissionId == answerId);
         }
+
+        public IEnumerable<Answer> GetAnswersForQuestionById(int questionId, PagingAttributes pagingAttributes)
+        {
+            return _databaseContext.Answers
+                .Include(a => a.Submission)
+                .Where(a => a.ParentId == questionId)
+                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize)
+                .ToList();
+        }
+
+        public int NoOfAnswers(int questionId)
+        {
+            return _databaseContext.Answers
+                .Include(a => a.Submission)
+                .Count(a => a.ParentId == questionId);
+        }
+
+        public IEnumerable<Answer> GetMarkedAnswers(int userId, PagingAttributes pagingAttributes)
+        {
+            return _databaseContext.Answers
+                .Include(answer => answer.Submission)
+                    .ThenInclude(submission => submission.Markings)
+                .Where(answer => answer.Submission.Markings.All(marking => marking.UserId == userId))
+                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize);
+        }
     }
 }

@@ -113,7 +113,7 @@ namespace _3._Data_Layer.Database_Context
             modelBuilder.Entity<QuestionsTag>().HasOne(a => a.Question).WithMany().HasForeignKey(a => a.QuestionId);
             modelBuilder.Entity<QuestionsTag>().HasOne(a => a.Tag).WithMany().HasForeignKey(a => a.TagId);
             modelBuilder.Entity<Submission>().HasOne(a => a.SoMember).WithMany().HasForeignKey(a => a.SoMemberId);
-            modelBuilder.Entity<UserHistory>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
+            //modelBuilder.Entity<UserHistory>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
             modelBuilder.Entity<UserHistory>().HasOne(a => a.History).WithMany().HasForeignKey(a => a.HistoryId);
         }
     }
