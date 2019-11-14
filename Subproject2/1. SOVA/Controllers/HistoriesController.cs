@@ -47,7 +47,7 @@ namespace _1._SOVA.Controllers
             var dto = _mapper.Map<UserHistoryDto>(userHistory);
             dto.Link = Url.Link(
             nameof(GetUserHistoryByUserId),
-            new { historyId = userHistory.HistoryId, userId = userHistory.UserId });
+            new { userId = userHistory.UserId, historyId = userHistory.HistoryId });
             return dto;
         }
 
@@ -69,7 +69,7 @@ namespace _1._SOVA.Controllers
                 numberOfPages,
                 prev,
                 next,
-                items = userHistories.Select(CreateUserHistroyDto)
+                items = userHistories
             };
         }
 
