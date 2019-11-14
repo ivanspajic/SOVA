@@ -15,5 +15,7 @@ namespace _1._SOVA.Models
         public int SubmissionId { get; set; }
         public List<Tag> Tags { get; set; }
         public List<Question> LinkedPosts { get; set; }
+        public List<Comment> Comments { get; set; }
+        public List<Answer> Answers { get; set; }
     }
 }

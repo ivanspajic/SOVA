@@ -12,5 +12,7 @@ namespace _0._Models
         public int SubmissionId { get; set; }
         public List<LinkPost> LinkedPosts { get; set; }
         public List<Tag> Tags { get; set; }
+        public List<Comment> Comments { get; set; }
+        public List<Answer> Answers { get; set; }
     }
 }
