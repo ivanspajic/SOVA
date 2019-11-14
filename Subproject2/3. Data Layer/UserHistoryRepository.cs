@@ -19,5 +19,17 @@ namespace _3._Data_Layer
         {
             _databaseContext = databaseContext;
         }
+
+        public IEnumerable<UserHistory> GetUserHistoryByUserId(int userId, PagingAttributes pagingAttributes)
+        {
+            return _databaseContext.UserHistory.Include(u => u.History).Where(u => u.UserId == userId).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize)
+                .ToList();
+        }
+
+        public int NoOfUserHistory(int userId)
+        {
+            return _databaseContext.UserHistory.Count(u => u.UserId == userId);
+        }
     }
 }
