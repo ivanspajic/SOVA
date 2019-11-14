@@ -7,7 +7,7 @@ namespace _2._Data_Layer_Abstractions
 {
     public interface IMarkingRepository
     {
-        bool Bookmark(int submissionId, int userId);
+        bool AddBookmark(int submissionId, int userId);
         int NoOfMarkings(int userId);
         IEnumerable<Submission> GetMarkedPosts(int userId, PagingAttributes pagingAttributes);
         bool IsMarked(int submissionId, int userId);

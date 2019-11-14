@@ -20,7 +20,7 @@ namespace _3._Data_Layer
             _databaseContext = databaseContext;
         }
 
-        public bool Bookmark(int submissionId, int userId)
+        public bool AddBookmark(int submissionId, int userId)
         {
             if (IsMarked(submissionId, userId))
                 return false;
