@@ -13,5 +13,7 @@ namespace _1._SOVA.Models
         public DateTime? ClosedDate { get; set; }
         public Submission Submission { get; set; }
         public int SubmissionId { get; set; }
+        public List<Tag> Tags { get; set; }
+        public List<Question> LinkedPosts { get; set; }
     }
 }
