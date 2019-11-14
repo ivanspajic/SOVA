@@ -24,7 +24,7 @@ namespace _1._SOVA.Controllers
         [HttpGet(Name = nameof(GetHistoryForUser))]
         public IActionResult GetHistoryForUser(int userId)
         {
-            return Ok(_historyRepository.GetHistoryForUser(userId));
+            return Ok(_historyRepository.GetHistoryById(userId));
         }
     }
 }
