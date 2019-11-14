@@ -22,7 +22,7 @@ namespace _3._Data_Layer
 
         public IEnumerable<UserHistory> GetUserHistoryByUserId(int userId, PagingAttributes pagingAttributes)
         {
-            return _databaseContext.UserHistory.Where(u => u.UserId == userId).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+            return _databaseContext.UserHistory.Include(u => u.History).Where(u => u.UserId == userId).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
                 .Take(pagingAttributes.PageSize)
                 .ToList();
         }

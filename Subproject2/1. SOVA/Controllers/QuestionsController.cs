@@ -53,7 +53,7 @@ namespace _1._SOVA.Controllers
         {
             var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var searchResults = _questionRepository.SearchQuestions(queryString, userId, pagingAttributes);
-            return Ok(CreateResult(searchResults, queryString, pagingAttributes));
+            return Ok(CreateResult(searchResults, queryString, userId, pagingAttributes));
         }
 
         ///////////////////
@@ -76,9 +76,9 @@ namespace _1._SOVA.Controllers
             return questions.Select(q => CreateQuestionDto(q));
         }
 
-        private object CreateResult(IEnumerable<SearchResult> questions, string str, PagingAttributes attr)
+        private object CreateResult(IEnumerable<SearchResult> questions, string str, int userId, PagingAttributes attr)
         {
-            var totalItems = _questionRepository.NoOfResults(str);
+            var totalItems = _questionRepository.NoOfResults(str, userId);
             var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
 
             var prev = attr.Page > 0
