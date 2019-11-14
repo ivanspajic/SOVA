@@ -16,10 +16,14 @@ namespace _1._SOVA.Controllers
         private readonly IQuestionRepository _questionRepository;
         private IMapper _mapper;
 
-        public QuestionsController(IQuestionRepository questionRepository, IMapper mapper)
+        private readonly IAnswerRepository _answerRepository; // this should not exist in this controller, it is a workaround
+
+        public QuestionsController(IQuestionRepository questionRepository, IMapper mapper, IAnswerRepository answerRepository) // workaround
         {
             _questionRepository = questionRepository;
             _mapper = mapper;
+
+            _answerRepository = answerRepository; //workaround
         }
 
         [HttpGet(Name = nameof(GetQuestions))]
@@ -43,7 +47,7 @@ namespace _1._SOVA.Controllers
         [HttpGet("{questionId}/answers", Name = nameof(GetAnswersForQuestion))]
         public ActionResult GetAnswersForQuestion([FromQuery] PagingAttributes pagingAttributes, int questionId)
         {
-            var answers = _questionRepository.GetAnswersForQuestionById(questionId, pagingAttributes);
+            var answers = _answerRepository.GetAnswersForQuestionById(questionId, pagingAttributes);
             return Ok(CreateResult(answers, questionId, pagingAttributes));
         }
 

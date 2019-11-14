@@ -22,5 +22,15 @@ namespace _3._Data_Layer
         {
             return _databaseContext.Answers.Include(a => a.Submission).FirstOrDefault(a => a.SubmissionId == answerId);
         }
+
+        public IEnumerable<Answer> GetAnswersForQuestionById(int questionId, PagingAttributes pagingAttributes)
+        {
+            return _databaseContext.Answers
+                .Include(a => a.Submission)
+                .Where(a => a.ParentId == questionId)
+                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize)
+                .ToList();
+        }
     }
 }
