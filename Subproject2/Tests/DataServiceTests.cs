@@ -10,8 +10,6 @@ namespace Tests
 {
     public class DataServiceTests
     {
-        // Check if you can make the instances accessible from the Web API project,
-        // or supplied into this class via dependency injection through the constructor.
         private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
 
         private readonly AnnotationRepository _annotationRepository;
@@ -457,6 +455,118 @@ namespace Tests
 
             // Assert
             Assert.NotNull(linkPost.LinkedPost.Submission);
+        }
+
+        [Fact]
+        public void GetBookmarkBySubmissionAndUserIds_ValidArguments()
+        {
+            // Arrange
+            int submissionId = 19;
+            int userId = 1;
+
+            // Act
+            bool bookmarked = _markingRepository.IsMarked(submissionId, userId);
+
+            // Assert
+            Assert.True(bookmarked);
+        }
+
+        [Theory]
+        [InlineData(0, 1)]
+        [InlineData(-1, 1)]
+        [InlineData(19, 0)]
+        [InlineData(19, -1)]
+        [InlineData(-1, -1)]
+        public void GetBookmarkBySubmissionAndUserIds_InvalidArguments(int submissionId, int userId)
+        {
+            // Act
+            bool bookmarked = _markingRepository.IsMarked(submissionId, userId);
+
+            // Assert
+            Assert.False(bookmarked);
+        }
+
+        [Fact]
+        public void GetNumberOfBookmarkedSubmissions_ValidArgument()
+        {
+            // Arrange
+            int userId = 1;
+
+            // Act
+            int bookmarkedSubmissions = _markingRepository.NoOfMarkings(userId);
+
+            // Assert
+            Assert.True(bookmarkedSubmissions > -1);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetNumberOfBookmarkedSubmissions_InvalidArgument(int userId)
+        {
+            // Act
+            int bookmarkedSubmissions = _markingRepository.NoOfMarkings(userId);
+
+            // Assert
+            Assert.Equal(0, bookmarkedSubmissions);
+        }
+
+        [Fact]
+        public void CreateBookmarkOnSubmissionForUser_ValidArguments()
+        {
+            // Arrange
+            int submissionId = 19;
+            int userId = 1;
+
+            // Act
+            bool bookmarked = _markingRepository.Bookmark(submissionId, userId);
+
+            // Assert
+            Assert.True(bookmarked);
+        }
+        
+        [Theory]
+        [InlineData(0, 1)]
+        [InlineData(-1, 1)]
+        [InlineData(19, 0)]
+        [InlineData(19, -1)]
+        [InlineData(-1, -1)]
+        public void CreateBookmarkOnSubmissionForUser_InvalidArguments(int submissionId, int userId)
+        {
+            // Act
+            bool bookmarked = _markingRepository.Bookmark(submissionId, userId);
+
+            // Assert
+            Assert.False(bookmarked);
+        }
+
+        [Fact]
+        public void DeleteBookmarkOnSubmissionForUser_ValidArguments()
+        {
+            // Arrange
+            int submissionId = 19;
+            int userId = 1;
+
+            // Act
+            bool bookmarked = _markingRepository.RemoveBookmark(submissionId, userId);
+
+            // Assert
+            Assert.True(bookmarked);
+        }
+
+        [Theory]
+        [InlineData(0, 1)]
+        [InlineData(-1, 1)]
+        [InlineData(19, 0)]
+        [InlineData(19, -1)]
+        [InlineData(-1, -1)]
+        public void DeleteBookmarkOnSubmissionForUser_InvalidArguments(int submissionId, int userId)
+        {
+            // Act
+            bool bookmarked = _markingRepository.RemoveBookmark(submissionId, userId);
+
+            // Assert
+            Assert.False(bookmarked);
         }
     }
 }
