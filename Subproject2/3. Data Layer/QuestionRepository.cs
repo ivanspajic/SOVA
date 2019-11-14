@@ -69,5 +69,12 @@ namespace _3._Data_Layer
                 .Where(q => q.SubmissionId == questionId)
                 .Include("LinkedPosts.LinkedPost.Submission");
         }
+
+        public IEnumerable<Question> GetTags(int questionId)
+        {
+            return _databaseContext.Questions
+                .Where(q => q.SubmissionId == questionId)
+                .Include("QuestionsTags.Tag");
+        }
     }
 }

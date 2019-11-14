@@ -11,5 +11,6 @@ namespace _0._Models
         public Submission Submission { get; set; }
         public int SubmissionId { get; set; }
         public List<LinkPost> LinkedPosts { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 }
