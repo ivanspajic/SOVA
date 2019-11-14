@@ -30,21 +30,24 @@ namespace _3._Data_Layer
                 UserId = userId
             };
             _databaseContext.Markings.Add(mark);
+            _databaseContext.SaveChanges();
             return true;
         }
 
         public bool RemoveBookmark(int submissionId, int userId)
         {
-            if (!IsMarked(submissionId, userId))
+            if (IsMarked(submissionId, userId))
                 return false;
             Marking mark = _databaseContext.Markings.Find(submissionId, userId);
             _databaseContext.Markings.Remove(mark);
+            _databaseContext.SaveChanges();
             return true;
         }
 
         public bool IsMarked(int submissionId, int userId)
         {
-            if (_databaseContext.Markings.Find(submissionId, userId) == null)
+            Console.WriteLine("**************");
+            if (_databaseContext.Markings.Find(submissionId, userId) != null)
                 return false;
             return true;
         }
