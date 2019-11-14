@@ -241,6 +241,63 @@ namespace Tests
         }
 
         [Fact]
+        public void GetAnswersByQuestionId_ValidArguments()
+        {
+            // Arrange
+            int questionId = 19;
+
+            PagingAttributes testAttributes = new PagingAttributes();
+
+            // Act
+            IEnumerable<Answer> answers = _answerRepository.GetAnswersForQuestionById(questionId, testAttributes);
+
+            // Assert
+            Assert.All(answers, (answer) => Assert.Equal(questionId, answer.ParentId));
+        }
+
+        [Theory]
+        [InlineData(0, 1, 1)]
+        [InlineData(-1, 1, 1)]
+        [InlineData(19, 1, 0)]
+        [InlineData(19, 1, -2)]
+        [InlineData(19, -2, 1)]
+        [InlineData(-1, -1, -1)]
+        public void GetAnswersByQuestionId_InvalidArguments(int questionId, int pageSize, int pageNumber)
+        {
+            // Arrange
+            PagingAttributes testAttributes = new PagingAttributes()
+            {
+                Page = pageNumber - 1,
+                PageSize = pageSize
+            };
+
+            // Act
+            IEnumerable<Answer> answers = _answerRepository.GetAnswersForQuestionById(questionId, testAttributes);
+
+            // Assert
+            Assert.Equal(default, answers);
+        }
+
+        [Fact]
+        public void GetAnswersByQuestionId_IncludesSubmission_IncludesComments()
+        {
+            // Arrange
+            int questionId = 19;
+
+            PagingAttributes testAttributes = new PagingAttributes();
+
+            // Act
+            IEnumerable<Answer> answers = _answerRepository.GetAnswersForQuestionById(questionId, testAttributes);
+
+            // Assert
+            Assert.All(answers, (answer) => 
+            {
+                Assert.NotNull(answer.Submission);
+                Assert.All(answer.Comments, (comment) => Assert.NotNull(comment.CommentSubmission));
+            });
+        }
+
+        [Fact]
         public void GetNumberOfCommentsOnSubmission_ValidArgument()
         {
             // Arrange
@@ -277,7 +334,7 @@ namespace Tests
             // Arrange
             PagingAttributes testAttributes = new PagingAttributes()
             {
-                Page = pageNumber,
+                Page = pageNumber - 1,
                 PageSize = pageSize
             };
 
@@ -285,7 +342,7 @@ namespace Tests
             
             IEnumerable<Comment> expectedComments = databaseContext.Comments
                                                         .Where(comment => comment.SubmissionId == submissionId)
-                                                        .Skip((pageNumber - 1) * pageSize)
+                                                        .Skip(pageNumber * pageSize)
                                                         .Take(pageSize);
 
             // Act
@@ -307,7 +364,7 @@ namespace Tests
             // Arrange
             PagingAttributes testAttributes = new PagingAttributes()
             {
-                Page = pageNumber,
+                Page = pageNumber - 1,
                 PageSize = pageSize
             };
 
@@ -401,7 +458,5 @@ namespace Tests
             // Assert
             Assert.NotNull(linkPost.LinkedPost.Submission);
         }
-
-
     }
 }

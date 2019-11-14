@@ -31,18 +31,7 @@ namespace _3._Data_Layer
             return _databaseContext.Questions.Find(submissionId);
         }
 
-
-        public IEnumerable<Answer> GetAnswersForQuestionById(int questionId, PagingAttributes pagingAttributes)
-        {
-            return _databaseContext.Answers
-                .Include(a => a.Submission)
-                .Where(a => a.ParentId == questionId)
-                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
-                .Take(pagingAttributes.PageSize)
-                .ToList();
-        }
-
-        public IEnumerable<SearchResult> SearchQuestions(string queryString, int? userId, PagingAttributes pagingAttributes)
+        public IEnumerable<SearchResult> SearchQuestions(string queryString, PagingAttributes pagingAttributes)
         {
             return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", userId, queryString)
                 .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
@@ -54,13 +43,6 @@ namespace _3._Data_Layer
         {
             return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", userId, queryString)
                 .Count();
-        }
-
-        public int NoOfAnswers(int questionId)
-        {
-            return _databaseContext.Answers
-                .Include(a => a.Submission)
-                .Count(a => a.ParentId == questionId);
         }
     }
 }
