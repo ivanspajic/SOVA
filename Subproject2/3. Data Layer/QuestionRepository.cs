@@ -62,5 +62,23 @@ namespace _3._Data_Layer
                 .Include(a => a.Submission)
                 .Count(a => a.ParentId == questionId);
         }
+
+        public IEnumerable<Question> GetLinkedPosts(int questionId, PagingAttributes pagingAttributes)
+        {
+            return _databaseContext.Questions
+                .Where(q => q.SubmissionId == questionId)
+                .Include("LinkedPosts.LinkedPost.Submission")
+                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize)
+                .ToList();
+        }
+
+        public int NoOfLinkedPosts(int questionId)
+        {
+            return _databaseContext.Questions
+                .Where(q => q.SubmissionId == questionId)
+                .Include("LinkedPosts.LinkedPost.Submission")
+                .Count();
+        }
     }
 }

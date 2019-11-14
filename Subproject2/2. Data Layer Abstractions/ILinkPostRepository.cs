@@ -7,6 +7,5 @@ namespace _2._Data_Layer_Abstractions
 {
     public interface ILinkPostRepository
     {
-        IEnumerable<LinkPost> GetByQuestionAndLinkedPostIds(int questionId);
     }
 }

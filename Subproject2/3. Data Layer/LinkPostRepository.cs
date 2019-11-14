@@ -19,10 +19,5 @@ namespace _3._Data_Layer
         {
             _databaseContext = databaseContext;
         }
-
-        public IEnumerable<LinkPost> GetByQuestionAndLinkedPostIds(int questionId)
-        {
-            return _databaseContext.LinkPosts.Include(l => l.Question).Where(l => l.QuestionId == questionId);
-        }
     }
 }

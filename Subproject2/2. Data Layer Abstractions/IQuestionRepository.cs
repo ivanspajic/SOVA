@@ -13,5 +13,7 @@ namespace _2._Data_Layer_Abstractions
         IEnumerable<Question> GetTenRandomQuestions();
         Question GetById(int submissionId);
         IEnumerable<SearchResult> SearchQuestions(string queryString, PagingAttributes pagingAttributes);
+        IEnumerable<Question> GetLinkedPosts(int questionId, PagingAttributes pagingAttributes);
+        int NoOfLinkedPosts(int questionId);
     }
 }

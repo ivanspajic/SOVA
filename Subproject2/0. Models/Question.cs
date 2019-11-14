@@ -10,5 +10,6 @@ namespace _0._Models
         public DateTime? ClosedDate { get; set; }
         public Submission Submission { get; set; }
         public int SubmissionId { get; set; }
+        public List<LinkPost> LinkedPosts { get; set; }
     }
 }
