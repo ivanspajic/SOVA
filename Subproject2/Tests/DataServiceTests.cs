@@ -241,6 +241,16 @@ namespace Tests
         }
 
         [Fact]
+        public void GetAnswersByQuestionId_ValidArgument()
+        {
+            // Arrange
+            int questionId = 19;
+
+            // Act
+            
+        }
+
+        [Fact]
         public void GetNumberOfCommentsOnSubmission_ValidArgument()
         {
             // Arrange
@@ -401,7 +411,5 @@ namespace Tests
             // Assert
             Assert.NotNull(linkPost.LinkedPost.Submission);
         }
-
-
     }
 }
