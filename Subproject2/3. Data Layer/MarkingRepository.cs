@@ -22,7 +22,7 @@ namespace _3._Data_Layer
 
         public bool AddBookmark(int submissionId, int userId)
         {
-            if (IsMarked(submissionId, userId))
+            if (!IsMarked(submissionId, userId))
                 return false;
             Marking mark = new Marking
             {
@@ -39,6 +39,10 @@ namespace _3._Data_Layer
             if (IsMarked(submissionId, userId))
                 return false;
             Marking mark = _databaseContext.Markings.Find(submissionId, userId);
+            if (mark == null)
+            {
+                return false;
+            }
             _databaseContext.Markings.Remove(mark);
             _databaseContext.SaveChanges();
             return true;
@@ -46,8 +50,7 @@ namespace _3._Data_Layer
 
         public bool IsMarked(int submissionId, int userId)
         {
-            Console.WriteLine("**************");
-            if (_databaseContext.Markings.Find(submissionId, userId) != null)
+            if (_databaseContext.Markings.Find(submissionId, userId) == null)
                 return false;
             return true;
         }

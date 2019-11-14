@@ -41,10 +41,14 @@ namespace _1._SOVA.Controllers
         public ActionResult UpdateBookmark(int submissionId)
         {
             var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
-            if (_markingRepository.IsMarked(submissionId, userId))
+            if (!_markingRepository.IsMarked(submissionId, userId))
             {
-                _markingRepository.RemoveBookmark(submissionId, userId);
-                return Ok($"Submission with id {submissionId} is now removed from your bookmarks.");
+                if (_markingRepository.RemoveBookmark(submissionId, userId))
+                {
+                    return Ok($"Submission with id {submissionId} is now removed from your bookmarks.");
+                }
+
+                return BadRequest("Something happenbed");
             }
 
             _markingRepository.AddBookmark(submissionId, userId);
