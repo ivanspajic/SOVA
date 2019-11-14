@@ -4,6 +4,7 @@ using System.Linq;
 using _0._Models;
 using _3._Data_Layer;
 using _3._Data_Layer.Database_Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Xunit;
 
@@ -568,6 +569,66 @@ namespace Tests
 
             // Assert
             Assert.False(bookmarked);
+        }
+
+        [Fact]
+        public void GetQuestionById_ValidArgument()
+        {
+            // Arrange
+            int questionId = 19;
+
+            // Act
+            Question question = _questionRepository.GetById(questionId);
+
+            // Assert
+            Assert.Equal(questionId, question.SubmissionId);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetQuestionById_InvalidArgument(int questionId)
+        {
+            // Act
+            Question question = _questionRepository.GetById(questionId);
+
+            // Assert
+            Assert.Equal(default, question);
+        }
+
+        [Theory]
+        [InlineData("test search", 1)]
+        [InlineData("test search again", null)]
+        public void GetNumberOfQuestionSearchResults_ValidArguments(string query, int? userId)
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+
+            int expectedResultCount = databaseContext.Questions.Include(question => question.Submission)
+                                         .Where(question => question.Submission.Body.ToLower()
+                                             .Contains(query.ToLower()) && question.Title.ToLower()
+                                             .Contains(query.ToLower())).Count();
+
+            // Act
+            int actualResultCount = _questionRepository.NoOfResults(query, userId);
+
+            // Assert
+            Assert.Equal(expectedResultCount, actualResultCount);
+        }
+
+        [Theory]
+        [InlineData("", 1)]
+        [InlineData("", null)]
+        [InlineData(" ", 1)]
+        [InlineData(" ", null)]
+        [InlineData(null, -1)]
+        public void GetNumberOfQuestionSearchResults_InvalidArguments(string query, int? userId)
+        {
+            // Act
+            int resultCount = _questionRepository.NoOfResults(query, userId);
+
+            // Assert
+            Assert.Equal(0, resultCount);
         }
     }
 }
