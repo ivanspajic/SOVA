@@ -28,7 +28,6 @@ create or replace function log_search_for_user(history_id int, authenticated_use
     returns void as
 $$
 begin
-    raise notice 'asdasd';
     insert into user_history(history_id, user_id) values (history_id, authenticated_user_id);
 end
 $$ language plpgsql;
@@ -57,7 +56,7 @@ $$ language plpgsql;
 
 --d3
 drop function if exists exact_match();
-CREATE OR REPLACE FUNCTION exact_match(authenticated_user_id integer default null, VARIADIC w text[])
+CREATE OR REPLACE FUNCTION exact_match(authenticated_user_id integer default null, VARIADIC w text[] default null)
     RETURNS table
             (
                 postid   int4,
@@ -96,7 +95,7 @@ $$
 
 --d4
 drop function if exists best_match();
-CREATE OR REPLACE FUNCTION best_match(authenticated_user_id integer default null, VARIADIC w text[])
+CREATE OR REPLACE FUNCTION best_match(authenticated_user_id integer default null, VARIADIC w text[] default null)
     RETURNS table
             (
                 postid int4,
@@ -131,7 +130,8 @@ $$
 
 --d6
 drop function if exists best_match_weighted();
-CREATE OR REPLACE FUNCTION best_match_weighted(authenticated_user_id integer default null, VARIADIC w text[])
+CREATE OR REPLACE FUNCTION best_match_weighted(authenticated_user_id integer default null,
+                                               VARIADIC w text[] default null)
     RETURNS table
             (
                 postid int4,
@@ -178,7 +178,7 @@ $$
 
 --d7
 drop function if exists word_2_words();
-CREATE OR REPLACE FUNCTION word_2_words(authenticated_user_id integer default null, VARIADIC w text[])
+CREATE OR REPLACE FUNCTION word_2_words(authenticated_user_id integer default null, VARIADIC w text[] default null)
     RETURNS table
             (
                 weight bigint,
@@ -216,4 +216,3 @@ BEGIN
 END
 $$
     LANGUAGE 'plpgsql';
-
