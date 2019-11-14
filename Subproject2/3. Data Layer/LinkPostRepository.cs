@@ -20,5 +20,9 @@ namespace _3._Data_Layer
             _databaseContext = databaseContext;
         }
 
+        public LinkPost GetByQuestionAndLinkedPostIds(int questionId, int linkedPostId)
+        {
+            return _databaseContext.LinkPosts.Where((l) => l.QuestionId == questionId && l.LinkPostId == linkedPostId).FirstOrDefault();
+        }
     }
 }

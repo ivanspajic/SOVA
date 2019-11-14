@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using _0._Models;
 using _3._Data_Layer;
@@ -42,10 +43,14 @@ namespace Tests
             _userRepository = new UserRepository(new SOVAContext(_connectionString));
         }
 
-        [Theory]
-        [InlineData("Test Annotation", 19, 1)]
-        public void CreateAnnotation_ValidArguments(string annotation, int submissionId, int userId)
+        [Fact]
+        public void CreateAnnotation_ValidArguments()
         {
+            // Arrange
+            string annotation = "Test Annotation";
+            int submissionId = 19;
+            int userId = 1;
+
             // Act
             Annotation actualAnnotation = _annotationRepository.Create(annotation, submissionId, userId);
 
@@ -73,15 +78,21 @@ namespace Tests
             Assert.Equal(default, actualAnnotation);
         }
 
-        [Theory]
-        [InlineData("Test Annotation", 19, 1)]
-        public void GetAnnotationBySubmissionAndUserId_ValidArguments(string annotation, int submissionId, int userId)
+        [Fact]
+        public void GetAnnotationBySubmissionAndUserIds_ValidArguments()
         {
+            // Arrange
+            string annotation = "Test Annotation";
+            int submissionId = 19;
+            int userId = 1;
+
             // Act
             Annotation actualAnnotation = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
 
             // Assert
             Assert.Equal(annotation, actualAnnotation.AnnotationString);
+            Assert.Equal(submissionId, actualAnnotation.SubmissionId);
+            Assert.Equal(userId, actualAnnotation.UserId);
         }
 
         [Theory]
@@ -90,7 +101,7 @@ namespace Tests
         [InlineData(19, 0)]
         [InlineData(19, -1)]
         [InlineData(0, 0)]
-        public void GetAnnotationBySubmissionAndUserId_InvalidArguments(int submissionId, int userId)
+        public void GetAnnotationBySubmissionAndUserIds_InvalidArguments(int submissionId, int userId)
         {
             // Act
             Annotation actualAnnotation = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
@@ -99,10 +110,14 @@ namespace Tests
             Assert.Equal(default, actualAnnotation);
         }
 
-        [Theory]
-        [InlineData("Test Test", 19, 1)]
-        public void UpdateAnnotationOnSubmissionForUser_ValidArguments(string annotation, int submissionId, int userId)
+        [Fact]
+        public void UpdateAnnotationOnSubmissionForUser_ValidArguments()
         {
+            // Arrange
+            string annotation = "Test Test";
+            int submissionId = 19;
+            int userId = 1;
+
             // Act
             bool updated = _annotationRepository.Update(annotation, submissionId, userId);
 
@@ -128,10 +143,13 @@ namespace Tests
             Assert.False(updated);
         }
 
-        [Theory]
-        [InlineData(19, 1)]
-        public void DeleteAnnotationOnSubmissionForUser_ValidArguments(int submissionId, int userId)
+        [Fact]
+        public void DeleteAnnotationOnSubmissionForUser_ValidArguments()
         {
+            // Arrange
+            int submissionId = 19;
+            int userId = 1;
+
             // Act
             bool deleted = _annotationRepository.Delete(submissionId, userId);
 
@@ -152,6 +170,235 @@ namespace Tests
 
             // Assert
             Assert.False(deleted);
+        }
+
+        [Theory]
+        [InlineData("Something here", 19, 1)]
+        [InlineData("Something else here", 19, 1)]
+        public void CheckAtMostOneAnnotationOnSubmissionForUser_CreateAnnotation(string annotation, int submissionId, int userId)
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+
+            // Act 
+            _annotationRepository.Create(annotation, submissionId, userId);
+
+            // Assert
+            Assert.True(databaseContext.Annotations.Count() <= 1);
+        }
+
+        [Fact]
+        public void GetAnnotationBySubmissionAndUserIds_AnnotationWithSubmission()
+        {
+            // Arrange
+            int submissionId = 19;
+            int userId = 1;
+
+            // Act
+            Annotation annotation = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
+
+            // Assert
+            Assert.Equal(submissionId, annotation.Submission.Id);
+        }
+
+        [Fact]
+        public void GetAnswerById_ValidArgument()
+        {
+            // Arrange
+            int answerId = 106266;
+
+            // Act
+            Answer answer = _answerRepository.GetAnswerById(answerId);
+
+            // Assert
+            Assert.Equal(answerId, answer.SubmissionId);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetAnswerById_InvalidArgument(int answerId)
+        {
+            // Act
+            Answer answer = _answerRepository.GetAnswerById(answerId);
+
+            // Assert
+            Assert.Equal(default, answer);
+        }
+
+        [Fact]
+        public void GetAnswerById_AnswerWithSubmission()
+        {
+            // Arrange
+            int answerId = 106266;
+
+            // Act
+            Answer answer = _answerRepository.GetAnswerById(answerId);
+
+            // Assert
+            Assert.Equal(answerId, answer.Submission.Id);
+        }
+
+        [Fact]
+        public void GetNumberOfCommentsOnSubmission_ValidArgument()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+
+            int submissionId = 19;
+            int expectedNumberOfComments = databaseContext.Comments.Where(comment => comment.SubmissionId == submissionId).Count();
+
+            // Act
+            int actualNumberOfComments = _commentRepository.NoOfComments(submissionId);
+
+            // Assert
+            Assert.Equal(expectedNumberOfComments, actualNumberOfComments);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetNumberOfCommentsOnSubmission_InvalidArgument(int submissionId)
+        {
+            // Act
+            int numberOfComments = _commentRepository.NoOfComments(submissionId);
+
+            // Assert
+            Assert.Equal(0, numberOfComments);
+        }
+
+        [Theory]
+        [InlineData(19, 20, 1)]
+        [InlineData(19, 5, 5)]
+        [InlineData(19, 2, 10)]
+        public void GetCommentsBySubmissionId_ValidArguments(int submissionId, int pageNumber, int pageSize)
+        {
+            // Arrange
+            PagingAttributes testAttributes = new PagingAttributes()
+            {
+                Page = pageNumber,
+                PageSize = pageSize
+            };
+
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            
+            IEnumerable<Comment> expectedComments = databaseContext.Comments
+                                                        .Where(comment => comment.SubmissionId == submissionId)
+                                                        .Skip((pageNumber - 1) * pageSize)
+                                                        .Take(pageSize);
+
+            // Act
+            IEnumerable<Comment> actualComments = _commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
+
+            // Assert
+            Assert.Equal(expectedComments, actualComments);
+        }
+
+        [Theory]
+        [InlineData(0, 1, 1)]
+        [InlineData(-1, 1, 1)]
+        [InlineData(19, 1, 0)]
+        [InlineData(19, 1, -2)]
+        [InlineData(19, -2, 1)]
+        [InlineData(-1, -1, -1)]
+        public void GetCommentsBySubmissionId_InvalidArguments(int submissionId, int pageNumber, int pageSize)
+        {
+            // Arrange
+            PagingAttributes testAttributes = new PagingAttributes()
+            {
+                Page = pageNumber,
+                PageSize = pageSize
+            };
+
+            // Act
+            IEnumerable<Comment> comments = _commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
+
+            // Assert
+            Assert.Empty(comments);
+        }
+
+        [Fact]
+        public void GetCommentsBySubmissionId_CommentsWithSubmissions()
+        {
+            // Arrange
+            int submissionId = 19;
+
+            PagingAttributes testAttributes = new PagingAttributes();
+
+            // Act
+            IEnumerable<Comment> comments = _commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
+
+            // Arrange
+            Assert.All(comments, (comment) => Assert.Equal(submissionId, comment.CommentSubmission.Id));
+        }
+
+        [Fact]
+        public void GetHistoryById_ValidArgument()
+        {
+            // Arrange
+            int historyId = 1;
+
+            // Act
+            History history = _historyRepository.GetHistoryById(historyId);
+
+            // Assert
+            Assert.Equal(historyId, history.Id);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetHistoryById_InvalidArgument(int historyId)
+        {
+            // Act
+            History history = _historyRepository.GetHistoryById(historyId);
+
+            // Assert
+            Assert.Equal(default, history);
+        }
+
+        [Fact]
+        public void GetLinkPostByQuestionAndLinkedPostIds_ValidArgument()
+        {
+            // Arrange
+            int questionId = 6173;
+            int linkedPostId = 1732348;
+
+            // Act
+            LinkPost linkPost = _linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
+
+            // Assert
+            Assert.Equal(questionId, linkPost.QuestionId);
+            Assert.Equal(linkedPostId, linkPost.LinkPostId);
+        }
+
+        [Theory]
+        [InlineData(0, 1732348)]
+        [InlineData(-1, 1732348)]
+        [InlineData(6173, 0)]
+        [InlineData(6173, -1)]
+        [InlineData(-1, -1)]
+        public void GetLinkPostByQuestionAndLinkedPostIds_InvalidArgument(int questionId, int linkedPostId)
+        {
+            // Act
+            LinkPost linkPost = _linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
+
+            // Assert
+            Assert.Equal(default, linkPost);
+        }
+
+        [Fact]
+        public void GetLinkPostByQuestionAndLinkedPostIds_LinkPostWithLinkedPost()
+        {
+            // Arrange
+            int questionId = 6173;
+            int linkedPostId = 1732348;
+
+            // Act
+            LinkPost linkPost = _linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
+
+            // Assert
+            Assert.Equal(linkedPostId, linkPost.LinkedPost.Submission.Id);
         }
     }
 }
