@@ -107,7 +107,7 @@ namespace _3._Data_Layer.Database_Context
             modelBuilder.Entity<LinkPost>().HasOne(l => l.Question).WithMany().HasForeignKey(l => l.QuestionId);
             modelBuilder.Entity<LinkPost>().HasOne(l => l.LinkedPost).WithMany().HasForeignKey(l => l.LinkPostId);
             modelBuilder.Entity<Marking>().HasOne(m => m.Submission).WithMany().HasForeignKey(m => m.SubmissionId);
-            modelBuilder.Entity<Marking>().HasOne(m => m.Submission).WithMany().HasForeignKey(m => m.UserId);
+            //modelBuilder.Entity<Marking>().HasOne(m => m.User).WithMany().HasForeignKey(m => m.UserId);
             modelBuilder.Entity<Question>().HasOne(q => q.Submission).WithMany().HasForeignKey(q => q.SubmissionId);
             modelBuilder.Entity<QuestionsTag>().HasOne(a => a.Question).WithMany().HasForeignKey(a => a.QuestionId);
             modelBuilder.Entity<QuestionsTag>().HasOne(a => a.Tag).WithMany().HasForeignKey(a => a.TagId);
