@@ -227,7 +227,7 @@ namespace Tests
         }
 
         [Fact]
-        public void GetAnswerById_AnswerWithSubmission()
+        public void GetAnswerById_IncludesSubmissions_IncludesComments_ThenIncludesSubmissions()
         {
             // Arrange
             int answerId = 106266;
@@ -236,7 +236,8 @@ namespace Tests
             Answer answer = _answerRepository.GetAnswerById(answerId);
 
             // Assert
-            Assert.Equal(answerId, answer.Submission.Id);
+            Assert.NotNull(answer.Submission);
+            Assert.All(answer.Comments, (comment) => Assert.NotNull(comment.CommentSubmission));
         }
 
         [Fact]
@@ -318,7 +319,7 @@ namespace Tests
         }
 
         [Fact]
-        public void GetCommentsBySubmissionId_CommentsWithSubmissions()
+        public void GetCommentsBySubmissionId_IncludeSubmissions()
         {
             // Arrange
             int submissionId = 19;
@@ -329,7 +330,7 @@ namespace Tests
             IEnumerable<Comment> comments = _commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
 
             // Arrange
-            Assert.All(comments, (comment) => Assert.Equal(submissionId, comment.CommentSubmission.Id));
+            Assert.All(comments, (comment) => Assert.NotNull(comment.CommentSubmission));
         }
 
         [Fact]
@@ -388,7 +389,7 @@ namespace Tests
         }
 
         [Fact]
-        public void GetLinkPostByQuestionAndLinkedPostIds_LinkPostWithLinkedPost()
+        public void GetLinkPostByQuestionAndLinkedPostIds_IncludeQuestion_IncludeSubmission()
         {
             // Arrange
             int questionId = 6173;
@@ -398,7 +399,9 @@ namespace Tests
             LinkPost linkPost = _linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
 
             // Assert
-            Assert.Equal(linkedPostId, linkPost.LinkedPost.Submission.Id);
+            Assert.NotNull(linkPost.LinkedPost.Submission);
         }
+
+
     }
 }
