@@ -31,7 +31,7 @@ namespace _1._SOVA.Controllers
             var posts = _markingRepository.GetMarkedPosts(userId, pagingAttributes);
             if (posts == null)
             {
-                return Ok("asd");
+                return NotFound("No bookmarks found");
             }
             return Ok(CreateResult(posts, userId, pagingAttributes));
         }
@@ -41,14 +41,14 @@ namespace _1._SOVA.Controllers
         public ActionResult UpdateBookmark(int submissionId)
         {
             var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
-            if (!_markingRepository.IsMarked(submissionId, userId))
+            if (_markingRepository.IsMarked(submissionId, userId))
             {
                 if (_markingRepository.RemoveBookmark(submissionId, userId))
                 {
                     return Ok($"Submission with id {submissionId} is now removed from your bookmarks.");
                 }
 
-                return BadRequest("Something happenbed");
+                return BadRequest("Error while removing bookmark");
             }
 
             _markingRepository.AddBookmark(submissionId, userId);

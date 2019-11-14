@@ -24,7 +24,7 @@ namespace _3._Data_Layer
         {
             if (!IsMarked(submissionId, userId))
                 return false;
-            Marking mark = new Marking
+            var mark = new Marking
             {
                 SubmissionId = submissionId,
                 UserId = userId
@@ -38,7 +38,7 @@ namespace _3._Data_Layer
         {
             if (IsMarked(submissionId, userId))
                 return false;
-            Marking mark = _databaseContext.Markings.Find(submissionId, userId);
+            var mark = _databaseContext.Markings.Find(submissionId, userId);
             if (mark == null)
             {
                 return false;
@@ -50,8 +50,9 @@ namespace _3._Data_Layer
 
         public bool IsMarked(int submissionId, int userId)
         {
-            if (_databaseContext.Markings.Find(submissionId, userId) == null)
-                return false;
+            var bookmarkedSubmission = _databaseContext.Markings.Where(m => m.SubmissionId == submissionId && m.UserId == userId);
+            //if (bookmarkedSubmission == null)
+            //    return false;
             return true;
         }
 

@@ -40,8 +40,6 @@ namespace _3._Data_Layer
 
         public bool Delete(int submissionId, int userId)
         {
-            Console.WriteLine("******************");
-            Console.WriteLine(userId + submissionId);
             Annotation annotationToDelete = _databaseContext.Annotations.Find(submissionId, userId);
             if (annotationToDelete != null)
             {
