@@ -47,7 +47,7 @@ namespace _1._SOVA.Controllers
         [HttpGet("{questionId}/answers", Name = nameof(GetAnswersForQuestion))]
         public ActionResult GetAnswersForQuestion([FromQuery] PagingAttributes pagingAttributes, int questionId)
         {
-            var answers = _answerRepository.GetAnswersForQuestionById(questionId, pagingAttributes);
+            var answers = _answerRepository.GetAnswersForQuestionById(questionId, pagingAttributes); // workaround
             return Ok(CreateResult(answers, questionId, pagingAttributes));
         }
 
@@ -102,7 +102,7 @@ namespace _1._SOVA.Controllers
 
         private object CreateResult(IEnumerable<Answer> answers, int questionId, PagingAttributes attr)
         {
-            var totalItems = _questionRepository.NoOfAnswers(questionId);
+            var totalItems = _answerRepository.NoOfAnswers(questionId); // workaround
             var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
 
             var prev = attr.Page > 0

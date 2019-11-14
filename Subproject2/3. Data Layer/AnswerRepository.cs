@@ -32,5 +32,12 @@ namespace _3._Data_Layer
                 .Take(pagingAttributes.PageSize)
                 .ToList();
         }
+
+        public int NoOfAnswers(int questionId)
+        {
+            return _databaseContext.Answers
+                .Include(a => a.Submission)
+                .Count(a => a.ParentId == questionId);
+        }
     }
 }
