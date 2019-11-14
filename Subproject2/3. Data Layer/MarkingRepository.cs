@@ -50,9 +50,9 @@ namespace _3._Data_Layer
 
         public bool IsMarked(int submissionId, int userId)
         {
-            var bookmarkedSubmission = _databaseContext.Markings.Where(m => m.SubmissionId == submissionId && m.UserId == userId);
-            //if (bookmarkedSubmission == null)
-            //    return false;
+            var bookmarkedSubmission = _databaseContext.Markings.Find(submissionId, userId);
+            if (bookmarkedSubmission == null)
+                return false;
             return true;
         }
 
