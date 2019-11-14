@@ -57,7 +57,7 @@ $$ language plpgsql;
 
 --d3
 drop function if exists exact_match();
-CREATE OR REPLACE FUNCTION exact_match(VARIADIC w text[], authenticated_user_id integer default null)
+CREATE OR REPLACE FUNCTION exact_match(authenticated_user_id integer default null, VARIADIC w text[])
     RETURNS table
             (
                 postid   int4,
@@ -96,7 +96,7 @@ $$
 
 --d4
 drop function if exists best_match();
-CREATE OR REPLACE FUNCTION best_match(VARIADIC w text[], authenticated_user_id integer default null)
+CREATE OR REPLACE FUNCTION best_match(authenticated_user_id integer default null, VARIADIC w text[])
     RETURNS table
             (
                 postid int4,
@@ -131,7 +131,7 @@ $$
 
 --d6
 drop function if exists best_match_weighted();
-CREATE OR REPLACE FUNCTION best_match_weighted(VARIADIC w text[], authenticated_user_id integer default null)
+CREATE OR REPLACE FUNCTION best_match_weighted(authenticated_user_id integer default null, VARIADIC w text[])
     RETURNS table
             (
                 postid int4,
@@ -178,7 +178,7 @@ $$
 
 --d7
 drop function if exists word_2_words();
-CREATE OR REPLACE FUNCTION word_2_words(VARIADIC w text[], authenticated_user_id integer default null)
+CREATE OR REPLACE FUNCTION word_2_words(authenticated_user_id integer default null, VARIADIC w text[])
     RETURNS table
             (
                 weight bigint,
