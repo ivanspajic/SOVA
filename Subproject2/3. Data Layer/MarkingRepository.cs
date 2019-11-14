@@ -49,16 +49,6 @@ namespace _3._Data_Layer
             return true;
         }
 
-        public IEnumerable<Submission> GetMarkedPosts(int userId, PagingAttributes pagingAttributes)
-        {
-            return _databaseContext.Markings
-                .Where(m => m.UserId == userId)
-                .Select(m => m.Submission)
-                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
-                .Take(pagingAttributes.PageSize)
-                .ToList();
-        }
-
         public int NoOfMarkings(int userId)
         {
             return _databaseContext.Markings

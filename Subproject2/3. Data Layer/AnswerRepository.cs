@@ -39,5 +39,15 @@ namespace _3._Data_Layer
                 .Include(a => a.Submission)
                 .Count(a => a.ParentId == questionId);
         }
+
+        public IEnumerable<Answer> GetMarkedAnswers(int userId, PagingAttributes pagingAttributes)
+        {
+            return _databaseContext.Answers
+                .Include(answer => answer.Submission)
+                    .ThenInclude(submission => submission.Markings)
+                .Where(answer => answer.Submission.Markings.All(marking => marking.UserId == userId))
+                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize);
+        }
     }
 }
