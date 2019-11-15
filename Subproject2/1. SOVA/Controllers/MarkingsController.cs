@@ -28,7 +28,7 @@ namespace _1._SOVA.Controllers
         public ActionResult GetMarkedPostsForUser([FromQuery] PagingAttributes pagingAttributes)
         {
             var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
-            var posts = _markingRepository.GetMarkedPosts(userId, pagingAttributes);
+            var posts = _markingRepository.GetMarkedSubmissions(userId, pagingAttributes);
             if (posts == null)
             {
                 return NotFound("No bookmarks found");

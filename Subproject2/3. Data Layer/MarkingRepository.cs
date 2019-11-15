@@ -62,11 +62,10 @@ namespace _3._Data_Layer
         public int NoOfMarkings(int userId)
         {
             return _databaseContext.Markings
-                .Where(m => m.UserId == userId)
-                .Count();
+                .Count(m => m.UserId == userId);
         }
 
-        public IEnumerable<Submission> GetMarkedPosts(int userId, PagingAttributes pagingAttributes)
+        public IEnumerable<Submission> GetMarkedSubmissions(int userId, PagingAttributes pagingAttributes)
         {
             return _databaseContext.Markings
                 .Where(m => m.UserId == userId)

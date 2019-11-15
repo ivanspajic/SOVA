@@ -12,12 +12,11 @@ namespace Tests
 {
     public class DataServiceTests
     {
-        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=Hotmai12";
 
         private readonly AnnotationRepository _annotationRepository;
         private readonly AnswerRepository _answerRepository;
         private readonly CommentRepository _commentRepository;
-        private readonly HistoryRepository _historyRepository;
         private readonly LinkPostRepository _linkPostRepository;
         private readonly MarkingRepository _markingRepository;
         private readonly QuestionRepository _questionRepository;
@@ -32,7 +31,6 @@ namespace Tests
             _annotationRepository = new AnnotationRepository(new SOVAContext(_connectionString));
             _answerRepository = new AnswerRepository(new SOVAContext(_connectionString));
             _commentRepository = new CommentRepository(new SOVAContext(_connectionString));
-            //_historyRepository = new HistoryRepository(new SOVAContext(_connectionString));
             _linkPostRepository = new LinkPostRepository(new SOVAContext(_connectionString));
             _markingRepository = new MarkingRepository(new SOVAContext(_connectionString));
             _questionRepository = new QuestionRepository(new SOVAContext(_connectionString));
@@ -390,30 +388,34 @@ namespace Tests
             Assert.All(comments, (comment) => Assert.NotNull(comment.CommentSubmission));
         }
 
-        //[Fact]
-        //public void GetHistoryById_ValidArgument()
-        //{
-        //    // Arrange
-        //    int historyId = 1;
+        [Fact]
+        public void GetHistoryByUserId_ValidArgument()
+        {
+            // Arrange
+            PagingAttributes testAttributes = new PagingAttributes();
+            int userId = 1;
 
-        //    // Act
-        //    History history = _historyRepository.GetUserHistoryByUserId(historyId);
+            // Act
+            var userHistory = _userHistoryRepository.GetUserHistoryByUserId(userId, testAttributes);
 
-        //    // Assert
-        //    Assert.Equal(historyId, history.Id);
-        //}
+            // Assert
+            Assert.True(userHistory != null);
+        }
 
-        //[Theory]
-        //[InlineData(0)]
-        //[InlineData(-1)]
-        //public void GetHistoryById_InvalidArgument(int historyId)
-        //{
-        //    // Act
-        //    History history = _historyRepository.GetHistoryById(historyId);
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetHistoryById_InvalidArgument(int userId)
+        {
+            // Arrange
+            PagingAttributes testAttributes = new PagingAttributes();
 
-        //    // Assert
-        //    Assert.Equal(default, history);
-        //}
+            // Act
+            var history = _userHistoryRepository.GetUserHistoryByUserId(userId, testAttributes);
+
+            // Assert
+            Assert.Equal(default, history);
+        }
 
         [Fact]
         public void GetLinkPostByQuestionAndLinkedPostIds_ValidArgument()
@@ -521,12 +523,12 @@ namespace Tests
             int userId = 1;
 
             // Act
-            bool bookmarked = _markingRepository.Bookmark(submissionId, userId);
+            bool bookmarked = _markingRepository.AddBookmark(submissionId, userId);
 
             // Assert
             Assert.True(bookmarked);
         }
-        
+
         [Theory]
         [InlineData(0, 1)]
         [InlineData(-1, 1)]
@@ -536,7 +538,7 @@ namespace Tests
         public void CreateBookmarkOnSubmissionForUser_InvalidArguments(int submissionId, int userId)
         {
             // Act
-            bool bookmarked = _markingRepository.Bookmark(submissionId, userId);
+            bool bookmarked = _markingRepository.AddBookmark(submissionId, userId);
 
             // Assert
             Assert.False(bookmarked);
