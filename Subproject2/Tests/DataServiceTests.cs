@@ -229,7 +229,7 @@ namespace Tests
             Annotation annotation = annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
 
             // Assert
-            Assert.Equal(submissionId, annotation.Submission.Id);
+            Assert.Equal(submissionId, annotation.SubmissionId);
         }
 
         [Fact]
