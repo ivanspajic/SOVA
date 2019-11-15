@@ -45,14 +45,14 @@ namespace _3._Data_Layer
                 .Count();
         }
 
-        public IEnumerable<Question> GetMarkedQuestions(int userId, PagingAttributes pagingAttributes)
-        {
-            return _databaseContext.Questions
-                .Include(question => question.Submission)
-                    .ThenInclude(submission => submission.Markings)
-                .Where(question => question.Submission.Markings.All(marking => marking.UserId == userId))
-                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
-                .Take(pagingAttributes.PageSize);
-        }
+        //public IEnumerable<Question> GetMarkedQuestions(int userId, PagingAttributes pagingAttributes)
+        //{
+        //    return _databaseContext.Questions
+        //        .Include(question => question.Submission)
+        //            .ThenInclude(submission => submission.Markings)
+        //        .Where(question => question.Submission.Markings.All(marking => marking.UserId == userId))
+        //        .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+        //        .Take(pagingAttributes.PageSize);
+        //}
     }
 }

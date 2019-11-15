@@ -13,6 +13,6 @@ namespace _2._Data_Layer_Abstractions
 
         int NoOfAnswers(int questionId);
 
-        IEnumerable<Answer> GetMarkedAnswers(int userId, PagingAttributes pagingAttributes);
+        //IEnumerable<Answer> GetMarkedAnswers(int userId, PagingAttributes pagingAttributes);
     }
 }

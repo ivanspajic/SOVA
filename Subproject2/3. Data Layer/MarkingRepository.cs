@@ -36,9 +36,10 @@ namespace _3._Data_Layer
 
         public bool RemoveBookmark(int submissionId, int userId)
         {
-            if (IsMarked(submissionId, userId))
+            if (!IsMarked(submissionId, userId))
                 return false;
-            var mark = _databaseContext.Markings.Find(submissionId, userId);
+            var mark = _databaseContext.Markings.FromSqlRaw("Select * from markings where submission_id={0} and user_id={1}",
+                submissionId, userId).FirstOrDefault();
             if (mark == null)
             {
                 return false;
@@ -50,7 +51,9 @@ namespace _3._Data_Layer
 
         public bool IsMarked(int submissionId, int userId)
         {
-            var bookmarkedSubmission = _databaseContext.Markings.Find(submissionId, userId);
+            var bookmarkedSubmission =
+                _databaseContext.Markings.FromSqlRaw("Select * from markings where submission_id={0} and user_id={1} limit(1)",
+                    submissionId, userId).FirstOrDefault();
             if (bookmarkedSubmission == null)
                 return false;
             return true;

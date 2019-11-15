@@ -11,6 +11,6 @@ namespace _2._Data_Layer_Abstractions
         Comment GetCommentById(int commentId);
         int NoOfComments(int submissionId);
 
-        IEnumerable<Comment> GetMarkedComments(int userId, PagingAttributes pagingAttributes);
+        //IEnumerable<Comment> GetMarkedComments(int userId, PagingAttributes pagingAttributes);
     }
 }
