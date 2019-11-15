@@ -10,6 +10,19 @@ using Xunit;
 
 namespace Tests
 {
+    // Missing Tests:
+    //
+    // - getting all bookmarks containing all respective posts
+    // - getting questions by search queries
+    // - (questiontag repository)
+    // - get somember by id
+    // - tag repository (maybe for displaying all relevant questions when clicking on a tag?)
+    // - get number of stored search results for a user
+    // - get user's search history by id paginated
+    // - get user by id
+    // - get user by username
+    // - create user
+    // - update user
     public class DataServiceTests
     {
         private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
