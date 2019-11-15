@@ -45,7 +45,7 @@ namespace _3._Data_Layer
         {
             if (queryString == null)
                 return 0;
-            return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0})", queryString)
+            return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", userId, queryString)
                 .Count();
         }
     }
