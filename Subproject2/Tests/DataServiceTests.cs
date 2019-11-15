@@ -12,7 +12,7 @@ namespace Tests
 {
     public class DataServiceTests
     {
-        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=19130419200";
 
         private readonly AnnotationRepository _annotationRepository;
         private readonly AnswerRepository _answerRepository;
