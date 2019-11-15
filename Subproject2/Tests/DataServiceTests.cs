@@ -48,6 +48,9 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
+
             string annotation = "Test Annotation";
             int submissionId = 19;
             int userId = 1;
@@ -130,6 +133,9 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
+
             // Create annotation in case it does not exist
             int submissionId = 19;
             int userId = 1;
@@ -172,6 +178,9 @@ namespace Tests
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
+
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
 
             int submissionId = 19;
             int userId = 1;
@@ -442,6 +451,9 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             CommentRepository commentRepository = new CommentRepository(databaseContext);
 
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
+
             int submissionId = 19;
 
             PagingAttributes testAttributes = new PagingAttributes();
@@ -472,6 +484,11 @@ namespace Tests
         [InlineData(-1)]
         public void GetHistoryById_InvalidArgument(int userId)
         {
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
+
+            // Do a search so database has some history for test to find. (In case it history doesn't have any entry, the test will fail.)
+            _questionRepository.SearchQuestions("testing", 1, new PagingAttributes());
             // Arrange
             PagingAttributes testAttributes = new PagingAttributes();
 
@@ -542,6 +559,9 @@ namespace Tests
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             MarkingRepository markingRepository = new MarkingRepository(databaseContext);
+
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
 
             int submissionId = 19;
             int userId = 1;
@@ -614,6 +634,9 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             MarkingRepository markingRepository = new MarkingRepository(databaseContext);
 
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
+
             int submissionId = 19;
             int userId = 1;
 
@@ -650,8 +673,15 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             MarkingRepository markingRepository = new MarkingRepository(databaseContext);
 
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
+
+
             int submissionId = 19;
             int userId = 1;
+
+            // Create a bookmark for test to dlelte if it doesn't exist.
+            markingRepository.AddBookmark(submissionId, userId);
 
             // Act
             bool bookmarked = markingRepository.RemoveBookmark(submissionId, userId);

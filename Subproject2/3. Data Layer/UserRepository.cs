@@ -34,6 +34,10 @@ namespace _3._Data_Layer
         }
         public User CreateUser(string username, string password, string salt)
         {
+            if (_databaseContext.Users.FirstOrDefault(v => v.Username == username) != null) // This is only for test to create a user with username "testUsername". For the application, there's a check in the controller.
+            {
+                return null;
+            }
             // If the Users table is not empty, increment the existing ID by 1; else set the ID to 1.
             var userId = _databaseContext.Users.Any() ? _databaseContext.Users.Max(x => x.Id) + 1 : 1;
             var user = new User()
