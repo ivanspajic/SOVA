@@ -63,14 +63,14 @@ namespace Tests
         }
 
         [Theory]
-        //[InlineData("", 19, 1)]
-        //[InlineData(" ", 19, 1)]
-        //[InlineData(null, 19, 1)]
+        [InlineData("", 19, 1)]
+        [InlineData(" ", 19, 1)]
+        [InlineData(null, 19, 1)]
         [InlineData("Test Annotation", 0, 1)]
         [InlineData("Test Annotation", -1, 1)]
-        //[InlineData("Test Annotation", 19, 0)]
-        //[InlineData("Test Annotation", 19, -1)]
-        //[InlineData("", 0, 0)]
+        [InlineData("Test Annotation", 19, 0)]
+        [InlineData("Test Annotation", 19, -1)]
+        [InlineData("", 0, 0)]
         public void CreateAnnotationOnSubmissionForUser_InvalidArguments(string annotation, int submissionId, int userId)
         {
             // Arrange
@@ -229,7 +229,7 @@ namespace Tests
             Annotation annotation = annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
 
             // Assert
-            Assert.Equal(submissionId, annotation.Submission.Id);
+            Assert.Equal(submissionId, annotation.SubmissionId);
         }
 
         [Fact]

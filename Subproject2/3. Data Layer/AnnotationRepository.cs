@@ -60,7 +60,8 @@ namespace _3._Data_Layer
         public Annotation GetBySubmissionAndUserIds(int submissionId, int userId)
         {
             var ant = _databaseContext.Annotations.Find(submissionId, userId);
-
+            if (ant == null)
+                return null;
             return ant;
         }
 
