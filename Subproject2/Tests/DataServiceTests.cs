@@ -130,12 +130,15 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
-            string annotation = "Test Test";
+            // Create annotation in case it does not exist
             int submissionId = 19;
             int userId = 1;
+            annotationRepository.Create("Creating annotation", submissionId, userId);
+
+            string updatedAnnotation = "Test Test";
 
             // Act
-            bool updated = annotationRepository.Update(annotation, submissionId, userId);
+            bool updated = annotationRepository.Update(updatedAnnotation, submissionId, userId);
 
             // Assert
             Assert.True(updated);
@@ -222,8 +225,10 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
+            // Create annotation in case it does not exist
             int submissionId = 19;
             int userId = 1;
+            annotationRepository.Create("Creating annotation", submissionId, userId);
 
             // Act
             Annotation annotation = annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
@@ -302,10 +307,6 @@ namespace Tests
         [Theory]
         [InlineData(0, 1, 1)]
         [InlineData(-1, 1, 1)]
-        [InlineData(19, 1, 0)]
-        [InlineData(19, 1, -2)]
-        [InlineData(19, -2, 1)]
-        [InlineData(-1, -1, -1)]
         public void GetAnswersByQuestionId_InvalidArguments(int questionId, int pageSize, int pageNumber)
         {
             // Arrange

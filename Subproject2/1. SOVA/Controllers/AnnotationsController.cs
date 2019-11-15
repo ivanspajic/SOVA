@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace _1._SOVA.Controllers
 {
     [ApiController]
-    [Route("api/annotation")]
+    [Route("api/annotations")]
     public class AnnotationsController : ControllerBase
     {
         private readonly IAnnotationRepository _annotationRepository;
