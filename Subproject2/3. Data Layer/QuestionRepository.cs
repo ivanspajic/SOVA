@@ -31,6 +31,16 @@ namespace _3._Data_Layer
             return _databaseContext.Questions.Find(submissionId);
         }
 
+        public IEnumerable<SearchResult> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes)
+        {
+            var tagId = _databaseContext.Tags.Find(tagName);
+            if (tagId == null)
+                return null;
+            var questionIds = _databaseContext.QuestionsTags.Find(tagId);
+
+            return null;
+        }
+
         public IEnumerable<SearchResult> SearchQuestions(string queryString, int? userId, PagingAttributes pagingAttributes)
         {
             if (queryString == null)
