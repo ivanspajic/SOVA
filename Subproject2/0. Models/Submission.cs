@@ -12,6 +12,5 @@ namespace _0._Models
         public int Score { get; set; }
         public int? SoMemberId { get; set; }
         public SoMember? SoMember { get; set; }
-        public IEnumerable<Marking> Markings { get; set; }
     }
 }

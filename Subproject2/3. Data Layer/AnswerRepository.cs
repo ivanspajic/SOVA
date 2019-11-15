@@ -25,12 +25,14 @@ namespace _3._Data_Layer
 
         public IEnumerable<Answer> GetAnswersForQuestionById(int questionId, PagingAttributes pagingAttributes)
         {
-            return _databaseContext.Answers
+            var answers = _databaseContext.Answers
                 .Include(a => a.Submission)
                 .Where(a => a.ParentId == questionId)
                 .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
-                .Take(pagingAttributes.PageSize)
-                .ToList();
+                .Take(pagingAttributes.PageSize).ToList();
+            if (answers.Count == 0)
+                return null;
+            return answers;
         }
 
         public int NoOfAnswers(int questionId)
@@ -38,16 +40,6 @@ namespace _3._Data_Layer
             return _databaseContext.Answers
                 .Include(a => a.Submission)
                 .Count(a => a.ParentId == questionId);
-        }
-
-        public IEnumerable<Answer> GetMarkedAnswers(int userId, PagingAttributes pagingAttributes)
-        {
-            return _databaseContext.Answers
-                .Include(answer => answer.Submission)
-                    .ThenInclude(submission => submission.Markings)
-                .Where(answer => answer.Submission.Markings.All(marking => marking.UserId == userId))
-                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
-                .Take(pagingAttributes.PageSize);
         }
     }
 }

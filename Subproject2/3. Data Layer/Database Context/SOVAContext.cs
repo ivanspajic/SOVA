@@ -102,18 +102,15 @@ namespace _3._Data_Layer.Database_Context
             modelBuilder.Entity<User>().HasKey(u => u.Id);
 
             modelBuilder.Entity<Annotation>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId);
-            //modelBuilder.Entity<Annotation>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
             modelBuilder.Entity<Answer>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId);
             modelBuilder.Entity<Comment>().HasOne(c => c.CommentSubmission).WithMany().HasForeignKey(c => c.Id);
             modelBuilder.Entity<LinkPost>().HasOne(l => l.Question).WithMany().HasForeignKey(l => l.QuestionId);
             modelBuilder.Entity<LinkPost>().HasOne(l => l.LinkedPost).WithMany().HasForeignKey(l => l.LinkPostId);
-            modelBuilder.Entity<Marking>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId);
-            modelBuilder.Entity<Marking>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
+            modelBuilder.Entity<Marking>().HasOne(m => m.Submission).WithMany().HasForeignKey(m => m.SubmissionId);
             modelBuilder.Entity<Question>().HasOne(q => q.Submission).WithMany().HasForeignKey(q => q.SubmissionId);
             modelBuilder.Entity<QuestionsTag>().HasOne(a => a.Question).WithMany().HasForeignKey(a => a.QuestionId);
             modelBuilder.Entity<QuestionsTag>().HasOne(a => a.Tag).WithMany().HasForeignKey(a => a.TagId);
             modelBuilder.Entity<Submission>().HasOne(a => a.SoMember).WithMany().HasForeignKey(a => a.SoMemberId);
-            //modelBuilder.Entity<UserHistory>().HasOne(a => a.User).WithMany().HasForeignKey(a => a.UserId);
             modelBuilder.Entity<UserHistory>().HasOne(a => a.History).WithMany().HasForeignKey(a => a.HistoryId);
         }
     }

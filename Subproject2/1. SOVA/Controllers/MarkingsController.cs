@@ -23,24 +23,36 @@ namespace _1._SOVA.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{userId}/markedposts", Name = nameof(GetMarkedPostsForUser))]
-        public ActionResult GetMarkedPostsForUser([FromQuery] PagingAttributes pagingAttributes, int userId)
+        //[Authorize]
+        [HttpGet("bookmarks", Name = nameof(GetMarkedPostsForUser))]
+        public ActionResult GetMarkedPostsForUser([FromQuery] PagingAttributes pagingAttributes)
         {
-            var posts = _markingRepository.GetMarkedPosts(userId, pagingAttributes);
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            var posts = _markingRepository.GetMarkedSubmissions(userId, pagingAttributes);
+            if (posts == null)
+            {
+                return NotFound("No bookmarks found");
+            }
             return Ok(CreateResult(posts, userId, pagingAttributes));
         }
 
-        [HttpPut("{submissionId}/{userId}")]
-        public ActionResult UpdateBookmark(int submissionId, int userId)
+        //[Authorize]
+        [HttpPut("{submissionId}/bookmarks")]
+        public ActionResult UpdateBookmark(int submissionId)
         {
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             if (_markingRepository.IsMarked(submissionId, userId))
             {
-                _markingRepository.RemoveBookmark(submissionId, userId);
-                return Ok();
+                if (_markingRepository.RemoveBookmark(submissionId, userId))
+                {
+                    return Ok($"Submission with id {submissionId} is now removed from your bookmarks.");
+                }
+
+                return BadRequest("Error while removing bookmark");
             }
 
-            _markingRepository.Bookmark(submissionId, userId);
-            return Ok();
+            _markingRepository.AddBookmark(submissionId, userId);
+            return Ok($"Submission with id {submissionId} is now bookmarked.");
         }
 
         ///////////////////

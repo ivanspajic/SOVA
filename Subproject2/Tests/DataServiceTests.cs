@@ -27,12 +27,42 @@ namespace Tests
     {
         private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
 
+        private readonly AnnotationRepository _annotationRepository;
+        private readonly AnswerRepository _answerRepository;
+        private readonly CommentRepository _commentRepository;
+        private readonly LinkPostRepository _linkPostRepository;
+        private readonly MarkingRepository _markingRepository;
+        private readonly QuestionRepository _questionRepository;
+        private readonly QuestionTagRepository _questionTagRepository;
+        private readonly SoMemberRepository _soMemberRepository;
+        private readonly TagRepository _tagRepository;
+        private readonly UserHistoryRepository _userHistoryRepository;
+        private readonly UserRepository _userRepository;
+
+        public DataServiceTests()
+        {
+            _annotationRepository = new AnnotationRepository(new SOVAContext(_connectionString));
+            _answerRepository = new AnswerRepository(new SOVAContext(_connectionString));
+            _commentRepository = new CommentRepository(new SOVAContext(_connectionString));
+            _linkPostRepository = new LinkPostRepository(new SOVAContext(_connectionString));
+            _markingRepository = new MarkingRepository(new SOVAContext(_connectionString));
+            _questionRepository = new QuestionRepository(new SOVAContext(_connectionString));
+            _questionTagRepository = new QuestionTagRepository(new SOVAContext(_connectionString));
+            _soMemberRepository = new SoMemberRepository(new SOVAContext(_connectionString));
+            _tagRepository = new TagRepository(new SOVAContext(_connectionString));
+            _userHistoryRepository = new UserHistoryRepository(new SOVAContext(_connectionString));
+            _userRepository = new UserRepository(new SOVAContext(_connectionString));
+        }
+
         [Fact]
         public void CreateAnnotation_ValidArguments()
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
+
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
 
             string annotation = "Test Annotation";
             int submissionId = 19;
@@ -116,12 +146,18 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
-            string annotation = "Test Test";
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
+
+            // Create annotation in case it does not exist
             int submissionId = 19;
             int userId = 1;
+            annotationRepository.Create("Creating annotation", submissionId, userId);
+
+            string updatedAnnotation = "Test Test";
 
             // Act
-            bool updated = annotationRepository.Update(annotation, submissionId, userId);
+            bool updated = annotationRepository.Update(updatedAnnotation, submissionId, userId);
 
             // Assert
             Assert.True(updated);
@@ -155,6 +191,9 @@ namespace Tests
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
+
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
 
             int submissionId = 19;
             int userId = 1;
@@ -208,14 +247,16 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
+            // Create annotation in case it does not exist
             int submissionId = 19;
             int userId = 1;
+            annotationRepository.Create("Creating annotation", submissionId, userId);
 
             // Act
             Annotation annotation = annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
 
             // Assert
-            Assert.Equal(submissionId, annotation.Submission.Id);
+            Assert.Equal(submissionId, annotation.SubmissionId);
         }
 
         [Fact]
@@ -288,10 +329,6 @@ namespace Tests
         [Theory]
         [InlineData(0, 1, 1)]
         [InlineData(-1, 1, 1)]
-        [InlineData(19, 1, 0)]
-        [InlineData(19, 1, -2)]
-        [InlineData(19, -2, 1)]
-        [InlineData(-1, -1, -1)]
         public void GetAnswersByQuestionId_InvalidArguments(int questionId, int pageSize, int pageNumber)
         {
             // Arrange
@@ -427,6 +464,9 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             CommentRepository commentRepository = new CommentRepository(databaseContext);
 
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
+
             int submissionId = 19;
 
             PagingAttributes testAttributes = new PagingAttributes();
@@ -438,37 +478,39 @@ namespace Tests
             Assert.All(comments, (comment) => Assert.NotNull(comment.CommentSubmission));
         }
 
-        //[Fact]
-        //public void GetHistoryById_ValidArgument()
-        //{
-        //    // Arrange
-        //    SOVAContext databaseContext = new SOVAContext(_connectionString);
-        //    HistoryRepository historyRepository = new HistoryRepository(databaseContext);
+        [Fact]
+        public void GetHistoryByUserId_ValidArgument()
+        {
+            // Arrange
+            PagingAttributes testAttributes = new PagingAttributes();
+            int userId = 1;
 
-        //    int historyId = 1;
+            // Act
+            var userHistory = _userHistoryRepository.GetUserHistoryByUserId(userId, testAttributes);
 
-        //    // Act
-        //    History history = historyRepository.GetUserHistoryByUserId(historyId);
+            // Assert
+            Assert.True(userHistory != null);
+        }
 
-        //    // Assert
-        //    Assert.Equal(historyId, history.Id);
-        //}
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetHistoryById_InvalidArgument(int userId)
+        {
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
 
-        //[Theory]
-        //[InlineData(0)]
-        //[InlineData(-1)]
-        //public void GetHistoryById_InvalidArgument(int historyId)
-        //{
-        //    // Arrange
-        //    SOVAContext databaseContext = new SOVAContext(_connectionString);
-        //    HistoryRepository historyRepository = new HistoryRepository(databaseContext);
+            // Do a search so database has some history for test to find. (In case it history doesn't have any entry, the test will fail.)
+            _questionRepository.SearchQuestions("testing", 1, new PagingAttributes());
+            // Arrange
+            PagingAttributes testAttributes = new PagingAttributes();
 
-        //    // Act
-        //    History history = historyRepository.GetHistoryById(historyId);
+            // Act
+            var history = _userHistoryRepository.GetUserHistoryByUserId(userId, testAttributes);
 
-        //    // Assert
-        //    Assert.Equal(default, history);
-        //}
+            // Assert
+            Assert.Equal(default, history);
+        }
 
         [Fact]
         public void GetLinkPostByQuestionAndLinkedPostIds_ValidArgument()
@@ -531,11 +573,17 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             MarkingRepository markingRepository = new MarkingRepository(databaseContext);
 
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
+
             int submissionId = 19;
             int userId = 1;
 
+            markingRepository.RemoveBookmark(submissionId, userId);
             // Act
+            markingRepository.AddBookmark(submissionId, userId);
             bool bookmarked = markingRepository.IsMarked(submissionId, userId);
+            markingRepository.RemoveBookmark(submissionId, userId);
 
             // Assert
             Assert.True(bookmarked);
@@ -599,16 +647,19 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             MarkingRepository markingRepository = new MarkingRepository(databaseContext);
 
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
+
             int submissionId = 19;
             int userId = 1;
 
             // Act
-            bool bookmarked = markingRepository.Bookmark(submissionId, userId);
+            bool bookmarked = _markingRepository.AddBookmark(submissionId, userId);
 
             // Assert
             Assert.True(bookmarked);
         }
-        
+
         [Theory]
         [InlineData(0, 1)]
         [InlineData(-1, 1)]
@@ -622,7 +673,7 @@ namespace Tests
             MarkingRepository markingRepository = new MarkingRepository(databaseContext);
 
             // Act
-            bool bookmarked = markingRepository.Bookmark(submissionId, userId);
+            bool bookmarked = _markingRepository.AddBookmark(submissionId, userId);
 
             // Assert
             Assert.False(bookmarked);
@@ -635,8 +686,15 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             MarkingRepository markingRepository = new MarkingRepository(databaseContext);
 
+            // Create User in case they don't exist
+            _userRepository.CreateUser("testUser", "testPassword", "testSalt");
+
+
             int submissionId = 19;
             int userId = 1;
+
+            // Create a bookmark for test to dlelte if it doesn't exist.
+            markingRepository.AddBookmark(submissionId, userId);
 
             // Act
             bool bookmarked = markingRepository.RemoveBookmark(submissionId, userId);

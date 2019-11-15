@@ -43,6 +43,8 @@ namespace _3._Data_Layer
 
         public IEnumerable<SearchResult> SearchQuestions(string queryString, int? userId, PagingAttributes pagingAttributes)
         {
+            if (queryString == null)
+                return null;
             return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", userId, queryString)
                 .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
                 .Take(pagingAttributes.PageSize)
@@ -51,18 +53,10 @@ namespace _3._Data_Layer
 
         public int NoOfResults(string queryString, int? userId)
         {
+            if (queryString == null)
+                return 0;
             return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", userId, queryString)
                 .Count();
-        }
-
-        public IEnumerable<Question> GetMarkedQuestions(int userId, PagingAttributes pagingAttributes)
-        {
-            return _databaseContext.Questions
-                .Include(question => question.Submission)
-                    .ThenInclude(submission => submission.Markings)
-                .Where(question => question.Submission.Markings.All(marking => marking.UserId == userId))
-                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
-                .Take(pagingAttributes.PageSize);
         }
     }
 }
