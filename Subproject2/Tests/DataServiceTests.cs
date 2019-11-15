@@ -12,7 +12,34 @@ namespace Tests
 {
     public class DataServiceTests
     {
-        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=Hotmai12";
+
+        private readonly AnnotationRepository _annotationRepository;
+        private readonly AnswerRepository _answerRepository;
+        private readonly CommentRepository _commentRepository;
+        private readonly LinkPostRepository _linkPostRepository;
+        private readonly MarkingRepository _markingRepository;
+        private readonly QuestionRepository _questionRepository;
+        private readonly QuestionTagRepository _questionTagRepository;
+        private readonly SoMemberRepository _soMemberRepository;
+        private readonly TagRepository _tagRepository;
+        private readonly UserHistoryRepository _userHistoryRepository;
+        private readonly UserRepository _userRepository;
+
+        public DataServiceTests()
+        {
+            _annotationRepository = new AnnotationRepository(new SOVAContext(_connectionString));
+            _answerRepository = new AnswerRepository(new SOVAContext(_connectionString));
+            _commentRepository = new CommentRepository(new SOVAContext(_connectionString));
+            _linkPostRepository = new LinkPostRepository(new SOVAContext(_connectionString));
+            _markingRepository = new MarkingRepository(new SOVAContext(_connectionString));
+            _questionRepository = new QuestionRepository(new SOVAContext(_connectionString));
+            _questionTagRepository = new QuestionTagRepository(new SOVAContext(_connectionString));
+            _soMemberRepository = new SoMemberRepository(new SOVAContext(_connectionString));
+            _tagRepository = new TagRepository(new SOVAContext(_connectionString));
+            _userHistoryRepository = new UserHistoryRepository(new SOVAContext(_connectionString));
+            _userRepository = new UserRepository(new SOVAContext(_connectionString));
+        }
 
         [Fact]
         public void CreateAnnotation_ValidArguments()
@@ -425,37 +452,34 @@ namespace Tests
             Assert.All(comments, (comment) => Assert.NotNull(comment.CommentSubmission));
         }
 
-        //[Fact]
-        //public void GetHistoryById_ValidArgument()
-        //{
-        //    // Arrange
-        //    SOVAContext databaseContext = new SOVAContext(_connectionString);
-        //    HistoryRepository historyRepository = new HistoryRepository(databaseContext);
+        [Fact]
+        public void GetHistoryByUserId_ValidArgument()
+        {
+            // Arrange
+            PagingAttributes testAttributes = new PagingAttributes();
+            int userId = 1;
 
-        //    int historyId = 1;
+            // Act
+            var userHistory = _userHistoryRepository.GetUserHistoryByUserId(userId, testAttributes);
 
-        //    // Act
-        //    History history = historyRepository.GetUserHistoryByUserId(historyId);
+            // Assert
+            Assert.True(userHistory != null);
+        }
 
-        //    // Assert
-        //    Assert.Equal(historyId, history.Id);
-        //}
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetHistoryById_InvalidArgument(int userId)
+        {
+            // Arrange
+            PagingAttributes testAttributes = new PagingAttributes();
 
-        //[Theory]
-        //[InlineData(0)]
-        //[InlineData(-1)]
-        //public void GetHistoryById_InvalidArgument(int historyId)
-        //{
-        //    // Arrange
-        //    SOVAContext databaseContext = new SOVAContext(_connectionString);
-        //    HistoryRepository historyRepository = new HistoryRepository(databaseContext);
+            // Act
+            var history = _userHistoryRepository.GetUserHistoryByUserId(userId, testAttributes);
 
-        //    // Act
-        //    History history = historyRepository.GetHistoryById(historyId);
-
-        //    // Assert
-        //    Assert.Equal(default, history);
-        //}
+            // Assert
+            Assert.Equal(default, history);
+        }
 
         [Fact]
         public void GetLinkPostByQuestionAndLinkedPostIds_ValidArgument()
@@ -590,12 +614,12 @@ namespace Tests
             int userId = 1;
 
             // Act
-            bool bookmarked = markingRepository.Bookmark(submissionId, userId);
+            bool bookmarked = _markingRepository.AddBookmark(submissionId, userId);
 
             // Assert
             Assert.True(bookmarked);
         }
-        
+
         [Theory]
         [InlineData(0, 1)]
         [InlineData(-1, 1)]
@@ -609,7 +633,7 @@ namespace Tests
             MarkingRepository markingRepository = new MarkingRepository(databaseContext);
 
             // Act
-            bool bookmarked = markingRepository.Bookmark(submissionId, userId);
+            bool bookmarked = _markingRepository.AddBookmark(submissionId, userId);
 
             // Assert
             Assert.False(bookmarked);

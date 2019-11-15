@@ -41,15 +41,5 @@ namespace _3._Data_Layer
                 .Where(c => c.SubmissionId == submissionId)
                 .Count();
         }
-
-        public IEnumerable<Comment> GetMarkedComments(int userId, PagingAttributes pagingAttributes)
-        {
-            return _databaseContext.Comments
-                .Include(comment => comment.CommentSubmission)
-                    .ThenInclude(submission => submission.Markings)
-                .Where(comment => comment.CommentSubmission.Markings.All(marking => marking.UserId == userId))
-                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
-                .Take(pagingAttributes.PageSize);
-        }
     }
 }
