@@ -22,20 +22,26 @@ namespace _3._Data_Layer
 
         public Annotation Create(string annotation, int submissionId, int userId)
         {
-            if (string.IsNullOrWhiteSpace(annotation) || userId <= 0) return null;
-            Delete(submissionId, userId); //only allow 1 annotation at a time
-            var ant = new Annotation
+            try
             {
-                SubmissionId = submissionId,
-                AnnotationString = annotation,
-                UserId = userId
-            };
+                if (string.IsNullOrWhiteSpace(annotation) || userId <= 0) return null;
+                Delete(submissionId, userId); //only allow 1 annotation at a time
+                var ant = new Annotation
+                {
+                    SubmissionId = submissionId,
+                    AnnotationString = annotation,
+                    UserId = userId
+                };
 
-            _databaseContext.Annotations.Add(ant);
-
-            _databaseContext.SaveChanges();
-
-            return ant;
+                _databaseContext.Annotations.Add(ant);
+                _databaseContext.SaveChanges();
+                return ant;
+            }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public bool Delete(int submissionId, int userId)
