@@ -60,6 +60,16 @@ namespace _1._SOVA.Controllers
             return Ok(CreateResult(searchResults, queryString, userId, pagingAttributes));
         }
 
+        //[Authorize]
+        [HttpGet("tag/{tagString}", Name = nameof(SearchQuestionByTag))]
+        public List<QuestionsTag> SearchQuestionByTag([FromQuery] PagingAttributes pagingAttributes, string tagString)
+        {
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            var searchResults = _questionRepository.GetQuestionsByTags(tagString, pagingAttributes);
+            return searchResults;
+            //return Ok(CreateResult(searchResults, queryString, userId, pagingAttributes));
+        }
+
         ///////////////////
         //
         // Helpers

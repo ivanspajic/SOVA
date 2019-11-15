@@ -31,14 +31,14 @@ namespace _3._Data_Layer
             return _databaseContext.Questions.Find(submissionId);
         }
 
-        public IEnumerable<SearchResult> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes)
+        public List<QuestionsTag> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes)
         {
-            var tagId = _databaseContext.Tags.Find(tagName);
-            if (tagId == null)
+            var tag = _databaseContext.Tags.FirstOrDefault(t => t.TagString == tagName);
+            if (tag == null)
                 return null;
-            var questionIds = _databaseContext.QuestionsTags.Find(tagId);
-
-            return null;
+            return _databaseContext.QuestionsTags.Include(qt => qt.Question).Where(qt => qt.TagId == tag.Id).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize)
+                .ToList();
         }
 
         public IEnumerable<SearchResult> SearchQuestions(string queryString, int? userId, PagingAttributes pagingAttributes)
