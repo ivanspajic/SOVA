@@ -10,5 +10,6 @@ namespace _0._Models
         public DateTime? ClosedDate { get; set; }
         public Submission Submission { get; set; }
         public int SubmissionId { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
     }
 }
