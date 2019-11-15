@@ -67,6 +67,7 @@ namespace _3._Data_Layer
 
         public bool Update(string annotation, int submissionId, int userId)
         {
+            if (string.IsNullOrWhiteSpace(annotation) || userId <= 0) return false;
             var ant = _databaseContext.Annotations.Find(submissionId, userId);
             if (ant != null)
             {
