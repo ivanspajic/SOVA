@@ -12,7 +12,7 @@ namespace Tests
 {
     public class DataServiceTests
     {
-        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=;
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=19130419200";
 
         private readonly AnnotationRepository _annotationRepository;
         private readonly AnswerRepository _answerRepository;
@@ -545,8 +545,11 @@ namespace Tests
             int submissionId = 19;
             int userId = 1;
 
+            markingRepository.RemoveBookmark(submissionId, userId);
             // Act
+            markingRepository.AddBookmark(submissionId, userId);
             bool bookmarked = markingRepository.IsMarked(submissionId, userId);
+            markingRepository.RemoveBookmark(submissionId, userId);
 
             // Assert
             Assert.True(bookmarked);
