@@ -28,6 +28,7 @@ namespace _3._Data_Layer
 
         public Question GetById(int submissionId)
         {
+            //return null;
             return _databaseContext.Questions.Find(submissionId);
         }
 
