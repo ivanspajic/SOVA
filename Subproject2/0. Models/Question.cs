@@ -13,5 +13,6 @@ namespace _0._Models
         public IEnumerable<LinkPost> LinkedPosts { get; set;}
         public IEnumerable<Comment> Comments { get; set; }
         public IEnumerable<QuestionsTag> QuestionsTags { get; set; }
+        public IEnumerable<Answer> Answers { get; set; }
     }
 }

@@ -37,6 +37,10 @@ namespace _3._Data_Layer
                         .ThenInclude(linkedPost => linkedPost.Submission)
                 .Include(question => question.QuestionsTags)
                     .ThenInclude(questionsTags => questionsTags.Tag)
+                .Include(question => question.Answers)
+                    .ThenInclude(answers => answers.Submission)
+                .Include(question => question.Answers)
+                    .ThenInclude(answers => answers.Comments)
                 .Where(question => question.SubmissionId == submissionId)
                 .FirstOrDefault();
         }
