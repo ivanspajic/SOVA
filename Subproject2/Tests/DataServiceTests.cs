@@ -12,8 +12,6 @@ namespace Tests
 {
     // Missing Tests:
     //
-    // also fix cleanup for all the methods
-    // - missing user history including history
     // - getting questions including all of their things
     // - getting all bookmarks containing all respective posts
     // - getting questions by search queries
@@ -448,17 +446,18 @@ namespace Tests
         }
 
         [Fact]
-        public void GetHistoryByUserId_ValidArgument()
+        public void GetUserHistoryByUserId_ValidArgument()
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             UserHistoryRepository userHistoryRepository = new UserHistoryRepository(databaseContext);
 
             PagingAttributes testAttributes = new PagingAttributes();
-            int userId = 1;
+
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
             // Act
-            IEnumerable<UserHistory> userHistory = userHistoryRepository.GetUserHistoryByUserId(userId, testAttributes);
+            IEnumerable<UserHistory> userHistory = userHistoryRepository.GetUserHistoryByUserId(testUser.Id, testAttributes);
 
             // Assert
             Assert.True(userHistory != null);
@@ -467,7 +466,7 @@ namespace Tests
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
-        public void GetHistoryById_InvalidArgument(int userId)
+        public void GetUserHistoryByUserId_InvalidArgument(int userId)
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
@@ -475,13 +474,35 @@ namespace Tests
 
             PagingAttributes testAttributes = new PagingAttributes();
 
-            databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", userId, "testing");
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
+
+            databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", testUser.Id, "testing");
 
             // Act
             IEnumerable<UserHistory> history = userHistoryRepository.GetUserHistoryByUserId(userId, testAttributes);
 
             // Assert
             Assert.Equal(default, history);
+        }
+
+        [Fact]
+        public void GetUserHistoryByUserId_IncludesHistory()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            UserHistoryRepository userHistoryRepository = new UserHistoryRepository(databaseContext);
+
+            PagingAttributes testAttributes = new PagingAttributes();
+
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
+
+            databaseContext.SearchResults.FromSqlRaw("SELECT * FROM best_match_weighted({0}, {1})", testUser.Id, "testing");
+
+            // Act
+            IEnumerable<UserHistory> histories = userHistoryRepository.GetUserHistoryByUserId(testUser.Id, testAttributes);
+
+            // Assert
+            Assert.All(histories, (history) => Assert.NotNull(history.History));
         }
 
         [Fact]
