@@ -26,7 +26,7 @@ namespace Tests
     // - update user
     public class DataServiceTests
     {
-        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=Hotmai12";
 
         [Fact]
         public void CreateAnnotation_ValidArguments()
@@ -35,7 +35,7 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
-            
+
             string annotation = "Test Annotation";
             int submissionId = 19;
 
@@ -436,7 +436,7 @@ namespace Tests
 
             PagingAttributes testAttributes = new PagingAttributes();
 
-            
+
 
             // Act
             IEnumerable<Comment> comments = commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
@@ -589,7 +589,7 @@ namespace Tests
             Assert.True(bookmarked);
 
             // Clean-Up
-            marking = databaseContext.Markings.Find(submissionId, testUser.Id);
+            marking = databaseContext.Markings.FirstOrDefault(b => b.SubmissionId == submissionId && b.UserId == testUser.Id);
             databaseContext.Markings.Remove(marking);
 
             databaseContext.SaveChanges();
@@ -656,6 +656,9 @@ namespace Tests
             int submissionId = 19;
 
             User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
+
+            // First make sure it is not bookmarked.
+            markingRepository.RemoveBookmark(submissionId, testUser.Id);
 
             // Act
             bool bookmarked = markingRepository.AddBookmark(submissionId, testUser.Id);
@@ -803,7 +806,7 @@ namespace Tests
             string testPassword = "testPassword";
             string testSalt = "testSalt";
 
-            User testUser = databaseContext.Users.Where(user => user.Username == testUsername).First();
+            User testUser = databaseContext.Users.FirstOrDefault(u => u.Username == testUsername);
 
             if (testUser != null) return testUser;
 
@@ -826,7 +829,7 @@ namespace Tests
             string annotation = "Test Annotation";
             int submissionId = 19;
 
-            Annotation testAnnotation = databaseContext.Annotations.Where(annotation => annotation.SubmissionId == submissionId && annotation.UserId == userId).First();
+            Annotation testAnnotation = databaseContext.Annotations.FirstOrDefault(annotation => annotation.SubmissionId == submissionId && annotation.UserId == userId);
 
             if (testAnnotation != null) return testAnnotation;
 
@@ -839,7 +842,7 @@ namespace Tests
 
             databaseContext.SaveChanges();
 
-            return databaseContext.Annotations.Where(annotation => annotation.SubmissionId == submissionId && annotation.UserId == userId).First();
+            return databaseContext.Annotations.FirstOrDefault(annotation => annotation.SubmissionId == submissionId && annotation.UserId == userId);
         }
     }
 }
