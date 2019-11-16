@@ -48,7 +48,7 @@ namespace _1._SOVA.Controllers
         public ActionResult GetAnswersForQuestion([FromQuery] PagingAttributes pagingAttributes, int questionId)
         {
             var answers = _answerRepository.GetAnswersForQuestionById(questionId, pagingAttributes); // workaround
-            return Ok(CreateResult(answers, questionId, pagingAttributes));
+            return Ok(CreateAnswerResult(answers, questionId, pagingAttributes));
         }
 
         //[Authorize]
@@ -57,17 +57,16 @@ namespace _1._SOVA.Controllers
         {
             var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var searchResults = _questionRepository.SearchQuestions(queryString, userId, pagingAttributes);
-            return Ok(CreateResult(searchResults, queryString, userId, pagingAttributes));
+            return Ok(CreateSearchResult(searchResults, queryString, userId, pagingAttributes));
         }
 
         //[Authorize]
         [HttpGet("tag/{tagString}", Name = nameof(SearchQuestionByTag))]
-        public List<QuestionsTag> SearchQuestionByTag([FromQuery] PagingAttributes pagingAttributes, string tagString)
+        public ActionResult SearchQuestionByTag([FromQuery] PagingAttributes pagingAttributes, string tagString)
         {
             var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var searchResults = _questionRepository.GetQuestionsByTags(tagString, pagingAttributes);
-            return searchResults;
-            //return Ok(CreateResult(searchResults, queryString, userId, pagingAttributes));
+            return Ok(CreateTagsResult(searchResults, tagString, pagingAttributes));
         }
 
         ///////////////////
@@ -90,7 +89,7 @@ namespace _1._SOVA.Controllers
             return questions.Select(q => CreateQuestionDto(q));
         }
 
-        private object CreateResult(IEnumerable<SearchResult> questions, string str, int userId, PagingAttributes attr)
+        private object CreateSearchResult(IEnumerable<SearchResult> questions, string str, int userId, PagingAttributes attr)
         {
             var totalItems = _questionRepository.NoOfResults(str, userId);
             var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
@@ -111,8 +110,30 @@ namespace _1._SOVA.Controllers
                 items = questions
             };
         }
+        private object CreateTagsResult(IEnumerable<QuestionsTag> questions, string str, PagingAttributes attr)
+        {
+            var totalItems = _questionRepository.NoOfResults(str, null);
+            var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
 
-        private object CreateResult(IEnumerable<Answer> answers, int questionId, PagingAttributes attr)
+            var prev = attr.Page > 0
+                ? CreatePagingLink(attr.Page - 1, attr.PageSize, nameof(SearchQuestionByTag))
+                : null;
+            var next = attr.Page < numberOfPages - 1
+                ? CreatePagingLink(attr.Page + 1, attr.PageSize, nameof(SearchQuestionByTag))
+                : null;
+
+            return new
+            {
+                totalItems,
+                numberOfPages,
+                prev,
+                next,
+                items = questions
+            };
+        }
+
+
+        private object CreateAnswerResult(IEnumerable<Answer> answers, int questionId, PagingAttributes attr)
         {
             var totalItems = _answerRepository.NoOfAnswers(questionId); // workaround
             var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
