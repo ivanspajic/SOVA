@@ -12,7 +12,7 @@ namespace Tests
 {
     // Missing Tests:
     //
-    // first thing to do: fix users - make db context find them by ids for testing. also fix cleanup for all the methods
+    // also fix cleanup for all the methods
     // - missing user history including history
     // - getting questions including all of their things
     // - getting all bookmarks containing all respective posts
@@ -37,27 +37,19 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
+            
             string annotation = "Test Annotation";
             int submissionId = 19;
-            int userId = 1;
 
-            databaseContext.Users.Add(new User
-            {
-                Username = "testUser",
-                Password = "testPassword",
-                Salt = "testSalt"
-            });
-
-            databaseContext.SaveChanges();
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
             // Act
-            Annotation actualAnnotation = annotationRepository.Create(annotation, submissionId, userId);
+            Annotation actualAnnotation = annotationRepository.Create(annotation, submissionId, testUser.Id);
 
             // Assert
             Assert.Equal(annotation, actualAnnotation.AnnotationString);
             Assert.Equal(submissionId, actualAnnotation.SubmissionId);
-            Assert.Equal(userId, actualAnnotation.UserId);
-
+            Assert.Equal(testUser.Id, actualAnnotation.UserId);
         }
 
         [Theory]
@@ -129,27 +121,14 @@ namespace Tests
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
             int submissionId = 19;
-            int userId = 1;
             string updatedAnnotation = "Test Test";
 
-            databaseContext.Users.Add(new User
-            {
-                Username = "testUser",
-                Password = "testPassword",
-                Salt = "testSalt"
-            });
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
-            databaseContext.Annotations.Add(new Annotation
-            {
-                AnnotationString = "Creating annotation",
-                SubmissionId = submissionId,
-                UserId = userId
-            });
-
-            databaseContext.SaveChanges();
+            EnsureTestAnnotationExistsThroughContext_ReturnsTestAnnotation(testUser.Id);
 
             // Act
-            bool updated = annotationRepository.Update(updatedAnnotation, submissionId, userId);
+            bool updated = annotationRepository.Update(updatedAnnotation, submissionId, testUser.Id);
 
             // Assert
             Assert.True(updated);
@@ -185,19 +164,11 @@ namespace Tests
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
             int submissionId = 19;
-            int userId = 1;
 
-            databaseContext.Users.Add(new User
-            {
-                Username = "testUser",
-                Password = "testPassword",
-                Salt = "testSalt"
-            });
-
-            databaseContext.SaveChanges();
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
             // Act
-            bool deleted = annotationRepository.Delete(submissionId, userId);
+            bool deleted = annotationRepository.Delete(submissionId, testUser.Id);
 
             // Assert
             Assert.True(deleted);
@@ -246,19 +217,13 @@ namespace Tests
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
             int submissionId = 19;
-            int userId = 1;
 
-            databaseContext.Annotations.Add(new Annotation
-            {
-                AnnotationString = "Creating annotation",
-                SubmissionId = submissionId,
-                UserId = userId
-            });
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
-            databaseContext.SaveChanges();
+            EnsureTestAnnotationExistsThroughContext_ReturnsTestAnnotation(testUser.Id);
 
             // Act
-            Annotation annotation = annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
+            Annotation annotation = annotationRepository.GetBySubmissionAndUserIds(submissionId, testUser.Id);
 
             // Assert
             Assert.Equal(submissionId, annotation.SubmissionId);
@@ -473,14 +438,7 @@ namespace Tests
 
             PagingAttributes testAttributes = new PagingAttributes();
 
-            databaseContext.Users.Add(new User
-            {
-                Username = "testUser",
-                Password = "testPassword",
-                Salt = "testSalt"
-            });
-
-            databaseContext.SaveChanges();
+            
 
             // Act
             IEnumerable<Comment> comments = commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
@@ -588,35 +546,29 @@ namespace Tests
             MarkingRepository markingRepository = new MarkingRepository(databaseContext);
 
             int submissionId = 19;
-            int userId = 1;
 
-            databaseContext.Users.Add(new User
-            {
-                Username = "testUser",
-                Password = "testPassword",
-                Salt = "testSalt"
-            });
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
-            Marking marking = databaseContext.Markings.Find(submissionId, userId);
+            Marking marking = databaseContext.Markings.Find(submissionId, testUser.Id);
             if (marking == null)
             {
                 databaseContext.Markings.Add(new Marking
                 {
                     SubmissionId = submissionId,
-                    UserId = userId
+                    UserId = testUser.Id
                 });
             }
 
             databaseContext.SaveChanges();
 
             // Act
-            bool bookmarked = markingRepository.IsMarked(submissionId, userId);
+            bool bookmarked = markingRepository.IsMarked(submissionId, testUser.Id);
 
             // Assert
             Assert.True(bookmarked);
 
             // Clean-Up
-            marking = databaseContext.Markings.Find(submissionId, userId);
+            marking = databaseContext.Markings.Find(submissionId, testUser.Id);
             databaseContext.Markings.Remove(marking);
 
             databaseContext.SaveChanges();
@@ -680,20 +632,12 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             MarkingRepository markingRepository = new MarkingRepository(databaseContext);
 
-            databaseContext.Users.Add(new User
-            {
-                Username = "testUser",
-                Password = "testPassword",
-                Salt = "testSalt"
-            });
-
-            databaseContext.SaveChanges();
-
             int submissionId = 19;
-            int userId = 1;
+
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
             // Act
-            bool bookmarked = markingRepository.AddBookmark(submissionId, userId);
+            bool bookmarked = markingRepository.AddBookmark(submissionId, testUser.Id);
 
             // Assert
             Assert.True(bookmarked);
@@ -725,23 +669,15 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             MarkingRepository markingRepository = new MarkingRepository(databaseContext);
 
-            databaseContext.Users.Add(new User
-            {
-                Username = "testUser",
-                Password = "testPassword",
-                Salt = "testSalt"
-            });
-
-            databaseContext.SaveChanges();            
-
             int submissionId = 19;
-            int userId = 1;
+
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
             // Create a bookmark for test to dlelte if it doesn't exist.
-            markingRepository.AddBookmark(submissionId, userId);
+            markingRepository.AddBookmark(submissionId, testUser.Id);
 
             // Act
-            bool bookmarked = markingRepository.RemoveBookmark(submissionId, userId);
+            bool bookmarked = markingRepository.RemoveBookmark(submissionId, testUser.Id);
 
             // Assert
             Assert.True(bookmarked);
@@ -836,6 +772,53 @@ namespace Tests
 
             // Assert
             Assert.Equal(0, resultCount);
+        }
+
+        public User EnsureTestUserExistsThroughContext_ReturnsTestUser()
+        {
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+
+            string testUsername = "testUsername";
+            string testPassword = "testPassword";
+            string testSalt = "testSalt";
+
+            User testUser = databaseContext.Users.Where(user => user.Username == testUsername).First();
+
+            if (testUser != null) return testUser;
+
+            databaseContext.Users.Add(new User
+            {
+                Username = testUsername,
+                Password = testPassword,
+                Salt = testSalt
+            });
+
+            databaseContext.SaveChanges();
+
+            return databaseContext.Users.Where(user => user.Username == testUsername).First();
+        }
+
+        public Annotation EnsureTestAnnotationExistsThroughContext_ReturnsTestAnnotation(int userId)
+        {
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+
+            string annotation = "Test Annotation";
+            int submissionId = 19;
+
+            Annotation testAnnotation = databaseContext.Annotations.Where(annotation => annotation.SubmissionId == submissionId && annotation.UserId == userId).First();
+
+            if (testAnnotation != null) return testAnnotation;
+
+            databaseContext.Annotations.Add(new Annotation
+            {
+                AnnotationString = annotation,
+                SubmissionId = submissionId,
+                UserId = userId
+            });
+
+            databaseContext.SaveChanges();
+
+            return databaseContext.Annotations.Where(annotation => annotation.SubmissionId == submissionId && annotation.UserId == userId).First();
         }
     }
 }
