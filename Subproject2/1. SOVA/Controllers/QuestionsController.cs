@@ -27,14 +27,14 @@ namespace _1._SOVA.Controllers
         }
 
         [HttpGet(Name = nameof(GetQuestions))]
-        public ActionResult GetQuestions()
+        public ActionResult GetQuestions([FromQuery] PagingAttributes pagingAttributes)
         {
-            var questions = _questionRepository.GetTenRandomQuestions();
-            return Ok(CreateResult(questions));
+            var questions = _questionRepository.GetQuestions(pagingAttributes);
+            return Ok(CreateResult(questions, pagingAttributes));
         }
 
-        [HttpGet("{questionId}", Name = nameof(GetQuestion))]
-        public ActionResult GetQuestion(int questionId)
+        [HttpGet("{questionId}", Name = nameof(GetQuestionById))]
+        public ActionResult GetQuestionById(int questionId)
         {
             var question = _questionRepository.GetById(questionId);
             if (question == null)
@@ -79,14 +79,30 @@ namespace _1._SOVA.Controllers
         {
             var dto = _mapper.Map<QuestionDto>(question);
             dto.Link = Url.Link(
-                    nameof(GetQuestion),
+                    nameof(GetQuestionById),
                     new { questionId = question.SubmissionId });
             return dto;
         }
 
-        private IEnumerable<QuestionDto> CreateResult(IEnumerable<Question> questions)
+        private object CreateResult(IEnumerable<Question> questions, PagingAttributes attr)
         {
-            return questions.Select(q => CreateQuestionDto(q));
+            var totalItems = _questionRepository.NoOfRandomQuestions();
+            var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
+
+            var prev = attr.Page > 0
+                ? CreatePagingLink(attr.Page - 1, attr.PageSize, nameof(GetQuestions))
+                : null;
+            var next = attr.Page < numberOfPages - 1
+                ? CreatePagingLink(attr.Page + 1, attr.PageSize, nameof(GetQuestions))
+                : null;
+            return new
+            {
+                totalItems,
+                numberOfPages,
+                prev,
+                next,
+                items = questions
+            };
         }
 
         private object CreateSearchResult(IEnumerable<SearchResult> questions, string str, int userId, PagingAttributes attr)

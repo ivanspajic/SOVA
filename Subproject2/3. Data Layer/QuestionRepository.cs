@@ -20,10 +20,12 @@ namespace _3._Data_Layer
             _databaseContext = databaseContext;
         }
 
-        public IEnumerable<Question> GetTenRandomQuestions()
+        public IEnumerable<Question> GetQuestions(PagingAttributes pagingAttributes)
         {
             var randomOffSet = new Random().Next(1, 1000);
-            return _databaseContext.Questions.Skip(randomOffSet).Take(10);
+            return _databaseContext.Questions.Skip(randomOffSet).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize)
+                .ToList();
         }
 
         public Question GetById(int submissionId)
@@ -57,6 +59,12 @@ namespace _3._Data_Layer
                 return 0;
             return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", userId, queryString)
                 .Count();
+        }
+
+        public int NoOfRandomQuestions()
+        {
+            var randomOffSet = new Random().Next(1, 1000);
+            return _databaseContext.Questions.Skip(randomOffSet).Count();
         }
     }
 }
