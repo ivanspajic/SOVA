@@ -26,7 +26,7 @@ namespace Tests
     // - update user
     public class DataServiceTests
     {
-        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=Hotmai12";
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
 
         [Fact]
         public void CreateAnnotation_ValidArguments()
