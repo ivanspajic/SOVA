@@ -33,8 +33,8 @@ namespace _1._SOVA.Controllers
             return Ok(CreateResult(questions, pagingAttributes));
         }
 
-        [HttpGet("{questionId}", Name = nameof(GetQuestion))]
-        public ActionResult GetQuestion(int questionId)
+        [HttpGet("{questionId}", Name = nameof(GetQuestionById))]
+        public ActionResult GetQuestionById(int questionId)
         {
             var question = _questionRepository.GetById(questionId);
             if (question == null)
@@ -79,7 +79,7 @@ namespace _1._SOVA.Controllers
         {
             var dto = _mapper.Map<QuestionDto>(question);
             dto.Link = Url.Link(
-                    nameof(GetQuestion),
+                    nameof(GetQuestionById),
                     new { questionId = question.SubmissionId });
             return dto;
         }
