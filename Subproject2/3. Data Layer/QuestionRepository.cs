@@ -28,21 +28,17 @@ namespace _3._Data_Layer
 
         public Question GetById(int submissionId)
         {
-            return _databaseContext.Questions
-                .Include(question => question.Submission)
-                .Include(question => question.Comments)
-                    .ThenInclude(comment => comment.CommentSubmission)
-                .Include(question => question.LinkedPosts)
-                    .ThenInclude(linkedPosts => linkedPosts.LinkedPost)
-                        .ThenInclude(linkedPost => linkedPost.Submission)
-                .Include(question => question.QuestionsTags)
-                    .ThenInclude(questionsTags => questionsTags.Tag)
-                .Include(question => question.Answers)
-                    .ThenInclude(answers => answers.Submission)
-                .Include(question => question.Answers)
-                    .ThenInclude(answers => answers.Comments)
-                .Where(question => question.SubmissionId == submissionId)
-                .FirstOrDefault();
+            return _databaseContext.Questions.Find(submissionId);
+        }
+
+        public List<QuestionsTag> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes)
+        {
+            var tag = _databaseContext.Tags.FirstOrDefault(t => t.TagString == tagName);
+            if (tag == null)
+                return null;
+            return _databaseContext.QuestionsTags.Include(qt => qt.Question).Where(qt => qt.TagId == tag.Id).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize)
+                .ToList();
         }
 
         public IEnumerable<SearchResult> SearchQuestions(string queryString, int? userId, PagingAttributes pagingAttributes)
