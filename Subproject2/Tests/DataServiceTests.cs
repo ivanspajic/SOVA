@@ -12,21 +12,59 @@ namespace Tests
 {
     // Missing Tests:
     //
-    // - getting questions including all of their things
-    // - getting all bookmarks containing all respective posts
-    // - getting questions by search queries
-    // - (questiontag repository)
-    // - get somember by id
-    // - tag repository (maybe for displaying all relevant questions when clicking on a tag?)
-    // - get number of stored search results for a user
-    // - get user's search history by id paginated
-    // - get user by id
-    // - get user by username
-    // - create user
-    // - update user
+    // - getting all bookmarks containing all respective posts (needs refactoring)
+    // - getting questions by search queries                   (needs refactoring)
+    // - tag repository (maybe for displaying all relevant questions when clicking on a tag?) (repository missing)
     public class DataServiceTests
     {
-        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=is131095";
+
+        public User EnsureTestUserExistsThroughContext_ReturnsTestUser()
+        {
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+
+            string testUsername = "testUsername";
+            string testPassword = "testPassword";
+            string testSalt = "testSalt";
+
+            User testUser = databaseContext.Users.FirstOrDefault(u => u.Username == testUsername);
+
+            if (testUser != null) return testUser;
+
+            databaseContext.Users.Add(new User
+            {
+                Username = testUsername,
+                Password = testPassword,
+                Salt = testSalt
+            });
+
+            databaseContext.SaveChanges();
+
+            return databaseContext.Users.Where(user => user.Username == testUsername).First();
+        }
+
+        public Annotation EnsureTestAnnotationExistsThroughContext_ReturnsTestAnnotation(int userId)
+        {
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+
+            string annotation = "Test Annotation";
+            int submissionId = 19;
+
+            Annotation testAnnotation = databaseContext.Annotations.FirstOrDefault(annotation => annotation.SubmissionId == submissionId && annotation.UserId == userId);
+
+            if (testAnnotation != null) return testAnnotation;
+
+            databaseContext.Annotations.Add(new Annotation
+            {
+                AnnotationString = annotation,
+                SubmissionId = submissionId,
+                UserId = userId
+            });
+
+            databaseContext.SaveChanges();
+
+            return databaseContext.Annotations.FirstOrDefault(annotation => annotation.SubmissionId == submissionId && annotation.UserId == userId);
+        }
 
         [Fact]
         public void CreateAnnotation_ValidArguments()
@@ -389,7 +427,7 @@ namespace Tests
 
             IEnumerable<Comment> expectedComments = databaseContext.Comments
                                                         .Where(comment => comment.SubmissionId == submissionId)
-                                                        .Skip(pageNumber * pageSize)
+                                                        .Skip(testAttributes.Page * testAttributes.PageSize)
                                                         .Take(pageSize);
 
             // Act
@@ -436,8 +474,6 @@ namespace Tests
 
             PagingAttributes testAttributes = new PagingAttributes();
 
-
-
             // Act
             IEnumerable<Comment> comments = commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
 
@@ -445,44 +481,66 @@ namespace Tests
             Assert.All(comments, (comment) => Assert.NotNull(comment.CommentSubmission));
         }
 
-        [Fact]
-        public void GetUserHistoryByUserId_ValidArgument()
+        [Theory]
+        [InlineData(20, 1)]
+        [InlineData(5, 5)]
+        [InlineData(2, 10)]
+        public void GetUserHistoryByUserId_ValidArguments(int pageSize, int pageNumber)
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             UserHistoryRepository userHistoryRepository = new UserHistoryRepository(databaseContext);
 
-            PagingAttributes testAttributes = new PagingAttributes();
+            PagingAttributes testAttributes = new PagingAttributes
+            {
+                Page = pageNumber,
+                PageSize = pageSize
+            };
 
             User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
+            databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", testUser.Id, "testing");
+
+            IEnumerable<UserHistory> expectedHistories = databaseContext.UserHistory
+                                                             .Where(userHistory => userHistory.UserId == testUser.Id)
+                                                             .Skip(testAttributes.Page * testAttributes.PageSize)
+                                                             .Take(testAttributes.PageSize);
+
             // Act
-            IEnumerable<UserHistory> userHistory = userHistoryRepository.GetUserHistoryByUserId(testUser.Id, testAttributes);
+            IEnumerable<UserHistory> actualHistories = userHistoryRepository.GetUserHistoryByUserId(testUser.Id, testAttributes);
 
             // Assert
-            Assert.True(userHistory != null);
+            Assert.Equal(expectedHistories, actualHistories);
         }
 
         [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void GetUserHistoryByUserId_InvalidArgument(int userId)
+        [InlineData(0, 1, 1)]
+        [InlineData(-1, 1, 1)]
+        [InlineData(1, 1, 0)]
+        [InlineData(1, 1, -2)]
+        [InlineData(1, -2, 1)]
+        [InlineData(-1, -1, -1)]
+        public void GetUserHistoryByUserId_InvalidArguments(int userId, int pageNumber, int pageSize)
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             UserHistoryRepository userHistoryRepository = new UserHistoryRepository(databaseContext);
 
-            PagingAttributes testAttributes = new PagingAttributes();
+            PagingAttributes testAttributes = new PagingAttributes
+            {
+                Page = pageNumber - 1,
+                PageSize = pageSize
+            };
 
             User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
             databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", testUser.Id, "testing");
 
             // Act
-            IEnumerable<UserHistory> history = userHistoryRepository.GetUserHistoryByUserId(userId, testAttributes);
+            IEnumerable<UserHistory> histories = userHistoryRepository.GetUserHistoryByUserId(userId, testAttributes);
 
             // Assert
-            Assert.Equal(default, history);
+            Assert.Equal(default, histories);
         }
 
         [Fact]
@@ -503,6 +561,38 @@ namespace Tests
 
             // Assert
             Assert.All(histories, (history) => Assert.NotNull(history.History));
+        }
+
+        [Fact]
+        public void GetUserHistoryCountByUserId_ValidArgument()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            UserHistoryRepository userHistoryRepository = new UserHistoryRepository(databaseContext);
+
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
+
+            // Act
+            int count = userHistoryRepository.NoOfUserHistory(testUser.Id);
+
+            // Assert
+            Assert.True(count > -1);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetUserHistoryCountByUserId_InvalidArgument(int userId)
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            UserHistoryRepository userHistoryRepository = new UserHistoryRepository(databaseContext);
+
+            // Act
+            int count = userHistoryRepository.NoOfUserHistory(userId);
+
+            // Assert
+            Assert.Equal(0, count);
         }
 
         [Fact]
@@ -798,51 +888,234 @@ namespace Tests
             Assert.Equal(0, resultCount);
         }
 
-        public User EnsureTestUserExistsThroughContext_ReturnsTestUser()
+        [Fact]
+        public void GetQuestionById_IncludesSubmission_IncludesCommentsSubmissions_IncludesTags_IncludesAnswersSubmissions_IncludesAnswersCommentsSubmissions()
         {
+            // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
+            QuestionRepository questionRepository = new QuestionRepository(databaseContext);
 
-            string testUsername = "testUsername";
-            string testPassword = "testPassword";
-            string testSalt = "testSalt";
-
-            User testUser = databaseContext.Users.FirstOrDefault(u => u.Username == testUsername);
-
-            if (testUser != null) return testUser;
-
-            databaseContext.Users.Add(new User
-            {
-                Username = testUsername,
-                Password = testPassword,
-                Salt = testSalt
-            });
-
-            databaseContext.SaveChanges();
-
-            return databaseContext.Users.Where(user => user.Username == testUsername).First();
-        }
-
-        public Annotation EnsureTestAnnotationExistsThroughContext_ReturnsTestAnnotation(int userId)
-        {
-            SOVAContext databaseContext = new SOVAContext(_connectionString);
-
-            string annotation = "Test Annotation";
             int submissionId = 19;
 
-            Annotation testAnnotation = databaseContext.Annotations.FirstOrDefault(annotation => annotation.SubmissionId == submissionId && annotation.UserId == userId);
+            // Act
+            Question question = questionRepository.GetById(submissionId);
 
-            if (testAnnotation != null) return testAnnotation;
+            // Assert
+            Assert.NotNull(question.Submission);
+            Assert.NotNull(question.Comments);
+            Assert.All(question.Comments, (comment) => Assert.NotNull(comment.CommentSubmission));
+            Assert.NotNull(question.QuestionsTags);
+            Assert.All(question.QuestionsTags, (questionsTag) => Assert.NotNull(questionsTag.Tag));
+            Assert.NotNull(question.Answers);
+            Assert.All(question.Answers, (answer) => Assert.NotNull(answer.Submission));
+            Assert.All(question.Answers, (answer) => Assert.NotNull(answer.Comments));
+            Assert.All(question.Answers, (answer) => Assert.All(answer.Comments, (comment) => Assert.NotNull(comment.CommentSubmission)));
+        }
 
-            databaseContext.Annotations.Add(new Annotation
-            {
-                AnnotationString = annotation,
-                SubmissionId = submissionId,
-                UserId = userId
-            });
+        [Fact]
+        public void GetSoMemberById_ValidArgument()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            SoMemberRepository soMemberRepository = new SoMemberRepository(databaseContext);
 
-            databaseContext.SaveChanges();
+            int soMemberId = 1;
+            string soMemberName = "Jeff Atwood";
 
-            return databaseContext.Annotations.FirstOrDefault(annotation => annotation.SubmissionId == submissionId && annotation.UserId == userId);
+            // Act
+            SoMember soMember = soMemberRepository.GetSoMemberById(soMemberId);
+
+            // Assert
+            Assert.Equal(soMemberName, soMember.DisplayName);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetSoMemberbyId_InvalidArgument(int soMemberId)
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            SoMemberRepository soMemberRepository = new SoMemberRepository(databaseContext);
+
+            // Act
+            SoMember soMember = soMemberRepository.GetSoMemberById(soMemberId);
+
+            // Assert
+            Assert.Equal(default, soMember);
+        }
+
+        [Fact]
+        public void GetUserById_ValidArgument()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            UserRepository userRepository = new UserRepository(databaseContext);
+
+            User expectedUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
+
+            // Act
+            User actualUser = userRepository.GetUserById(expectedUser.Id);
+
+            // Assert
+            Assert.Equal(expectedUser, actualUser);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetUserById_InvalidArgument(int userId)
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            UserRepository userRepository = new UserRepository(databaseContext);
+
+            // Act
+            User testUser = userRepository.GetUserById(userId);
+
+            // Assert
+            Assert.Equal(default, testUser);
+        }
+
+        [Fact]
+        public void GetUserByUsername_ValidArgument()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            UserRepository userRepository = new UserRepository(databaseContext);
+
+            User expectedUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
+
+            // Act
+            User actualUser = userRepository.GetUserByUsername(expectedUser.Username);
+
+            // Assert
+            Assert.Equal(expectedUser, actualUser);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(null)]
+        public void GetUserByUsername_InvalidArgument(string username)
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            UserRepository userRepository = new UserRepository(databaseContext);
+
+            // Act
+            User testUser = userRepository.GetUserByUsername(username);
+
+            // Assert
+            Assert.Equal(default, testUser);
+        }
+
+        [Fact]
+        public void CreateUser_ValidArguments()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            UserRepository userRepository = new UserRepository(databaseContext);
+
+            string username = "John Miller";
+            string password = "hunter2";
+            string salt = "pretendthisisrandomstuff";
+
+            // Act
+            User testUser = userRepository.CreateUser(username, password, salt);
+
+            // Assert
+            Assert.Equal(username, testUser.Username);
+            Assert.Equal(password, testUser.Password);
+            Assert.Equal(salt, testUser.Salt);
+        }
+
+        [Theory]
+        [InlineData("", "hunter2", "pretendthisisrandomstuff")]
+        [InlineData(" ", "hunter2", "pretendthisisrandomstuff")]
+        [InlineData(null, "hunter2", "pretendthisisrandomstuff")]
+        [InlineData("John Miller", "", "pretendthisisrandomstuff")]
+        [InlineData("John Miller", " ", "pretendthisisrandomstuff")]
+        [InlineData("John Miller", null, "pretendthisisrandomstuff")]
+        [InlineData("John Miller", "hunter2", "")]
+        [InlineData("John Miller", "hunter2", " ")]
+        [InlineData("John Miller", "hunter2", null)]
+        [InlineData(null, null, null)]
+        public void CreateUser_InvalidArguments(string username, string password, string salt)
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            UserRepository userRepository = new UserRepository(databaseContext);
+
+            // Act
+            User actualUser = userRepository.CreateUser(username, password, salt);
+
+            // Assert
+            User expectedUser = databaseContext.Users.FirstOrDefault(user => user.Username == username && user.Password == password && user.Salt == salt);
+
+            Assert.Null(expectedUser);
+            Assert.Null(actualUser);
+        }
+
+        [Theory]
+        [InlineData("John Milla", null, null)]
+        [InlineData(null, "hunter1", "newsaltwhodis")]
+        public void UpdateUser_ValidArguments_SomeAlwaysNotNull(string username, string password, string salt)
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            UserRepository userRepository = new UserRepository(databaseContext);
+
+            int userId = 1;
+
+            // Act
+            User actualUser = userRepository.UpdateUser(userId, username, password, salt);
+
+            // Assert
+            User expectedUser = databaseContext.Users.Find(userId);
+
+            Assert.Equal(expectedUser, actualUser);
+        }
+
+        [Fact]
+        public void UpdateUserRemainsUnchanged_ValidArguments_AllNull()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            UserRepository userRepository = new UserRepository(databaseContext);
+
+            int userId = 1;
+            string username = null;
+            string password = null;
+            string salt = null;
+
+            // Act
+            User actualUser = userRepository.UpdateUser(userId, username, password, salt);
+
+            // Assert
+            User expectedUser = databaseContext.Users.Find(userId);
+
+            Assert.Equal(expectedUser, actualUser);
+        }
+
+        [Theory]
+        [InlineData("", "", "")]
+        [InlineData(" ", " ", "testtest")]
+        public void UpdateUserRemainsUnchanged_InvalidArguments(string username, string password, string salt)
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            UserRepository userRepository = new UserRepository(databaseContext);
+
+            int userId = 1;
+
+            // Act
+            User actualUser = userRepository.UpdateUser(userId, username, password, salt);
+
+            // Assert
+            User expectedUser = databaseContext.Users.Find(userId);
+
+            Assert.Equal(expectedUser, actualUser);
         }
     }
 }
