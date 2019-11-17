@@ -107,7 +107,7 @@ namespace Tests
             Annotation actualAnnotation = annotationRepository.Create(annotation, submissionId, userId);
 
             // Assert
-            Assert.Equal(default, actualAnnotation);
+            Assert.Null(actualAnnotation);
         }
 
         [Fact]
@@ -146,7 +146,7 @@ namespace Tests
             Annotation actualAnnotation = annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
 
             // Assert
-            Assert.Equal(default, actualAnnotation);
+            Assert.Null(actualAnnotation);
         }
 
         [Fact]
@@ -294,7 +294,7 @@ namespace Tests
             Answer answer = answerRepository.GetAnswerById(answerId);
 
             // Assert
-            Assert.Equal(default, answer);
+            Assert.Null(answer);
         }
 
         [Fact]
@@ -351,7 +351,7 @@ namespace Tests
             IEnumerable<Answer> answers = answerRepository.GetAnswersForQuestionById(questionId, testAttributes);
 
             // Assert
-            Assert.Equal(default, answers);
+            Assert.Null(answers);
         }
 
         [Fact]
@@ -540,7 +540,7 @@ namespace Tests
             IEnumerable<UserHistory> histories = userHistoryRepository.GetUserHistoryByUserId(userId, testAttributes);
 
             // Assert
-            Assert.Equal(default, histories);
+            Assert.Null(histories);
         }
 
         [Fact]
@@ -629,7 +629,7 @@ namespace Tests
             LinkPost linkPost = linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
 
             // Assert
-            Assert.Equal(default, linkPost);
+            Assert.Null(linkPost);
         }
 
         [Fact]
@@ -845,7 +845,7 @@ namespace Tests
             Question question = questionRepository.GetById(questionId);
 
             // Assert
-            Assert.Equal(default, question);
+            Assert.Null(question);
         }
 
         [Theory]
@@ -942,7 +942,7 @@ namespace Tests
             SoMember soMember = soMemberRepository.GetSoMemberById(soMemberId);
 
             // Assert
-            Assert.Equal(default, soMember);
+            Assert.Null(soMember);
         }
 
         [Fact]
@@ -974,7 +974,7 @@ namespace Tests
             User testUser = userRepository.GetUserById(userId);
 
             // Assert
-            Assert.Equal(default, testUser);
+            Assert.Null(testUser);
         }
 
         [Fact]
@@ -1007,7 +1007,7 @@ namespace Tests
             User testUser = userRepository.GetUserByUsername(username);
 
             // Assert
-            Assert.Equal(default, testUser);
+            Assert.Null(testUser);
         }
 
         [Fact]
