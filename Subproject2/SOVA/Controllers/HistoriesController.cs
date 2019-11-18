@@ -25,7 +25,7 @@ namespace SOVA.Controllers
         [HttpGet(Name = nameof(GetUserHistoryByUserId))]
         public IActionResult GetUserHistoryByUserId([FromQuery] PagingAttributes pagingAttributes)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 39;
             var history = _userHistoryRepository.GetUserHistoryByUserId(userId, pagingAttributes);
             if (history == null)
             {

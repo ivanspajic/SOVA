@@ -15,7 +15,7 @@ namespace Tests
     // - tag repository (maybe for displaying all relevant questions when clicking on a tag?) (repository missing)
     public class DataServiceTests
     {
-        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=Hotmai12";
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
 
         public User EnsureTestUserExistsThroughContext_ReturnsTestUser()
         {
