@@ -26,6 +26,11 @@ namespace _3._Data_Layer
             {
                 return null;
             }
+
+            if (pagingAttributes.Page < 1 || pagingAttributes.PageSize < 1)
+            {
+                return null;
+            }
             return _databaseContext.UserHistory.Include(u => u.History).Where(u => u.UserId == userId).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
                 .Take(pagingAttributes.PageSize)
                 .ToList();
