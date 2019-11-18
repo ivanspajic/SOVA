@@ -16,7 +16,7 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 ----
 
 ## Current status:
-🚀 **Started on 5 Nov, 2019.** Laying down architecture and kick starting the project.
+🚀 **Completed on 18 November** Finished implementation and documentation.
 
 ----
 
