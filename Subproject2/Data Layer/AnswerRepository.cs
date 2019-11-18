@@ -1,0 +1,43 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using Data_Layer.Database_Context;
+using Data_Layer_Abstractions;
+using Microsoft.EntityFrameworkCore;
+using Models;
+
+namespace Data_Layer
+{
+    public class AnswerRepository : IAnswerRepository
+    {
+        private readonly SOVAContext _databaseContext;
+
+        public AnswerRepository(SOVAContext databaseContext)
+        {
+            _databaseContext = databaseContext;
+        }
+
+        public Answer GetAnswerById(int answerId)
+        {
+            return _databaseContext.Answers.Include(a => a.Submission).FirstOrDefault(a => a.SubmissionId == answerId);
+        }
+
+        public IEnumerable<Answer> GetAnswersForQuestionById(int questionId, PagingAttributes pagingAttributes)
+        {
+            var answers = _databaseContext.Answers
+                .Include(a => a.Submission)
+                .Where(a => a.ParentId == questionId)
+                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize).ToList();
+            if (answers.Count == 0)
+                return null;
+            return answers;
+        }
+
+        public int NoOfAnswers(int questionId)
+        {
+            return _databaseContext.Answers
+                .Include(a => a.Submission)
+                .Count(a => a.ParentId == questionId);
+        }
+    }
+}
