@@ -17,6 +17,8 @@ namespace Tests
     {
         private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
 
+        //For RUC's database connection
+        //private readonly string _connectionString = "host=rawdata.ruc.dk;db=raw4;uid=raw4;pwd=yzOrEFi)";
         public User EnsureTestUserExistsThroughContext_ReturnsTestUser()
         {
             SOVAContext databaseContext = new SOVAContext(_connectionString);
