@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using _0._Models;
+﻿using _0._Models;
 using _1._SOVA.Models;
 using _2._Data_Layer_Abstractions;
 using AutoMapper;

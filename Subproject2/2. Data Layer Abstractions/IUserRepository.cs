@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using _0._Models;
 
 namespace _2._Data_Layer_Abstractions
@@ -12,5 +10,6 @@ namespace _2._Data_Layer_Abstractions
         User GetUserByUsername(string username);
         User UpdateUser(int userId, string? username, string? password, string salt);
         IEnumerable<User> GetUsers();
+        bool DeleteUser(string username);
     }
 }

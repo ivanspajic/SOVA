@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Text;
 using _0._Models;
 using _3._Data_Layer.Database_Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using _2._Data_Layer_Abstractions;
-using Npgsql;
 
 namespace _3._Data_Layer
 {
@@ -55,7 +52,7 @@ namespace _3._Data_Layer
 
         public int NoOfResults(string queryString, int? userId)
         {
-            if (queryString == null)
+            if (queryString == null || userId < 1)
                 return 0;
             return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", userId, queryString)
                 .Count();

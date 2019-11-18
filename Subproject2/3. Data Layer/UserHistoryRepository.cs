@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
+﻿using System.Collections.Generic;
 using _0._Models;
 using _3._Data_Layer.Database_Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using _2._Data_Layer_Abstractions;
-using Npgsql;
 
 namespace _3._Data_Layer
 {
@@ -26,9 +22,19 @@ namespace _3._Data_Layer
             {
                 return null;
             }
-            return _databaseContext.UserHistory.Include(u => u.History).Where(u => u.UserId == userId).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+
+            if (pagingAttributes.Page < 0 || pagingAttributes.PageSize < 0)
+            {
+                return null;
+            }
+            var userHistroy = _databaseContext.UserHistory.Include(u => u.History).Where(u => u.UserId == userId).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
                 .Take(pagingAttributes.PageSize)
                 .ToList();
+            if (userHistroy.Count == 0)
+            {
+                return null;
+            }
+            return userHistroy;
         }
 
         public int NoOfUserHistory(int userId)

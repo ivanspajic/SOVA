@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using _0._Models;
 using _3._Data_Layer;
 using _3._Data_Layer.Database_Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Xunit;
 
 namespace Tests
@@ -17,7 +15,7 @@ namespace Tests
     // - tag repository (maybe for displaying all relevant questions when clicking on a tag?) (repository missing)
     public class DataServiceTests
     {
-        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=is131095";
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
 
         public User EnsureTestUserExistsThroughContext_ReturnsTestUser()
         {
@@ -122,6 +120,7 @@ namespace Tests
             int userId = 1;
 
             // Act
+            annotationRepository.Create(annotation, submissionId, userId);
             Annotation actualAnnotation = annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
 
             // Assert
@@ -482,9 +481,9 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData(20, 1)]
-        [InlineData(5, 5)]
-        [InlineData(2, 10)]
+        [InlineData(20, 0)]
+        [InlineData(5, 0)]
+        [InlineData(2, 0)]
         public void GetUserHistoryByUserId_ValidArguments(int pageSize, int pageNumber)
         {
             // Arrange
@@ -502,9 +501,9 @@ namespace Tests
             databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", testUser.Id, "testing");
 
             IEnumerable<UserHistory> expectedHistories = databaseContext.UserHistory
-                                                             .Where(userHistory => userHistory.UserId == testUser.Id)
-                                                             .Skip(testAttributes.Page * testAttributes.PageSize)
-                                                             .Take(testAttributes.PageSize);
+                .Where(userHistory => userHistory.UserId == testUser.Id)
+                .Skip(testAttributes.Page * testAttributes.PageSize)
+                .Take(testAttributes.PageSize);
 
             // Act
             IEnumerable<UserHistory> actualHistories = userHistoryRepository.GetUserHistoryByUserId(testUser.Id, testAttributes);
@@ -848,19 +847,39 @@ namespace Tests
             Assert.Null(question);
         }
 
-        [Theory]
-        [InlineData("test search", 1)]
-        [InlineData("test search again", null)]
-        public void GetNumberOfQuestionSearchResults_ValidArguments(string query, int? userId)
+        [Fact]
+        public void GetNumberOfQuestionSearchResults_ValidArguments_UserIdNull()
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             QuestionRepository questionRepository = new QuestionRepository(databaseContext);
+            var query = "test search";
+            int? userId = null;
+            int expectedResultCount = databaseContext.Questions
+                .Include(question => question.Submission)
+                .Count(question => question.Submission.Body.ToLower()
+                .Contains(query.ToLower()) && question.Title.ToLower()
+                .Contains(query.ToLower()));
 
-            int expectedResultCount = databaseContext.Questions.Include(question => question.Submission)
-                                         .Where(question => question.Submission.Body.ToLower()
-                                             .Contains(query.ToLower()) && question.Title.ToLower()
-                                             .Contains(query.ToLower())).Count();
+            // Act
+            int actualResultCount = questionRepository.NoOfResults(query, userId);
+
+            // Assert
+            Assert.Equal(expectedResultCount, actualResultCount);
+        }
+        [Fact]
+        public void GetNumberOfQuestionSearchResults_ValidArguments_UserId()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            QuestionRepository questionRepository = new QuestionRepository(databaseContext);
+            var query = "test search again";
+            int userId = EnsureTestUserExistsThroughContext_ReturnsTestUser().Id;
+            int expectedResultCount = databaseContext.Questions
+                .Include(question => question.Submission)
+                .Count(question => question.Submission.Body.ToLower()
+                                       .Contains(query.ToLower()) && question.Title.ToLower()
+                                       .Contains(query.ToLower()));
 
             // Act
             int actualResultCount = questionRepository.NoOfResults(query, userId);
@@ -870,16 +889,31 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData("", 1)]
         [InlineData("", null)]
-        [InlineData(" ", 1)]
         [InlineData(" ", null)]
         [InlineData(null, -1)]
-        public void GetNumberOfQuestionSearchResults_InvalidArguments(string query, int? userId)
+        public void GetNumberOfQuestionSearchResults_InvalidArguments_InvalidUser(string query, int? userId)
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             QuestionRepository questionRepository = new QuestionRepository(databaseContext);
+
+            // Act
+            int resultCount = questionRepository.NoOfResults(query, userId);
+
+            // Assert
+            Assert.Equal(0, resultCount);
+        }
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(null)]
+        public void GetNumberOfQuestionSearchResults_InvalidArguments_ValidUser(string query)
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            QuestionRepository questionRepository = new QuestionRepository(databaseContext);
+            var userId = EnsureTestUserExistsThroughContext_ReturnsTestUser().Id;
 
             // Act
             int resultCount = questionRepository.NoOfResults(query, userId);
@@ -1028,6 +1062,9 @@ namespace Tests
             Assert.Equal(username, testUser.Username);
             Assert.Equal(password, testUser.Password);
             Assert.Equal(salt, testUser.Salt);
+
+            // Cleanup
+            userRepository.DeleteUser(testUser.Username);
         }
 
         [Theory]
@@ -1058,7 +1095,7 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData("John Milla", null, null)]
+        [InlineData("John Milli", null, null)]
         [InlineData(null, "hunter1", "newsaltwhodis")]
         public void UpdateUser_ValidArguments_SomeAlwaysNotNull(string username, string password, string salt)
         {
@@ -1066,15 +1103,18 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             UserRepository userRepository = new UserRepository(databaseContext);
 
-            int userId = 1;
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
             // Act
-            User actualUser = userRepository.UpdateUser(userId, username, password, salt);
+            User actualUser = userRepository.UpdateUser(testUser.Id, username, password, salt);
 
             // Assert
-            User expectedUser = databaseContext.Users.Find(userId);
+            User expectedUser = databaseContext.Users.Find(testUser.Id);
 
             Assert.Equal(expectedUser, actualUser);
+
+            // Cleanup 
+            userRepository.UpdateUser(testUser.Id, "testUsername", null, null);
         }
 
         [Fact]
@@ -1084,16 +1124,16 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             UserRepository userRepository = new UserRepository(databaseContext);
 
-            int userId = 1;
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
             string username = null;
             string password = null;
             string salt = null;
 
             // Act
-            User actualUser = userRepository.UpdateUser(userId, username, password, salt);
+            User actualUser = userRepository.UpdateUser(testUser.Id, username, password, salt);
 
             // Assert
-            User expectedUser = databaseContext.Users.Find(userId);
+            User expectedUser = databaseContext.Users.Find(testUser.Id);
 
             Assert.Equal(expectedUser, actualUser);
         }
@@ -1107,13 +1147,13 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             UserRepository userRepository = new UserRepository(databaseContext);
 
-            int userId = 1;
+            User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
             // Act
-            User actualUser = userRepository.UpdateUser(userId, username, password, salt);
+            User actualUser = userRepository.UpdateUser(testUser.Id, username, password, salt);
 
             // Assert
-            User expectedUser = databaseContext.Users.Find(userId);
+            User expectedUser = databaseContext.Users.Find(testUser.Id);
 
             Assert.Equal(expectedUser, actualUser);
         }
