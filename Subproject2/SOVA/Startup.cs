@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
 
 namespace SOVA
 {
@@ -32,10 +33,15 @@ namespace SOVA
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("appsettings.dbConnectionString.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.dbConnectionString.json", optional: true, reloadOnChange: true)
                 .Build();
 
+            // for local database connection
             var dbConnectionString = builder.GetSection("StackOverflow:ConnectionString").Value;
+
+            // for ruc's database connection
+            //var dbConnectionString = "host=rawdata.ruc.dk;db=raw4;uid=raw4;pwd=yzOrEFi)";
+
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
