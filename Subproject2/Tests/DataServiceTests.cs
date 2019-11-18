@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using _0._Models;
-using _3._Data_Layer;
-using _3._Data_Layer.Database_Context;
+using Data_Layer;
+using Data_Layer.Database_Context;
 using Microsoft.EntityFrameworkCore;
+using Models;
 using Xunit;
 
 namespace Tests
