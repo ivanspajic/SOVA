@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
+﻿using System.Collections.Generic;
 using _0._Models;
 using _3._Data_Layer.Database_Context;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using _2._Data_Layer_Abstractions;
-using Npgsql;
 
 namespace _3._Data_Layer
 {
@@ -26,7 +21,13 @@ namespace _3._Data_Layer
         }
         public User GetUserById(int userId)
         {
-            return _databaseContext.Users.FirstOrDefault(u => u.Id == userId);
+            var user = _databaseContext.Users.FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user;
         }
         public User GetUserByUsername(string username)
         {
@@ -62,12 +63,17 @@ namespace _3._Data_Layer
 
         public User UpdateUser(int userId, string? updatedUsername, string? updatedPassword, string? updatedSalt)
         {
+            //if (updatedUsername == null || (updatedPassword == null && updatedSalt == null))
+            //{
+            //    return null;
+            //}
+
             var user = GetUserById(userId);
-            if (updatedUsername != null)
+            if (!string.IsNullOrWhiteSpace(updatedUsername) && user.Username != updatedUsername)
             {
                 user.Username = updatedUsername;
             }
-            if (updatedPassword != null || updatedSalt != null)
+            if (!string.IsNullOrWhiteSpace(updatedPassword) && !string.IsNullOrWhiteSpace(updatedSalt))
             {
                 user.Password = updatedPassword;
                 user.Salt = updatedSalt;

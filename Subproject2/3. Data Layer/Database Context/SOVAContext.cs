@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using _0._Models;
+﻿using _0._Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace _3._Data_Layer.Database_Context

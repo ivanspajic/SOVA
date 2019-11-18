@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Threading.Tasks;
 using _0._Models;
 using _1._SOVA.Models;
 using _2._Data_Layer_Abstractions;
@@ -28,7 +25,7 @@ namespace _1._SOVA.Controllers
         [HttpGet(Name = nameof(GetUserHistoryByUserId))]
         public IActionResult GetUserHistoryByUserId([FromQuery] PagingAttributes pagingAttributes)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 39;
             var history = _userHistoryRepository.GetUserHistoryByUserId(userId, pagingAttributes);
             if (history == null)
             {
