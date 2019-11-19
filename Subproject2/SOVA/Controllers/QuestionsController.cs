@@ -16,14 +16,15 @@ namespace SOVA.Controllers
         private readonly IQuestionRepository _questionRepository;
         private IMapper _mapper;
 
-        private readonly IAnswerRepository _answerRepository; // this should not exist in this controller, it is a workaround
+        private readonly IAnswerRepository _answerRepository;
+        private readonly ICommentRepository _commentRepository;
 
-        public QuestionsController(IQuestionRepository questionRepository, IMapper mapper, IAnswerRepository answerRepository) // workaround
+        public QuestionsController(IQuestionRepository questionRepository, IAnswerRepository answerRepository, ICommentRepository commentRepository, IMapper mapper)
         {
             _questionRepository = questionRepository;
+            _answerRepository = answerRepository;
+            _commentRepository = commentRepository;
             _mapper = mapper;
-
-            _answerRepository = answerRepository; //workaround
         }
 
         [HttpGet(Name = nameof(GetQuestions))]
@@ -47,7 +48,7 @@ namespace SOVA.Controllers
         [HttpGet("{questionId}/answers", Name = nameof(GetAnswersForQuestion))]
         public ActionResult GetAnswersForQuestion([FromQuery] PagingAttributes pagingAttributes, int questionId)
         {
-            var answers = _answerRepository.GetAnswersForQuestionById(questionId, pagingAttributes); // workaround
+            var answers = _answerRepository.GetAnswersForQuestionById(questionId);
             return Ok(CreateAnswerResult(answers, questionId, pagingAttributes));
         }
 
@@ -81,6 +82,8 @@ namespace SOVA.Controllers
             dto.Link = Url.Link(
                     nameof(GetQuestionById),
                     new { questionId = question.SubmissionId });
+            dto.Answers = _answerRepository.GetAnswersForQuestionById(question.SubmissionId);
+            dto.Comments = _commentRepository.GetAllCommentsBySubmissionId(question.SubmissionId);
             return dto;
         }
 

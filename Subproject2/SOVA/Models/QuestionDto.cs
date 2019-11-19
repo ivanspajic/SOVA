@@ -10,7 +10,8 @@ namespace SOVA.Models
         public string Title { get; set; }
         public DateTime? ClosedDate { get; set; }
         public Submission Submission { get; set; }
-        public IEnumerable<Answer> Answer { get; set; }
+        public IEnumerable<Answer> Answers { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
 
     }
 }
