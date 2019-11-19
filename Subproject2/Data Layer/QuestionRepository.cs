@@ -27,7 +27,7 @@ namespace Data_Layer
 
         public Question GetById(int submissionId)
         {
-            return _databaseContext.Questions.Find(submissionId);
+            return _databaseContext.Questions.Include(q => q.Submission.SoMember).FirstOrDefault(x => x.SubmissionId == submissionId);
         }
 
         public List<QuestionsTag> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes)
