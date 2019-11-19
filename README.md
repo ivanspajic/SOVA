@@ -16,9 +16,9 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 ----
 
 ## Current status:
-![#008000](https://placehold.it/15/008000/000000?text=+) [Subproject 1 - Database](https://github.com/ivanspajic/SOVA/tree/master/Subproject1): Completed
+![#008000](https://placehold.it/15/008000/000000?text=+) [Subproject 1 - Database](https://github.com/ivanspajic/SOVA/tree/master/Subproject1): Completed 14 Oct, 2019
 
-![#FFA500](https://placehold.it/15/FFA500/000000?text=+) [Subproject 2 - RESTful web service](https://github.com/ivanspajic/SOVA/tree/master/Subproject2): Starting 5 Nov, 2019
+![#008000](https://placehold.it/15/008000/000000?text=+) [Subproject 2 - RESTful web service](https://github.com/ivanspajic/SOVA/tree/master/Subproject2): Completed 18 Nov, 2019
 
 ![#005AFF](https://placehold.it/15/005AFF/000000?text=+) Subproject n - ??
 
