@@ -20,6 +20,11 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 
 ----
 
+## Submitted documents and files:
+- [Project report](https://github.com/ivanspajic/SOVA/blob/master/Subproject2/Resources/SOVA%20raw4-subproject2.pdf)
+
+----
+
 ## Steps to reproduce
 
 > Prerequisites: You must have [.NET Core](https://dotnet.microsoft.com/download) installed. These steps presumes you are running on Windows with properly set "Environment Variables" for the command line tools. If running any other OS, the only difference is file path.
@@ -74,5 +79,4 @@ The server connects to the database by reading the connection string from a loca
 ## Knows issues ⚡:
 
 - Not all tests pass. Currently 111 out of 133 tests pass.
-- Fetching questions, answers and comments do fail. It is a work in progress.
 - Fetching linked posts fail. Work in progress.

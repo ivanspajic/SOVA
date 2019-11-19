@@ -324,10 +324,8 @@ namespace Tests
 
             int questionId = 19;
 
-            PagingAttributes testAttributes = new PagingAttributes();
-
             // Act
-            IEnumerable<Answer> answers = answerRepository.GetAnswersForQuestionById(questionId, testAttributes);
+            IEnumerable<Answer> answers = answerRepository.GetAnswersForQuestionById(questionId);
 
             // Assert
             Assert.All(answers, (answer) => Assert.Equal(questionId, answer.ParentId));
