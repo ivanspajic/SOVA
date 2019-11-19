@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Data_Layer.Database_Context;
 using Data_Layer_Abstractions;
@@ -16,26 +17,24 @@ namespace Data_Layer
             _databaseContext = databaseContext;
         }
 
-        public IEnumerable<Comment> GetAllCommentsBySubmissionId(int submissionId, PagingAttributes pagingAttributes)
+        public IEnumerable<Comment> GetAllCommentsBySubmissionId(int submissionId)
         {
             return _databaseContext.Comments
-                .Include(c => c.CommentSubmission)
+                .Include(c => c.Submission)
+                .Include(a => a.Submission.SoMember)
                 .Where(c => c.SubmissionId == submissionId)
-                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
-                .Take(pagingAttributes.PageSize)
                 .ToList();
         }
 
         public Comment GetCommentById(int commentId)
         {
-            return _databaseContext.Comments.Include(c => c.CommentSubmission).FirstOrDefault(c => c.SubmissionId == commentId);
+            return _databaseContext.Comments.Include(c => c.Submission).FirstOrDefault(c => c.Submission.Id == commentId);
         }
 
         public int NoOfComments(int submissionId)
         {
             return _databaseContext.Comments
-                .Where(c => c.SubmissionId == submissionId)
-                .Count();
+                .Count(c => c.SubmissionId == submissionId);
         }
     }
 }

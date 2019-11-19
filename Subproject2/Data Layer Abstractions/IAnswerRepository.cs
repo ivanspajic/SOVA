@@ -7,7 +7,7 @@ namespace Data_Layer_Abstractions
     {
         Answer GetAnswerById(int answerId);
 
-        IEnumerable<Answer> GetAnswersForQuestionById(int questionId, PagingAttributes pagingAttributes);
+        IEnumerable<Answer> GetAnswersForQuestionById(int questionId);
 
         int NoOfAnswers(int questionId);
     }

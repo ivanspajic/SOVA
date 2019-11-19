@@ -21,13 +21,13 @@ namespace Data_Layer
             return _databaseContext.Answers.Include(a => a.Submission).FirstOrDefault(a => a.SubmissionId == answerId);
         }
 
-        public IEnumerable<Answer> GetAnswersForQuestionById(int questionId, PagingAttributes pagingAttributes)
+        public IEnumerable<Answer> GetAnswersForQuestionById(int questionId)
         {
             var answers = _databaseContext.Answers
                 .Include(a => a.Submission)
+                .Include(a => a.Submission.SoMember)
                 .Where(a => a.ParentId == questionId)
-                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
-                .Take(pagingAttributes.PageSize).ToList();
+                .ToList();
             if (answers.Count == 0)
                 return null;
             return answers;
