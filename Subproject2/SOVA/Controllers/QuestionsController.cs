@@ -80,7 +80,7 @@ namespace SOVA.Controllers
             var dto = _mapper.Map<QuestionDto>(question);
             dto.Link = Url.Link(
                     nameof(GetQuestionById),
-                    new { questionId = question.SubmissionId, });
+                    new { questionId = question.SubmissionId });
             return dto;
         }
 
