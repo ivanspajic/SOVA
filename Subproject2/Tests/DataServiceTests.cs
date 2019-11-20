@@ -15,7 +15,7 @@ namespace Tests
     // - tag repository (maybe for displaying all relevant questions when clicking on a tag?) (repository missing)
     public class DataServiceTests
     {
-        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=Hotmai12";
 
         //For RUC's database connection
         // private readonly string _connectionString = "host=rawdata.ruc.dk;db=raw4;uid=raw4;pwd=yzOrEFi)";
@@ -299,7 +299,7 @@ namespace Tests
         }
 
         [Fact]
-        public void GetAnswerById_IncludesSubmissions_IncludesComments_ThenIncludesSubmissions()
+        public void GetAnswerById_IncludesSubmissions()
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
@@ -312,7 +312,6 @@ namespace Tests
 
             // Assert
             Assert.NotNull(answer.Submission);
-            // Assert.All(answer.Comments, (comment) => Assert.NotNull(comment.CommentSubmission));
         }
 
         [Fact]
@@ -348,7 +347,7 @@ namespace Tests
         }
 
         [Fact]
-        public void GetAnswersByQuestionId_IncludesSubmission_IncludesComments()
+        public void GetAnswersByQuestionId_IncludesSubmission()
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
@@ -360,10 +359,11 @@ namespace Tests
             IEnumerable<Answer> answers = answerRepository.GetAnswersForQuestionById(questionId);
 
             // Assert
-            Assert.All(answers, (answer) =>
+            Assert.All(answers, (a) =>
             {
-                Assert.NotNull(answer.Submission);
-                // Assert.All(answer.Comments, (comment) => Assert.NotNull(comment.CommentSubmission));
+                Assert.NotNull(a.Submission);
+                Assert.NotNull(a.Accepted);
+                Assert.NotNull(a.ParentId);
             });
         }
 
@@ -421,7 +421,6 @@ namespace Tests
 
         [Theory]
         [InlineData(0)]
-        [InlineData(19)]
         [InlineData(-1)]
         public void GetCommentsBySubmissionId_InvalidArguments(int submissionId)
         {
@@ -895,7 +894,7 @@ namespace Tests
         }
 
         [Fact]
-        public void GetQuestionById_IncludesSubmission_IncludesCommentsSubmissions_IncludesTags_IncludesAnswersSubmissions_IncludesAnswersCommentsSubmissions()
+        public void GetQuestionById_IncludesSubmission()
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
@@ -908,14 +907,28 @@ namespace Tests
 
             // Assert
             Assert.NotNull(question.Submission);
-            // Assert.NotNull(question.Comments);
-            // Assert.All(question.Comments, (comment) => Assert.NotNull(comment.CommentSubmission));
-            // Assert.NotNull(question.QuestionsTags);
-            // Assert.All(question.QuestionsTags, (questionsTag) => Assert.NotNull(questionsTag.Tag));
-            // Assert.NotNull(question.Answers);
-            // Assert.All(question.Answers, (answer) => Assert.NotNull(answer.Submission));
-            // Assert.All(question.Answers, (answer) => Assert.NotNull(answer.Comments));
-            // Assert.All(question.Answers, (answer) => Assert.All(answer.Comments, (comment) => Assert.NotNull(comment.CommentSubmission)));
+            Assert.NotNull(question.Submission.SoMember);
+            Assert.NotNull(question.Submission.CreationDate);
+        }
+
+        [Fact]
+        public void GetCommentsByParentId_IncludesComments()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            var commentRepository = new CommentRepository(databaseContext);
+
+            int submissionId = 19;
+
+            // Act
+            var comments = commentRepository.GetAllCommentsBySubmissionId(submissionId);
+
+            // Assert
+            Assert.All(comments, (c) =>
+            {
+                Assert.NotNull(c.Submission);
+                Assert.NotNull(c.SubmissionId);
+            });
         }
 
         [Fact]
@@ -964,7 +977,12 @@ namespace Tests
             User actualUser = userRepository.GetUserById(expectedUser.Id);
 
             // Assert
-            Assert.Equal(expectedUser, actualUser);
+            Assert.Equal(expectedUser.Username, actualUser.Username);
+            Assert.Equal(expectedUser.Salt, actualUser.Salt);
+            Assert.Equal(expectedUser.Password, actualUser.Password);
+            Assert.Equal(expectedUser.UserHistory, actualUser.UserHistory);
+            Assert.Equal(expectedUser.UserAnnotations, actualUser.UserAnnotations);
+            Assert.Equal(expectedUser.UserAnnotations, actualUser.UserAnnotations);
         }
 
         [Theory]
@@ -996,7 +1014,12 @@ namespace Tests
             User actualUser = userRepository.GetUserByUsername(expectedUser.Username);
 
             // Assert
-            Assert.Equal(expectedUser, actualUser);
+            Assert.Equal(expectedUser.Username, actualUser.Username);
+            Assert.Equal(expectedUser.Salt, actualUser.Salt);
+            Assert.Equal(expectedUser.Password, actualUser.Password);
+            Assert.Equal(expectedUser.UserHistory, actualUser.UserHistory);
+            Assert.Equal(expectedUser.UserAnnotations, actualUser.UserAnnotations);
+            Assert.Equal(expectedUser.UserAnnotations, actualUser.UserAnnotations);
         }
 
         [Theory]
