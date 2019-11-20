@@ -84,6 +84,7 @@ namespace SOVA.Controllers
                     new { questionId = question.SubmissionId });
             dto.Answers = _answerRepository.GetAnswersForQuestionById(question.SubmissionId);
             dto.Comments = _commentRepository.GetAllCommentsBySubmissionId(question.SubmissionId);
+            dto.Tags = _questionRepository.GetQuestionsTags(question.SubmissionId);
             return dto;
         }
 
