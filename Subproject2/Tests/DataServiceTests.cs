@@ -375,7 +375,7 @@ namespace Tests
             CommentRepository commentRepository = new CommentRepository(databaseContext);
 
             int submissionId = 19;
-            int expectedNumberOfComments = databaseContext.Comments.Where(comment => comment.SubmissionId == submissionId).Count();
+            int expectedNumberOfComments = databaseContext.Comments.Count(comment => comment.SubmissionId == submissionId);
 
             // Act
             int actualNumberOfComments = commentRepository.NoOfComments(submissionId);
@@ -604,20 +604,26 @@ namespace Tests
         }
 
         [Fact]
-        public void GetLinkPostByQuestionAndLinkedPostIds_IncludeQuestion_IncludeSubmission()
+        public void GetLinkPostByQuestionId()
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             LinkPostRepository linkPostRepository = new LinkPostRepository(databaseContext);
 
-            int questionId = 6173;
-            int linkedPostId = 1732348;
+            int questionId = 841646;
+            int linkedPostId = 19;
 
             // Act
             var linkPosts = linkPostRepository.GetLinkedPostByQuestionId(questionId);
 
             // Assert
-            Assert.All(linkPosts, linkPost => Assert.NotNull(linkPost.Submission));
+            Assert.All(linkPosts, linkPost =>
+            {
+                Assert.NotNull(linkPost.Submission);
+                Assert.True(linkPost.LinkPostId == linkedPostId);
+                Assert.True(linkPost.QuestionId == questionId);
+
+            });
         }
 
         [Fact]
