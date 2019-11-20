@@ -40,7 +40,7 @@ namespace Tests
 
             databaseContext.SaveChanges();
 
-            return databaseContext.Users.Where(user => user.Username == testUsername).First();
+            return databaseContext.Users.First(user => user.Username == testUsername);
         }
 
         public Annotation EnsureTestAnnotationExistsThroughContext_ReturnsTestAnnotation(int userId)
@@ -572,34 +572,35 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             LinkPostRepository linkPostRepository = new LinkPostRepository(databaseContext);
 
-            int questionId = 6173;
-            int linkedPostId = 1732348;
+            int questionId = 841646;
+            int linkedPostId = 19;
 
             // Act
-            LinkPost linkPost = linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
+            var linkPosts = linkPostRepository.GetLinkedPostByQuestionId(questionId);
 
             // Assert
-            Assert.Equal(questionId, linkPost.QuestionId);
-            Assert.Equal(linkedPostId, linkPost.LinkPostId);
+            Assert.All(linkPosts, (l) =>
+            {
+                Assert.True(l.QuestionId == questionId);
+                Assert.True(l.LinkPostId == linkedPostId);
+
+            });
         }
 
         [Theory]
-        [InlineData(0, 1732348)]
-        [InlineData(-1, 1732348)]
-        [InlineData(6173, 0)]
-        [InlineData(6173, -1)]
-        [InlineData(-1, -1)]
-        public void GetLinkPostByQuestionAndLinkedPostIds_InvalidArgument(int questionId, int linkedPostId)
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetLinkPostByQuestionAndLinkedPostIds_InvalidArgument(int questionId)
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             LinkPostRepository linkPostRepository = new LinkPostRepository(databaseContext);
 
             // Act
-            LinkPost linkPost = linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
+            var linkPosts = linkPostRepository.GetLinkedPostByQuestionId(questionId);
 
             // Assert
-            Assert.Null(linkPost);
+            Assert.All(linkPosts, Assert.Null);
         }
 
         [Fact]
@@ -613,10 +614,10 @@ namespace Tests
             int linkedPostId = 1732348;
 
             // Act
-            LinkPost linkPost = linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
+            var linkPosts = linkPostRepository.GetLinkedPostByQuestionId(questionId);
 
             // Assert
-            Assert.NotNull(linkPost.LinkedPost.Submission);
+            Assert.All(linkPosts, linkPost => Assert.NotNull(linkPost.Submission));
         }
 
         [Fact]

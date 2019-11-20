@@ -18,12 +18,15 @@ namespace SOVA.Controllers
 
         private readonly IAnswerRepository _answerRepository;
         private readonly ICommentRepository _commentRepository;
+        private readonly ILinkPostRepository _linkPostRepository;
 
-        public QuestionsController(IQuestionRepository questionRepository, IAnswerRepository answerRepository, ICommentRepository commentRepository, IMapper mapper)
+
+        public QuestionsController(IQuestionRepository questionRepository, IAnswerRepository answerRepository, ICommentRepository commentRepository, ILinkPostRepository linkPostRepository, IMapper mapper)
         {
             _questionRepository = questionRepository;
             _answerRepository = answerRepository;
             _commentRepository = commentRepository;
+            _linkPostRepository = linkPostRepository;
             _mapper = mapper;
         }
 
@@ -85,6 +88,7 @@ namespace SOVA.Controllers
             dto.Answers = _answerRepository.GetAnswersForQuestionById(question.SubmissionId);
             dto.Comments = _commentRepository.GetAllCommentsBySubmissionId(question.SubmissionId);
             dto.Tags = _questionRepository.GetQuestionsTags(question.SubmissionId);
+            dto.LinkPosts = _linkPostRepository.GetLinkedPostByQuestionId(question.SubmissionId);
             return dto;
         }
 

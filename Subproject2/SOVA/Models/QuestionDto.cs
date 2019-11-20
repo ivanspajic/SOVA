@@ -13,5 +13,6 @@ namespace SOVA.Models
         public IEnumerable<Answer> Answers { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
         public IEnumerable<QuestionsTag> Tags { get; set; }
+        public IEnumerable<LinkPost> LinkPosts { get; set; }
     }
 }
