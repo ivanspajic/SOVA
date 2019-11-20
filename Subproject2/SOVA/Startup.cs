@@ -52,6 +52,7 @@ namespace SOVA
             services.AddTransient<IUserRepository>(provider => new UserRepository(new SOVAContext(dbConnectionString)));
             services.AddTransient<IAnnotationRepository>(provider => new AnnotationRepository(new SOVAContext(dbConnectionString)));
             services.AddTransient<IMarkingRepository>(provider => new MarkingRepository(new SOVAContext(dbConnectionString)));
+            services.AddTransient<ILinkPostRepository>(provider => new LinkPostRepository(new SOVAContext(dbConnectionString)));
 
             var key = Encoding.UTF8.GetBytes(builder.GetSection("Auth:Key").Value);
 

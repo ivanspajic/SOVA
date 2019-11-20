@@ -12,6 +12,6 @@ namespace SOVA.Models
         public Submission Submission { get; set; }
         public IEnumerable<Answer> Answers { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
-
+        public IEnumerable<LinkPost> LinkPosts { get; set; }
     }
 }
