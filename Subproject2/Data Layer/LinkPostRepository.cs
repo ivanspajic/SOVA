@@ -16,7 +16,7 @@ namespace Data_Layer
 
         public LinkPost GetByQuestionAndLinkedPostIds(int questionId, int linkedPostId)
         {
-            return _databaseContext.LinkPosts.Where((l) => l.QuestionId == questionId && l.LinkPostId == linkedPostId).FirstOrDefault();
+            return _databaseContext.LinkPosts.FirstOrDefault(l => l.QuestionId == questionId && l.LinkPostId == linkedPostId);
         }
     }
 }
