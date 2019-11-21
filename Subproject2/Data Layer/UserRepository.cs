@@ -31,8 +31,19 @@ namespace Data_Layer
         }
         public User GetUserByUsername(string username)
         {
-            return _databaseContext.Users.FirstOrDefault(u => u.Username == username);
+            if (username == null)
+            {
+                return null;
+            }
+            var user = _databaseContext.Users.FirstOrDefault(u => u.Username == username);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user;
         }
+
         public User CreateUser(string username, string password, string salt)
         {
             if (string.IsNullOrWhiteSpace(username) ||

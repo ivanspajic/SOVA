@@ -21,7 +21,7 @@ namespace Data_Layer
         public IEnumerable<Question> GetQuestions(PagingAttributes pagingAttributes)
         {
             var randomOffSet = new Random().Next(1, 1000);
-            return _databaseContext.Questions.Skip(randomOffSet).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+            return _databaseContext.Questions.Include(q => q.Submission).ThenInclude(q => q.SoMember).Include(q => q.Tags).ThenInclude(q => q.Tag).Skip(randomOffSet).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
                 .Take(pagingAttributes.PageSize)
                 .ToList();
         }

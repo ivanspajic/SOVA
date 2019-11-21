@@ -9,5 +9,6 @@ namespace Models
         public DateTime? ClosedDate { get; set; }
         public int SubmissionId { get; set; }
         public Submission Submission { get; set; }
+        public IEnumerable<QuestionsTag> Tags { get; set; }
     }
 }
