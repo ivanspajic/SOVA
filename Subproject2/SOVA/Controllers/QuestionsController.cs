@@ -64,11 +64,9 @@ namespace SOVA.Controllers
             return Ok(CreateSearchResult(searchResults, queryString, userId, pagingAttributes));
         }
 
-        //[Authorize]
         [HttpGet("tag/{tagString}", Name = nameof(SearchQuestionByTag))]
         public ActionResult SearchQuestionByTag([FromQuery] PagingAttributes pagingAttributes, string tagString)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var searchResults = _questionRepository.GetQuestionsByTags(tagString, pagingAttributes);
             return Ok(CreateTagsResult(searchResults, tagString, pagingAttributes));
         }
