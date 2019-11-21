@@ -78,5 +78,4 @@ The server connects to the database by reading the connection string from a loca
 
 ## Knows issues ⚡:
 
-- Not all tests pass. Currently 111 out of 133 tests pass.
-- Fetching linked posts fail. Work in progress.
+- None yet 🎉
