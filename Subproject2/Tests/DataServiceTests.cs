@@ -117,7 +117,7 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
-            string annotation = "Test Annotation";
+            string annotation = "Something here";
             int submissionId = 19;
             int userId = 1;
 
@@ -242,7 +242,9 @@ namespace Tests
             annotationRepository.Create(annotation, submissionId, userId);
 
             // Assert
-            Assert.True(databaseContext.Annotations.Count() <= 1);
+            int annotationCount = databaseContext.Annotations.Where(annotation => annotation.UserId == userId && annotation.SubmissionId == submissionId).Count();
+
+            Assert.True(annotationCount <= 1);
         }
 
         [Fact]
@@ -1017,7 +1019,7 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             UserRepository userRepository = new UserRepository(databaseContext);
 
-            string username = "John Miller";
+            string username = "John Milleroni";
             string password = "hunter2";
             string salt = "pretendthisisrandomstuff";
 

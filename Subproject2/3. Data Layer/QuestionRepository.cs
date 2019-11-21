@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using _2._Data_Layer_Abstractions;
 using Npgsql;
+using System.Diagnostics;
 
 namespace _3._Data_Layer
 {
@@ -30,7 +31,28 @@ namespace _3._Data_Layer
 
         public Question GetById(int submissionId)
         {
-            return _databaseContext.Questions.Find(submissionId);
+            try
+            {
+                return _databaseContext.Questions
+                    .Include(question => question.Submission)
+                        .ThenInclude(submission => submission.Comments)
+                            .ThenInclude(comment => comment.CommentSubmission)
+                    .Include(question => question.QuestionsTags)
+                        .ThenInclude(questionTag => questionTag.Tag)
+                    .Include(question => question.Answers)
+                        .ThenInclude(answer => answer.Submission)
+                            .ThenInclude(submission => submission.Comments)
+                                .ThenInclude(comment => comment.CommentSubmission)
+                    .Include(question => question.LinkedPosts)
+                        .ThenInclude(linkPost => linkPost.LinkedPost)
+                            .ThenInclude(linkedPost => linkedPost.Submission)
+                    .FirstOrDefault(question => question.SubmissionId == submissionId);
+            }
+            catch (PostgresException x)
+            {
+                Debug.WriteLine(x.Message);
+            }
+            return null;
         }
 
         public List<QuestionsTag> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes)
