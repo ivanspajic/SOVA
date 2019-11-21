@@ -10,5 +10,7 @@ namespace Models
         public int SubmissionId { get; set; }
         public Submission Submission { get; set; }
         public IEnumerable<QuestionsTag> QuestionsTags { get; set; }
+        public IEnumerable<Answer> Answers { get; set; }
+        public IEnumerable<LinkPost> LinkedPosts { get; set; }
     }
 }

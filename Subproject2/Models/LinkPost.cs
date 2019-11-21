@@ -4,7 +4,7 @@
     {
         public int LinkPostId { get; set; }
         public int QuestionId { get; set; }
-        public Submission Submission { get; set; }
-
+        public Question Question { get; set; }
+        public Question LinkedPost { get; set; }
     }
 }
