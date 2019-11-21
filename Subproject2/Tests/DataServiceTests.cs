@@ -244,6 +244,8 @@ namespace Tests
 
             // Assert
             Assert.True(databaseContext.Annotations.Count() <= 1);
+
+            annotationRepository.Delete(submissionId, userId);
         }
 
         [Fact]
