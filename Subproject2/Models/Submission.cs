@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Models
 {
@@ -10,5 +11,6 @@ namespace Models
         public int Score { get; set; }
         public int? SoMemberId { get; set; }
         public SoMember? SoMember { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
     }
 }

@@ -6,6 +6,8 @@ using Data_Layer.Database_Context;
 using Data_Layer_Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Npgsql;
+using System.Diagnostics;
 
 namespace Data_Layer
 {
@@ -28,7 +30,20 @@ namespace Data_Layer
 
         public Question GetById(int submissionId)
         {
-            return _databaseContext.Questions.Include(q => q.Submission.SoMember).FirstOrDefault(x => x.SubmissionId == submissionId);
+            return _databaseContext.Questions
+                .Include(question => question.Submission)
+                    .ThenInclude(submission => submission.Comments)
+                        .ThenInclude(comment => comment.Submission)
+                .Include(question => question.QuestionsTags)
+                    .ThenInclude(questionTag => questionTag.Tag)
+                .Include(question => question.Answers)
+                    .ThenInclude(answer => answer.Submission)
+                        .ThenInclude(submission => submission.Comments)
+                            .ThenInclude(comment => comment.Submission)
+                .Include(question => question.LinkedPosts)
+                    .ThenInclude(linkPost => linkPost.LinkedPost)
+                        .ThenInclude(linkedPost => linkedPost.Submission)
+                .FirstOrDefault(question => question.SubmissionId == submissionId);
         }
 
         public IEnumerable<QuestionsTag> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes)

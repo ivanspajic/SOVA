@@ -15,7 +15,7 @@ namespace Tests
     // - tag repository (maybe for displaying all relevant questions when clicking on a tag?) (repository missing)
     public class DataServiceTests
     {
-        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=is131095";
 
         //For RUC's database connection
         // private readonly string _connectionString = "host=rawdata.ruc.dk;db=raw4;uid=raw4;pwd=yzOrEFi)";
@@ -117,7 +117,7 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
-            string annotation = "Test Annotation";
+            string annotation = "Something here";
             int submissionId = 19;
             int userId = 1;
 
@@ -243,9 +243,10 @@ namespace Tests
             annotationRepository.Create(annotation, submissionId, userId);
 
             // Assert
-            Assert.True(databaseContext.Annotations.Count() <= 1);
-
             annotationRepository.Delete(submissionId, userId);
+            int annotationCount = databaseContext.Annotations.Where(annotation => annotation.UserId == userId && annotation.SubmissionId == submissionId).Count();
+
+            Assert.True(annotationCount <= 1);
         }
 
         [Fact]
@@ -621,7 +622,7 @@ namespace Tests
             // Assert
             Assert.All(linkPosts, linkPost =>
             {
-                Assert.NotNull(linkPost.Submission);
+                Assert.NotNull(linkPost.Question);
                 Assert.True(linkPost.LinkPostId == linkedPostId);
                 Assert.True(linkPost.QuestionId == questionId);
 
@@ -1055,7 +1056,7 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             UserRepository userRepository = new UserRepository(databaseContext);
 
-            string username = "John Miller";
+            string username = "John Milleroni";
             string password = "hunter2";
             string salt = "pretendthisisrandomstuff";
 

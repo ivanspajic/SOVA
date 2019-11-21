@@ -18,7 +18,7 @@ namespace Data_Layer
 
         public IEnumerable<LinkPost> GetLinkedPostByQuestionId(int questionId)
         {
-            return _databaseContext.LinkPosts.Include(l => l.Submission).ThenInclude(s => s.SoMember).Where(l => l.QuestionId == questionId);
+            return _databaseContext.LinkPosts.Include(l => l.Question).ThenInclude(q => q.Submission).ThenInclude(s => s.SoMember).Where(l => l.QuestionId == questionId);
         }
     }
 }
