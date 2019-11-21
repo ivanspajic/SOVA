@@ -8,6 +8,5 @@ namespace Models
         public bool Accepted { get; set; }
         public Submission Submission { get; set; }
         public int SubmissionId { get; set; }
-        public IEnumerable<Comment> Comments { get; set; }
     }
 }

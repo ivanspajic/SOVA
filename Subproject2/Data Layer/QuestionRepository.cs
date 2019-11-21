@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Data_Layer.Database_Context;
@@ -30,14 +31,21 @@ namespace Data_Layer
             return _databaseContext.Questions.Include(q => q.Submission.SoMember).FirstOrDefault(x => x.SubmissionId == submissionId);
         }
 
-        public List<QuestionsTag> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes)
+        public IEnumerable<QuestionsTag> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes)
         {
             var tag = _databaseContext.Tags.FirstOrDefault(t => t.TagString == tagName);
             if (tag == null)
                 return null;
-            return _databaseContext.QuestionsTags.Include(qt => qt.Question).Where(qt => qt.TagId == tag.Id).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+            return _databaseContext.QuestionsTags.Where(qt => qt.TagId == tag.Id).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
                 .Take(pagingAttributes.PageSize)
                 .ToList();
+        }
+        public IEnumerable<QuestionsTag> GetQuestionsTags(int questionId)
+        {
+            var questionTags = _databaseContext.QuestionsTags.Include(qt => qt.Tag).Where(qt => qt.QuestionId == questionId);
+            if (!questionTags.Any())
+                return null;
+            return questionTags.ToList();
         }
 
         public IEnumerable<SearchResult> SearchQuestions(string queryString, int? userId, PagingAttributes pagingAttributes)

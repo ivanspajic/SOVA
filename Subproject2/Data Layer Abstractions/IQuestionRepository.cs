@@ -10,6 +10,7 @@ namespace Data_Layer_Abstractions
         IEnumerable<Question> GetQuestions(PagingAttributes pagingAttributes);
         Question GetById(int submissionId);
         IEnumerable<SearchResult> SearchQuestions(string queryString, int? userId, PagingAttributes pagingAttributes);
-        List<QuestionsTag> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes);
+        IEnumerable<QuestionsTag> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes);
+        IEnumerable<QuestionsTag> GetQuestionsTags(int questionId);
     }
 }
