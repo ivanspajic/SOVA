@@ -41,11 +41,15 @@ namespace SOVA.Controllers
         public ActionResult GetQuestionById(int questionId)
         {
             var question = _questionRepository.GetById(questionId);
+
             if (question == null)
             {
                 return NotFound();
             }
-            return Ok(CreateQuestionDto(question));
+
+            return Ok(question);
+
+            //return Ok(CreateQuestionDto(question));
         }
 
         [HttpGet("{questionId}/answers", Name = nameof(GetAnswersForQuestion))]
