@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Mvc;
 using Npgsql;
 
 namespace SOVA
@@ -40,9 +41,13 @@ namespace SOVA
             var dbConnectionString = builder.GetSection("StackOverflow:ConnectionString").Value;
 
             // for ruc's database connection
-            //var dbConnectionString = "host=rawdata.ruc.dk;db=raw4;uid=raw4;pwd=yzOrEFi)";
+            // var dbConnectionString = "host=rawdata.ruc.dk;db=raw4;uid=raw4;pwd=yzOrEFi)";
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.All;
+            });
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddTransient<IQuestionRepository>(provider => new QuestionRepository(new SOVAContext(dbConnectionString)));
@@ -52,6 +57,7 @@ namespace SOVA
             services.AddTransient<IUserRepository>(provider => new UserRepository(new SOVAContext(dbConnectionString)));
             services.AddTransient<IAnnotationRepository>(provider => new AnnotationRepository(new SOVAContext(dbConnectionString)));
             services.AddTransient<IMarkingRepository>(provider => new MarkingRepository(new SOVAContext(dbConnectionString)));
+            services.AddTransient<ILinkPostRepository>(provider => new LinkPostRepository(new SOVAContext(dbConnectionString)));
 
             var key = Encoding.UTF8.GetBytes(builder.GetSection("Auth:Key").Value);
 

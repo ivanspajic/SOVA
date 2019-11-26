@@ -6,6 +6,6 @@ namespace SOVA.Models
     {
         public string Link { get; set; }
         public int Id { get; set; }
-        public Submission CommentSubmission { get; set; }
+        public Submission Submission { get; set; }
     }
 }

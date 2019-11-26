@@ -31,8 +31,19 @@ namespace Data_Layer
         }
         public User GetUserByUsername(string username)
         {
-            return _databaseContext.Users.FirstOrDefault(u => u.Username == username);
+            if (username == null)
+            {
+                return null;
+            }
+            var user = _databaseContext.Users.FirstOrDefault(u => u.Username == username);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user;
         }
+
         public User CreateUser(string username, string password, string salt)
         {
             if (string.IsNullOrWhiteSpace(username) ||
@@ -45,7 +56,6 @@ namespace Data_Layer
             {
                 return null;
             }
-
             // If the Users table is not empty, increment the existing ID by 1; else set the ID to 1.
             var userId = _databaseContext.Users.Any() ? _databaseContext.Users.Max(x => x.Id) + 1 : 1;
             var user = new User()

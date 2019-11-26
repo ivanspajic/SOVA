@@ -1,10 +1,13 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Data_Layer.Database_Context;
 using Data_Layer_Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Npgsql;
+using System.Diagnostics;
 
 namespace Data_Layer
 {
@@ -20,24 +23,44 @@ namespace Data_Layer
         public IEnumerable<Question> GetQuestions(PagingAttributes pagingAttributes)
         {
             var randomOffSet = new Random().Next(1, 1000);
-            return _databaseContext.Questions.Skip(randomOffSet).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+            return _databaseContext.Questions.Include(q => q.Submission).ThenInclude(q => q.SoMember).Include(q => q.QuestionsTags).ThenInclude(q => q.Tag).Skip(randomOffSet).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
                 .Take(pagingAttributes.PageSize)
                 .ToList();
         }
 
         public Question GetById(int submissionId)
         {
-            return _databaseContext.Questions.Find(submissionId);
+            return _databaseContext.Questions
+                .Include(question => question.Submission)
+                    .ThenInclude(submission => submission.Comments)
+                        .ThenInclude(comment => comment.Submission)
+                .Include(question => question.QuestionsTags)
+                    .ThenInclude(questionTag => questionTag.Tag)
+                .Include(question => question.Answers)
+                    .ThenInclude(answer => answer.Submission)
+                        .ThenInclude(submission => submission.Comments)
+                            .ThenInclude(comment => comment.Submission)
+                .Include(question => question.LinkedPosts)
+                    .ThenInclude(linkPost => linkPost.LinkedPost)
+                        .ThenInclude(linkedPost => linkedPost.Submission)
+                .FirstOrDefault(question => question.SubmissionId == submissionId);
         }
 
-        public List<QuestionsTag> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes)
+        public IEnumerable<QuestionsTag> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes)
         {
             var tag = _databaseContext.Tags.FirstOrDefault(t => t.TagString == tagName);
             if (tag == null)
                 return null;
-            return _databaseContext.QuestionsTags.Include(qt => qt.Question).Where(qt => qt.TagId == tag.Id).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+            return _databaseContext.QuestionsTags.Where(qt => qt.TagId == tag.Id).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
                 .Take(pagingAttributes.PageSize)
                 .ToList();
+        }
+        public IEnumerable<QuestionsTag> GetQuestionsTags(int questionId)
+        {
+            var questionTags = _databaseContext.QuestionsTags.Include(qt => qt.Tag).Where(qt => qt.QuestionId == questionId);
+            if (!questionTags.Any())
+                return null;
+            return questionTags.ToList();
         }
 
         public IEnumerable<SearchResult> SearchQuestions(string queryString, int? userId, PagingAttributes pagingAttributes)

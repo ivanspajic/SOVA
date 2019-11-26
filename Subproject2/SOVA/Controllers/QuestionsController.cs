@@ -16,14 +16,18 @@ namespace SOVA.Controllers
         private readonly IQuestionRepository _questionRepository;
         private IMapper _mapper;
 
-        private readonly IAnswerRepository _answerRepository; // this should not exist in this controller, it is a workaround
+        private readonly IAnswerRepository _answerRepository;
+        private readonly ICommentRepository _commentRepository;
+        private readonly ILinkPostRepository _linkPostRepository;
 
-        public QuestionsController(IQuestionRepository questionRepository, IMapper mapper, IAnswerRepository answerRepository) // workaround
+
+        public QuestionsController(IQuestionRepository questionRepository, IAnswerRepository answerRepository, ICommentRepository commentRepository, ILinkPostRepository linkPostRepository, IMapper mapper)
         {
             _questionRepository = questionRepository;
+            _answerRepository = answerRepository;
+            _commentRepository = commentRepository;
+            _linkPostRepository = linkPostRepository;
             _mapper = mapper;
-
-            _answerRepository = answerRepository; //workaround
         }
 
         [HttpGet(Name = nameof(GetQuestions))]
@@ -37,17 +41,21 @@ namespace SOVA.Controllers
         public ActionResult GetQuestionById(int questionId)
         {
             var question = _questionRepository.GetById(questionId);
+
             if (question == null)
             {
                 return NotFound();
             }
-            return Ok(CreateQuestionDto(question));
+
+            return Ok(question);
+
+            //return Ok(CreateQuestionDto(question));
         }
 
         [HttpGet("{questionId}/answers", Name = nameof(GetAnswersForQuestion))]
         public ActionResult GetAnswersForQuestion([FromQuery] PagingAttributes pagingAttributes, int questionId)
         {
-            var answers = _answerRepository.GetAnswersForQuestionById(questionId, pagingAttributes); // workaround
+            var answers = _answerRepository.GetAnswersForQuestionById(questionId);
             return Ok(CreateAnswerResult(answers, questionId, pagingAttributes));
         }
 
@@ -60,11 +68,9 @@ namespace SOVA.Controllers
             return Ok(CreateSearchResult(searchResults, queryString, userId, pagingAttributes));
         }
 
-        //[Authorize]
         [HttpGet("tag/{tagString}", Name = nameof(SearchQuestionByTag))]
         public ActionResult SearchQuestionByTag([FromQuery] PagingAttributes pagingAttributes, string tagString)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var searchResults = _questionRepository.GetQuestionsByTags(tagString, pagingAttributes);
             return Ok(CreateTagsResult(searchResults, tagString, pagingAttributes));
         }
@@ -81,6 +87,10 @@ namespace SOVA.Controllers
             dto.Link = Url.Link(
                     nameof(GetQuestionById),
                     new { questionId = question.SubmissionId });
+            dto.Answers = _answerRepository.GetAnswersForQuestionById(question.SubmissionId);
+            dto.Comments = _commentRepository.GetAllCommentsBySubmissionId(question.SubmissionId);
+            dto.Tags = _questionRepository.GetQuestionsTags(question.SubmissionId);
+            dto.LinkPosts = _linkPostRepository.GetLinkedPostByQuestionId(question.SubmissionId);
             return dto;
         }
 

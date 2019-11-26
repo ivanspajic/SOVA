@@ -16,10 +16,10 @@ namespace Tests
     // - tag repository (maybe for displaying all relevant questions when clicking on a tag?) (repository missing)
     public class DataServiceTests
     {
-        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=is131095";
 
         //For RUC's database connection
-        //private readonly string _connectionString = "host=rawdata.ruc.dk;db=raw4;uid=raw4;pwd=yzOrEFi)";
+        // private readonly string _connectionString = "host=rawdata.ruc.dk;db=raw4;uid=raw4;pwd=yzOrEFi)";
         public User EnsureTestUserExistsThroughContext_ReturnsTestUser()
         {
             SOVAContext databaseContext = new SOVAContext(_connectionString);
@@ -41,7 +41,7 @@ namespace Tests
 
             databaseContext.SaveChanges();
 
-            return databaseContext.Users.Where(user => user.Username == testUsername).First();
+            return databaseContext.Users.First(user => user.Username == testUsername);
         }
 
         public Annotation EnsureTestAnnotationExistsThroughContext_ReturnsTestAnnotation(int userId)
@@ -118,7 +118,7 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnnotationRepository annotationRepository = new AnnotationRepository(databaseContext);
 
-            string annotation = "Test Annotation";
+            string annotation = "Something here";
             int submissionId = 19;
             int userId = 1;
 
@@ -244,7 +244,10 @@ namespace Tests
             annotationRepository.Create(annotation, submissionId, userId);
 
             // Assert
-            Assert.True(databaseContext.Annotations.Count() <= 1);
+            annotationRepository.Delete(submissionId, userId);
+            int annotationCount = databaseContext.Annotations.Where(annotation => annotation.UserId == userId && annotation.SubmissionId == submissionId).Count();
+
+            Assert.True(annotationCount <= 1);
         }
 
         [Fact]
@@ -300,7 +303,7 @@ namespace Tests
         }
 
         [Fact]
-        public void GetAnswerById_IncludesSubmissions_IncludesComments_ThenIncludesSubmissions()
+        public void GetAnswerById_IncludesSubmissions()
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
@@ -313,7 +316,6 @@ namespace Tests
 
             // Assert
             Assert.NotNull(answer.Submission);
-            Assert.All(answer.Comments, (comment) => Assert.NotNull(comment.CommentSubmission));
         }
 
         [Fact]
@@ -325,39 +327,31 @@ namespace Tests
 
             int questionId = 19;
 
-            PagingAttributes testAttributes = new PagingAttributes();
-
             // Act
-            IEnumerable<Answer> answers = answerRepository.GetAnswersForQuestionById(questionId, testAttributes);
+            IEnumerable<Answer> answers = answerRepository.GetAnswersForQuestionById(questionId);
 
             // Assert
             Assert.All(answers, (answer) => Assert.Equal(questionId, answer.ParentId));
         }
 
         [Theory]
-        [InlineData(0, 1, 1)]
-        [InlineData(-1, 1, 1)]
-        public void GetAnswersByQuestionId_InvalidArguments(int questionId, int pageSize, int pageNumber)
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetAnswersByQuestionId_InvalidArguments(int questionId)
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             AnswerRepository answerRepository = new AnswerRepository(databaseContext);
 
-            PagingAttributes testAttributes = new PagingAttributes()
-            {
-                Page = pageNumber - 1,
-                PageSize = pageSize
-            };
-
             // Act
-            IEnumerable<Answer> answers = answerRepository.GetAnswersForQuestionById(questionId, testAttributes);
+            IEnumerable<Answer> answers = answerRepository.GetAnswersForQuestionById(questionId);
 
             // Assert
             Assert.Null(answers);
         }
 
         [Fact]
-        public void GetAnswersByQuestionId_IncludesSubmission_IncludesComments()
+        public void GetAnswersByQuestionId_IncludesSubmission()
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
@@ -365,16 +359,15 @@ namespace Tests
 
             int questionId = 19;
 
-            PagingAttributes testAttributes = new PagingAttributes();
-
             // Act
-            IEnumerable<Answer> answers = answerRepository.GetAnswersForQuestionById(questionId, testAttributes);
+            IEnumerable<Answer> answers = answerRepository.GetAnswersForQuestionById(questionId);
 
             // Assert
-            Assert.All(answers, (answer) =>
+            Assert.All(answers, (a) =>
             {
-                Assert.NotNull(answer.Submission);
-                Assert.All(answer.Comments, (comment) => Assert.NotNull(comment.CommentSubmission));
+                Assert.NotNull(a.Submission);
+                Assert.NotNull(a.Accepted);
+                Assert.NotNull(a.ParentId);
             });
         }
 
@@ -386,7 +379,7 @@ namespace Tests
             CommentRepository commentRepository = new CommentRepository(databaseContext);
 
             int submissionId = 19;
-            int expectedNumberOfComments = databaseContext.Comments.Where(comment => comment.SubmissionId == submissionId).Count();
+            int expectedNumberOfComments = databaseContext.Comments.Count(comment => comment.SubmissionId == submissionId);
 
             // Act
             int actualNumberOfComments = commentRepository.NoOfComments(submissionId);
@@ -421,45 +414,26 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             CommentRepository commentRepository = new CommentRepository(databaseContext);
 
-            PagingAttributes testAttributes = new PagingAttributes()
-            {
-                Page = pageNumber - 1,
-                PageSize = pageSize
-            };
-
-            IEnumerable<Comment> expectedComments = databaseContext.Comments
-                                                        .Where(comment => comment.SubmissionId == submissionId)
-                                                        .Skip(testAttributes.Page * testAttributes.PageSize)
-                                                        .Take(pageSize);
+            IEnumerable<Comment> expectedComments = databaseContext.Comments.Where(comment => comment.SubmissionId == submissionId);
 
             // Act
-            IEnumerable<Comment> actualComments = commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
+            IEnumerable<Comment> actualComments = commentRepository.GetAllCommentsBySubmissionId(submissionId);
 
             // Assert
             Assert.Equal(expectedComments, actualComments);
         }
 
         [Theory]
-        [InlineData(0, 1, 1)]
-        [InlineData(-1, 1, 1)]
-        [InlineData(19, 1, 0)]
-        [InlineData(19, 1, -2)]
-        [InlineData(19, -2, 1)]
-        [InlineData(-1, -1, -1)]
-        public void GetCommentsBySubmissionId_InvalidArguments(int submissionId, int pageNumber, int pageSize)
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetCommentsBySubmissionId_InvalidArguments(int submissionId)
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             CommentRepository commentRepository = new CommentRepository(databaseContext);
 
-            PagingAttributes testAttributes = new PagingAttributes()
-            {
-                Page = pageNumber - 1,
-                PageSize = pageSize
-            };
-
             // Act
-            IEnumerable<Comment> comments = commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
+            IEnumerable<Comment> comments = commentRepository.GetAllCommentsBySubmissionId(submissionId);
 
             // Assert
             Assert.Empty(comments);
@@ -474,13 +448,11 @@ namespace Tests
 
             int submissionId = 19;
 
-            PagingAttributes testAttributes = new PagingAttributes();
-
             // Act
-            IEnumerable<Comment> comments = commentRepository.GetAllCommentsBySubmissionId(submissionId, testAttributes);
+            IEnumerable<Comment> comments = commentRepository.GetAllCommentsBySubmissionId(submissionId);
 
             // Arrange
-            Assert.All(comments, (comment) => Assert.NotNull(comment.CommentSubmission));
+            Assert.All(comments, (comment) => Assert.NotNull(comment.Submission));
         }
 
         [Theory]
@@ -604,51 +576,58 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             LinkPostRepository linkPostRepository = new LinkPostRepository(databaseContext);
 
-            int questionId = 6173;
-            int linkedPostId = 1732348;
+            int questionId = 841646;
+            int linkedPostId = 19;
 
             // Act
-            LinkPost linkPost = linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
+            var linkPosts = linkPostRepository.GetLinkedPostByQuestionId(questionId);
 
             // Assert
-            Assert.Equal(questionId, linkPost.QuestionId);
-            Assert.Equal(linkedPostId, linkPost.LinkPostId);
+            Assert.All(linkPosts, (l) =>
+            {
+                Assert.True(l.QuestionId == questionId);
+                Assert.True(l.LinkPostId == linkedPostId);
+
+            });
         }
 
         [Theory]
-        [InlineData(0, 1732348)]
-        [InlineData(-1, 1732348)]
-        [InlineData(6173, 0)]
-        [InlineData(6173, -1)]
-        [InlineData(-1, -1)]
-        public void GetLinkPostByQuestionAndLinkedPostIds_InvalidArgument(int questionId, int linkedPostId)
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetLinkPostByQuestionAndLinkedPostIds_InvalidArgument(int questionId)
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             LinkPostRepository linkPostRepository = new LinkPostRepository(databaseContext);
 
             // Act
-            LinkPost linkPost = linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
+            var linkPosts = linkPostRepository.GetLinkedPostByQuestionId(questionId);
 
             // Assert
-            Assert.Null(linkPost);
+            Assert.All(linkPosts, Assert.Null);
         }
 
         [Fact]
-        public void GetLinkPostByQuestionAndLinkedPostIds_IncludeQuestion_IncludeSubmission()
+        public void GetLinkPostByQuestionId()
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             LinkPostRepository linkPostRepository = new LinkPostRepository(databaseContext);
 
-            int questionId = 6173;
-            int linkedPostId = 1732348;
+            int questionId = 841646;
+            int linkedPostId = 19;
 
             // Act
-            LinkPost linkPost = linkPostRepository.GetByQuestionAndLinkedPostIds(questionId, linkedPostId);
+            var linkPosts = linkPostRepository.GetLinkedPostByQuestionId(questionId);
 
             // Assert
-            Assert.NotNull(linkPost.LinkedPost.Submission);
+            Assert.All(linkPosts, linkPost =>
+            {
+                Assert.NotNull(linkPost.Question);
+                Assert.True(linkPost.LinkPostId == linkedPostId);
+                Assert.True(linkPost.QuestionId == questionId);
+
+            });
         }
 
         [Fact]
@@ -926,7 +905,7 @@ namespace Tests
         }
 
         [Fact]
-        public void GetQuestionById_IncludesSubmission_IncludesCommentsSubmissions_IncludesTags_IncludesAnswersSubmissions_IncludesAnswersCommentsSubmissions()
+        public void GetQuestionById_IncludesSubmission()
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
@@ -939,14 +918,28 @@ namespace Tests
 
             // Assert
             Assert.NotNull(question.Submission);
-            Assert.NotNull(question.Comments);
-            Assert.All(question.Comments, (comment) => Assert.NotNull(comment.CommentSubmission));
-            Assert.NotNull(question.QuestionsTags);
-            Assert.All(question.QuestionsTags, (questionsTag) => Assert.NotNull(questionsTag.Tag));
-            Assert.NotNull(question.Answers);
-            Assert.All(question.Answers, (answer) => Assert.NotNull(answer.Submission));
-            Assert.All(question.Answers, (answer) => Assert.NotNull(answer.Comments));
-            Assert.All(question.Answers, (answer) => Assert.All(answer.Comments, (comment) => Assert.NotNull(comment.CommentSubmission)));
+            Assert.NotNull(question.Submission.SoMember);
+            Assert.NotNull(question.Submission.CreationDate);
+        }
+
+        [Fact]
+        public void GetCommentsByParentId_IncludesComments()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            var commentRepository = new CommentRepository(databaseContext);
+
+            int submissionId = 19;
+
+            // Act
+            var comments = commentRepository.GetAllCommentsBySubmissionId(submissionId);
+
+            // Assert
+            Assert.All(comments, (c) =>
+            {
+                Assert.NotNull(c.Submission);
+                Assert.NotNull(c.SubmissionId);
+            });
         }
 
         [Fact]
@@ -995,7 +988,12 @@ namespace Tests
             User actualUser = userRepository.GetUserById(expectedUser.Id);
 
             // Assert
-            Assert.Equal(expectedUser, actualUser);
+            Assert.Equal(expectedUser.Username, actualUser.Username);
+            Assert.Equal(expectedUser.Salt, actualUser.Salt);
+            Assert.Equal(expectedUser.Password, actualUser.Password);
+            Assert.Equal(expectedUser.UserHistory, actualUser.UserHistory);
+            Assert.Equal(expectedUser.UserAnnotations, actualUser.UserAnnotations);
+            Assert.Equal(expectedUser.UserAnnotations, actualUser.UserAnnotations);
         }
 
         [Theory]
@@ -1027,7 +1025,12 @@ namespace Tests
             User actualUser = userRepository.GetUserByUsername(expectedUser.Username);
 
             // Assert
-            Assert.Equal(expectedUser, actualUser);
+            Assert.Equal(expectedUser.Username, actualUser.Username);
+            Assert.Equal(expectedUser.Salt, actualUser.Salt);
+            Assert.Equal(expectedUser.Password, actualUser.Password);
+            Assert.Equal(expectedUser.UserHistory, actualUser.UserHistory);
+            Assert.Equal(expectedUser.UserAnnotations, actualUser.UserAnnotations);
+            Assert.Equal(expectedUser.UserAnnotations, actualUser.UserAnnotations);
         }
 
         [Theory]
@@ -1054,7 +1057,7 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             UserRepository userRepository = new UserRepository(databaseContext);
 
-            string username = "John Miller";
+            string username = "John Milleroni";
             string password = "hunter2";
             string salt = "pretendthisisrandomstuff";
 

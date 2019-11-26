@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Data_Layer.Database_Context;
 using Data_Layer_Abstractions;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace Data_Layer
@@ -14,9 +16,9 @@ namespace Data_Layer
             _databaseContext = databaseContext;
         }
 
-        public LinkPost GetByQuestionAndLinkedPostIds(int questionId, int linkedPostId)
+        public IEnumerable<LinkPost> GetLinkedPostByQuestionId(int questionId)
         {
-            return _databaseContext.LinkPosts.Where((l) => l.QuestionId == questionId && l.LinkPostId == linkedPostId).FirstOrDefault();
+            return _databaseContext.LinkPosts.Include(l => l.Question).ThenInclude(q => q.Submission).ThenInclude(s => s.SoMember).Where(l => l.QuestionId == questionId);
         }
     }
 }
