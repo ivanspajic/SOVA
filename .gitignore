@@ -364,3 +364,5 @@ Subproject2/Models/obj/Debug/netcoreapp3.0/Models.AssemblyInfo.cs
 Subproject2/Models/obj/Debug/netcoreapp3.0/Models.assets.cache
 Subproject2/SOVA/appsettings.dbConnectionString.json
 Subproject2/SOVA/appsettings.dbConnectionString.json
+Subproject2/.vscode/launch.json
+Subproject2/.vscode/tasks.json
