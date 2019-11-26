@@ -1,4 +1,9 @@
-﻿.header-image {
+﻿body {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.header-image {
     height: 75px;
     cursor: pointer;
 }
