@@ -1,1 +1,3 @@
-﻿
+﻿define(["jquery"], function($) {
+
+});

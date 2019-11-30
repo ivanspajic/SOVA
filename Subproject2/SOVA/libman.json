@@ -3,10 +3,6 @@
   "defaultProvider": "unpkg",
   "libraries": [
     {
-      "library": "knockout@3.5.1",
-      "destination": "wwwroot/lib/knockout/"
-    },
-    {
       "library": "requirejs@2.3.6",
       "destination": "wwwroot/lib/requirejs/"
     },
@@ -17,6 +13,10 @@
     {
       "library": "jquery@3.4.1",
       "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "knockout@3.5.1",
+      "destination": "wwwroot/knockout/"
     }
   ]
 }
