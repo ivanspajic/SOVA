@@ -1,3 +1,2 @@
-﻿
-define(["knockout"], function (ko) {
+﻿define(["knockout"], function (ko) {
 })
