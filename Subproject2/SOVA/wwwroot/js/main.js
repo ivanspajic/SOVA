@@ -2,9 +2,14 @@
     baseUrl: "js",
     paths: {
         jquery: "../lib/jquery/dist/jquery",
-        knockout: "../lib/knockout/build/output/knockout-latest.debug",
+        knockout: "../lib/knockout/build/output/knockout-latest",
         text: "../lib/requirejs-text/text",
         dataService: "services/dataservice"
+    },
+    shim: {
+        knockout: {
+            exports: "ko"
+        }
     }
 });
 
@@ -14,8 +19,13 @@ require(["knockout"], function (ko) {
         template: { require: "text!components/landing-page/landing-page.html" }
     });
     ko.components.register("question-with-answers", {
-        viewModel: { require: "components/question-with-answers/question-with-answers" },
-        template: { require: "text!components/question-with-answers/question-with-answers.html" }
+        viewModel: {
+            require: "components/question-with-answers/question-with-answers"
+        },
+        template: {
+            require:
+                "text!components/question-with-answers/question-with-answers.html"
+        }
     });
 });
 

@@ -1,12 +1,8 @@
-﻿<ul>
-    <li>n+1</li>
-    <li>n+1</li>
-    <li>n+1</li>
-    <li>n+1</li>
-    <li>n+1</li>
-    <li>n+1</li>
-    <li>n+1</li>
-    <li>n+1</li>
-    <li>n+1</li>
-    <li>n+1</li>
-</ul>
+﻿<div class="questions-list" data-bind="foreach: questions">
+    <div>
+        <span class="question-score" data-bind="text: submission.score"></span>
+        <span class="questions" data-bind="text: title">
+        </span>
+    </div>
+    <span class="so-member" data-bind="text: submission.soMember.displayName"></span>
+</div>
