@@ -8,18 +8,17 @@
     }
 });
 
-
-require(["knockout"], function(ko) {
-    ko.components.register("landingPage", {
-        viewModel: { require: "components/landingPage/landingPage" },
-        template: { require: "text!components/landingPage/landingPage.html" }
+require(["knockout"], function (ko) {
+    ko.components.register("landing-page", {
+        viewModel: { require: "components/landing-page/landing-page" },
+        template: { require: "text!components/landing-page/landing-page.html" }
     });
-    ko.components.register("questionWithAnswers", {
-        viewModel: { require: "components/questionWithAnswers/questionWithAnswers" },
-        template: { require: "text!components/questionWithAnswers/questionWithAnswers.html" }
+    ko.components.register("question-with-answers", {
+        viewModel: { require: "components/question-with-answers/question-with-answers" },
+        template: { require: "text!components/question-with-answers/question-with-answers.html" }
     });
 });
 
-require(["knockout", "app"], function(ko, app, ds) {
+require(["knockout", "app"], function (ko, app, ds) {
     ko.applyBindings(app);
 });
