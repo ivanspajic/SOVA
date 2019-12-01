@@ -5,19 +5,20 @@
             <p style="font-size: 12px">votes</p>
         </div>
         <div style="width: 600px;">
-            <a class="title-value" data-bind="text: title"></a>
+            <a class="title-value" data-bind="attr: { href: submissionId }, text: title">
+            </a>
             <div data-bind="foreach: questionsTags.$values"
                  style="display: flex; flex-direction: row;">
-                <div class="tags" data-bind="text: tag.tagString"></div>
+                <a class="tags" data-bind="attr: { href: tag.id }, text: tag.tagString"></a>
             </div>
         </div>
 
         <div class="question-list-so-member"
              style="display: flex; flex-direction: row; ">
             <p style="color: #9199a1;">
-                asked by:
+                asked by: &nbsp
             </p>
-            <a data-bind="text: submission.soMember.displayName"> </a>
+            <a class="questions-list-so-member" data-bind="attr: { href: submission.soMember.id }, text: submission.soMember.displayName"> </a>
         </div>
     </div>
 </div>
