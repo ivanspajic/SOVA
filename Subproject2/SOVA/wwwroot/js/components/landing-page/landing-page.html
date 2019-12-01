@@ -1,8 +1,27 @@
-﻿<div class="questions-list" data-bind="foreach: questions">
-    <div>
-        <span class="question-score" data-bind="text: submission.score"></span>
-        <span class="questions" data-bind="text: title">
-        </span>
+﻿<div class="body-container" data-bind="foreach: questions">
+  <div class="question-block">
+    <div class="score-block">
+      <div class="score-value" data-bind="text: submission.score"></div>
+      <p style="font-size: 12px">score</p>
     </div>
-    <span class="so-member" data-bind="text: submission.soMember.displayName"></span>
+    <div style="width: 600px;">
+      <a class="title-value" data-bind="text: title"></a>
+      <div
+        data-bind="foreach: questionsTags.$values"
+        style="display: flex; flex-direction: row;"
+      >
+        <div class="tags" data-bind="text: tag.tagString"></div>
+      </div>
+    </div>
+
+    <div
+      class="question-list-so-member"
+      style="display: flex; flex-direction: row; "
+    >
+      <p style="color: #9199a1;">
+        asked by:
+      </p>
+      <a data-bind="text: submission.soMember.displayName"> </a>
+    </div>
+  </div>
 </div>
