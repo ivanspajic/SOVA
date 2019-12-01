@@ -68,6 +68,10 @@ a:hover {
         background-color: #CEE0EE;
     }
 
+a:not([href]) {
+    color: #39739d!important;
+}
+
 .question-list-so-member {
     text-align: right;
     font-size: 12px;

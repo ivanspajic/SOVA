@@ -9,7 +9,7 @@
             </a>
             <div data-bind="foreach: questionsTags.$values"
                  style="display: flex; flex-direction: row;">
-                <a class="tags" data-bind="attr: { href: tag.id }, text: tag.tagString"></a>
+                <a class="tags" data-bind="attr: { href: tag.id }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
             </div>
         </div>
 
