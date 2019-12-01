@@ -5,7 +5,7 @@
             <p style="font-size: 12px">votes</p>
         </div>
         <div style="width: 600px;">
-            <a class="title-value" data-bind="attr: { href: submissionId }, text: title">
+            <a class="title-value" data-bind="attr: { href: submissionId }, text: title, click: $parent.goToQuestionWithAnswer">
             </a>
             <div data-bind="foreach: questionsTags.$values"
                  style="display: flex; flex-direction: row;">
