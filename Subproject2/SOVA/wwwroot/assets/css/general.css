@@ -20,6 +20,7 @@
 .question-main-block {
     display: flex;
     flex-direction: row;
+    flex: 1 1 auto;
 }
 
 .tags-block {
@@ -48,10 +49,6 @@
     padding-top: 20px;
     font-weight: bold;
     font-size: 16px;
-}
-
-.title-block {
-    width: 600px;
 }
 
 .title-value {
@@ -96,6 +93,7 @@ a:not([href]) {
     flex-direction: row;
     color: #07C;
     width: 20%;
+    margin-left: auto;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -154,7 +152,6 @@ a:not([href]) {
     .score-value {
         padding-top: 20px;
         font-weight: bold;
-        font-size: 12px;
     }
 }
 
@@ -184,9 +181,8 @@ a:not([href]) {
     }
 
     .header-image {
-        margin-right: auto;
-        margin-bottom: 10px;
-        margin-top: 5px;
+        display: block;
+        margin: 5px auto 10px auto;
         height: 35px;
     }
 
