@@ -1,20 +1,18 @@
-﻿<div class="body-container" data-bind="foreach: questions">
-    <div class="question-block">
-        <div class="score-block">
-            <div class="score-value" data-bind="text: submission.score"></div>
+﻿<div class="container" data-bind="foreach: questions">
+    <div class="row">
+        <div class="col-md-1">
+            <div class="col-md-1" data-bind="text: submission.score"></div>
             <p style="font-size: 12px; margin-left: 5px;">votes</p>
         </div>
-        <div class="question-main-block">
-            <div class="title-block">
-                <a class="title-value" data-bind="attr: { href: `question/${submissionId}` }, text: title">
-                </a>
-                <div data-bind="foreach: questionsTags.$values" class="tags-block">
-                    <a class="tags" data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
-                </div>
+        <div class="col-md-8">
+            <a class="row" data-bind="attr: { href: `question/${submissionId}` }, text: title">
+            </a>
+            <div class="row" data-bind="foreach: questionsTags.$values" class="tags-block">
+                <a data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
             </div>
-
-            <div class="question-list-so-member"
-                 style="display: flex; flex-direction: row; ">
+        </div>
+        <div class="col-md-4">
+            <div class="row pull-right">
                 <p style="color: #9199a1;">
                     asked by:&nbsp
                 </p>
