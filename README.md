@@ -20,7 +20,7 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 
 ![#008000](https://placehold.it/15/008000/000000?text=+) [Subproject 2 - RESTful web service](https://github.com/ivanspajic/SOVA/tree/master/Subproject2): Completed 18 Nov, 2019
 
-![#005AFF](https://placehold.it/15/005AFF/000000?text=+) Subproject n - ??
+![#005AFF](https://placehold.it/15/005AFF/000000?text=+) Subproject 3 - Frontend with Knockout JS. Started.
 
 ----
 

@@ -1,9 +1,14 @@
-﻿define(["jquery"], function ($) {
-    var getQuestions = (callback) => {
-        $.getJSON("api/questions", callback);
-    };
-    var getQuestionAnswers = (questionId) => {
-        $.getJSON(`api/questions/${questionId}`);
+﻿define([], function () {
+    var getQuestions = async (callback) => {
+        var response = await fetch("api/questions");
+        var data = await response.json();
+        callback(data);
     }
-    return { getQuestions, getQuestionAnswers };
+
+    var getQuestionByIdWithAnswers = async (questionId, callback) => {
+        var response = await fetch(`api/questions/${questionId}`);
+        var data = await response.json();
+        callback(data);
+    }
+    return { getQuestions, getQuestionByIdWithAnswers };
 });
