@@ -5,10 +5,10 @@
         callback(data);
     }
 
-    var getQuestionByIdWithAnswers = async (questionId, callback) => {
-        var response = await fetch(`api/questions/${questionId}`);
+    var getQuestionByIdWithAnswers = async (callback, questionId) => {
+        var response = await fetch(`api/questions/19`);
         var data = await response.json();
-        callback(data);
+        callback(data, questionId);
     }
     return { getQuestions, getQuestionByIdWithAnswers };
 });
