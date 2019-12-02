@@ -17,6 +17,16 @@
     font-family: sans-serif;
 }
 
+.question-main-block {
+    display: flex;
+    flex-direction: row;
+}
+
+.tags-block {
+    display: flex;
+    flex-direction: row;
+}
+
 .question-block {
     display: flex;
     flex-direction: row;
@@ -40,10 +50,15 @@
     font-size: 16px;
 }
 
+.title-block {
+    width: 600px;
+}
+
 .title-value {
     font-size: 16px;
     justify-content: space-between;
     color: #07C;
+    width: 100%;
 }
 
 a:hover {
@@ -69,7 +84,7 @@ a:hover {
     }
 
 a:not([href]) {
-    color: #39739d!important;
+    color: #39739d !important;
 }
 
 .question-list-so-member {
@@ -79,8 +94,106 @@ a:not([href]) {
     padding-top: 40px;
     display: flex;
     flex-direction: row;
+    color: #07C;
+    width: 20%;
 }
 
-.questions-list-so-member {
-    color: #07C;
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .header-image {
+        margin: 0px;
+    }
+
+    .question-block {
+        display: flex;
+    }
+
+    question-list-so-member {
+        min-width: 150px;
+        flex-direction: row;
+    }
+
+    .score-block {
+        min-width: 50px;
+    }
+
+    .title-value {
+        font-size: 14px;
+    }
+
+    .header-image {
+        margin: 5px 0px 10px 5px;
+    }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    .header-image {
+        margin: 0px;
+    }
+
+    .question-block {
+        display: flex;
+        min-width: 300px;
+    }
+
+    .score-block {
+        min-width: 50px;
+    }
+
+    .title-block {
+        width: 100%
+    }
+
+    .title-value {
+        font-size: 14px;
+    }
+
+    .header-image {
+        margin: 5px 0px 10px 5px;
+    }
+
+    .score-value {
+        padding-top: 20px;
+        font-weight: bold;
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .title-value {
+        font-size: 12px;
+    }
+
+    .score-value {
+        padding-top: 20px;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .question-list-so-member {
+        margin-right: 35px;
+        padding-top: 10px;
+        width: 100%;
+    }
+
+    body {
+        line-height: 1;
+    }
+
+    .body-container {
+        flex-direction: column;
+    }
+
+    .header-image {
+        margin-right: auto;
+        margin-bottom: 10px;
+        margin-top: 5px;
+        height: 35px;
+    }
+
+    .question-main-block {
+        margin-left: 10px;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+    }
 }
