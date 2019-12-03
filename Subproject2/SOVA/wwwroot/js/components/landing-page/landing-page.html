@@ -1,5 +1,5 @@
 ﻿<div class="container" data-bind="foreach: questions">
-    <div class="row">
+    <div class="row border-bottom" style="margin-top: 15px;">
         <div class="col-md-1">
             <div class="col-md-1" data-bind="text: submission.score"></div>
             <p style="font-size: 12px; margin-left: 5px;">votes</p>
@@ -7,11 +7,11 @@
         <div class="col-md-8">
             <a class="row" data-bind="attr: { href: `question/${submissionId}` }, text: title">
             </a>
-            <div class="row" data-bind="foreach: questionsTags.$values" class="tags-block">
-                <a data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
+            <div class="row" data-bind="foreach: questionsTags.$values">
+                <a class="border rounded-lg bg-light tags" data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 offset-10">
             <div class="row pull-right">
                 <p style="color: #9199a1;">
                     asked by:&nbsp
