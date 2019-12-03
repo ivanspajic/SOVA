@@ -28,3 +28,26 @@ a:hover {
         color: #316795;
         background-color: #CEE0EE;
     }
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        max-width: none;
+    }
+
+    .header-image {
+        display: block;
+        margin: 5px auto 10px auto;
+        height: 35px;
+    }
+
+    .question-list-so-member {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .header-image {
+        margin: 5px auto 10px 20px;
+    }
+}
