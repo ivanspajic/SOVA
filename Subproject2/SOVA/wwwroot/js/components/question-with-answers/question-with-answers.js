@@ -1,13 +1,14 @@
 ﻿define(["knockout", "dataService"], function (ko, ds) {
     return function () {
-        var questionIdFromParams = window.location.split("/")[1];
-        console.log(questionIdFromParams);
+        var questionIdFromParams = 19;
+
         var questionWithAnswer = ko.observable();
-        ds.getQuestionByIdWithAnswers((questionIdFromParams, data) => {
-            questionWithAnswer(questionIdFromParams, data);
+        ds.getQuestionByIdWithAnswers((data, questionIdFromParams) => {
+            questionWithAnswer(data, questionIdFromParams);
         });
 
         return {
+            questionIdFromParams,
             questionWithAnswer
         };
 

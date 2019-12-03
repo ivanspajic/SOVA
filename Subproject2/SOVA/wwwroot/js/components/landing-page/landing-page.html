@@ -1,7 +1,7 @@
 ﻿<div class="container" data-bind="foreach: questions">
     <div class="row border-bottom" style="margin-top: 15px;">
-        <div class="col-md-1">
-            <div class="col-md-1" data-bind="text: submission.score"></div>
+        <div class="col-md-1 questions-score">
+            <div data-bind="text: submission.score"></div>
             <p style="font-size: 12px; margin-left: 5px;">votes</p>
         </div>
         <div class="col-md-8">
@@ -11,12 +11,12 @@
                 <a class="border rounded-lg bg-light tags" data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
             </div>
         </div>
-        <div class="col-md-4 offset-10">
+        <div class="col-md-4 offset-10 question-list-so-member">
             <div class="row pull-right">
                 <p style="color: #9199a1;">
                     asked by:&nbsp
                 </p>
-                <a style="color: #07C;" data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
+                <a data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
             </div>
         </div>
     </div>
