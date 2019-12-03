@@ -34,15 +34,7 @@ a:hover {
         width: 100%;
         max-width: none;
     }
-}
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-    .header-image {
-        margin: 5px auto 10px 20px;
-    }
-}
-
-@media only screen and (max-width: 767px) {
     .header-image {
         display: block;
         margin: 5px auto 10px auto;
@@ -51,5 +43,11 @@ a:hover {
 
     .question-list-so-member {
         font-size: 12px;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .header-image {
+        margin: 5px auto 10px 20px;
     }
 }
