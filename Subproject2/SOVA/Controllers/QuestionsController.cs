@@ -79,6 +79,17 @@ namespace SOVA.Controllers
             dto.Link = Url.Link(
                     nameof(GetQuestionById),
                     new { questionId = question.SubmissionId });
+
+            //handling comments and submission
+            dto.Comments = question.Submission.Comments;
+            dto.Submission.Comments = null; // this ensures we don't have duplicate comment collections, since we have a direct property already containing comments
+
+            //handling linked posts
+            dto.LinkPosts = question.LinkedPosts; 
+
+            //handling tags
+            dto.Tags = question.QuestionsTags;
+
             return dto;
         }
 
