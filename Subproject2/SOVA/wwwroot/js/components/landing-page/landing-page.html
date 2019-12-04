@@ -1,0 +1,27 @@
+﻿<div class="container" data-bind="foreach: questions">
+    <div class="row border-bottom " style="margin-top: 15px;">
+        <div class="col-xs-1 col-sm-1 col-md-1 d-none d-sm-block questions-score">
+            <div data-bind="text: submission.score"></div>
+            <p style="font-size: 12px;">votes</p>
+        </div>
+        <div class="col-xs-8 col-sm-8 pl-3">
+            <div class="row d-block d-sm-none" style="font-size:12px;">
+                <strong data-bind="text: submission.score"></strong>
+                <span>votes</span>
+            </div>
+            <a class="row" data-bind="attr: { href: `question/${submissionId}` }, text: title">
+            </a>
+            <div class="row" data-bind="foreach: questionsTags.$values">
+                <a class="border rounded-lg bg-light tags" data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
+            </div>
+        </div>
+        <div class="col-sm-4 offset-md-9 pl-3 pt-3 question-list-so-member">
+            <div class="row">
+                <p style="color: #9199a1;">
+                    asked by:&nbsp
+                </p>
+                <a data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
+            </div>
+        </div>
+    </div>
+</div>

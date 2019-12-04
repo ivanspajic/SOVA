@@ -1,0 +1,53 @@
+﻿.header-image {
+    height: 55px;
+    cursor: pointer;
+    margin: 20px 0px 40px 80px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.question-list-so-member {
+    font-size: 14px;
+    text-align: center;
+    margin-right: 5px
+}
+
+.questions-score {
+    text-align: center;
+}
+
+.tags {
+    font-size: 12px;
+    margin: 10px 10px 0px 0px;
+    padding: .4em;
+}
+
+    .tags:hover {
+        color: #316795;
+        background-color: #CEE0EE;
+    }
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        max-width: none;
+    }
+
+    .header-image {
+        display: block;
+        margin: 5px auto 10px auto;
+        height: 35px;
+    }
+
+    .question-list-so-member {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .header-image {
+        margin: 5px auto 10px 20px;
+    }
+}
