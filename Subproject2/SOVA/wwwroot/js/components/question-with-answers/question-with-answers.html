@@ -1,2 +1,5 @@
-﻿<h1>Question With Answers</h1>
-<div data-bind="text: ko.toJSON($data)"></div>
+﻿<div class="container" data-bind="with: questionByIdWithAnswers">
+    Score: <span data-bind="text: submission.score"></span><br /><br />
+    Question Title: <span data-bind="text: title"></span><br /><br />
+    Question Body: <span data-bind="text: submission.body"></span>
+</div>

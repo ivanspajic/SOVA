@@ -1,6 +1,14 @@
-﻿define(["knockout"], function (ko) {
+﻿define(["knockout", "store"], function (ko, store) {
     var activeComponent = ko.observable("landing-page");
     var activeParams = ko.observable({});
 
-    return { activeComponent, activeParams };
+    var changeContent = function (questionId) {
+        store.dispatch(store.actions.selectQuestion(questionId));
+    };
+
+    store.subscribe(() => {
+        activeComponent("question-with-answers");
+    });
+
+    return { activeComponent, activeParams, changeContent };
 });
