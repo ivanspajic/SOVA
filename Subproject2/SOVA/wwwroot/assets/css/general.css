@@ -41,9 +41,26 @@ a:hover {
         height: 35px;
     }
 
+    .header-border {
+        border-bottom: solid;
+        border-width: 1px;
+    }
+
     .question-list-so-member {
         font-size: 12px;
     }
+
+    .question-title {
+        font-size: 20px;
+    }
+
+    .answer-body {
+        line-height: normal;
+    }
+}
+
+.answer-body *:before, .answer-body *:after {
+    box-sizing: content-box !important;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
