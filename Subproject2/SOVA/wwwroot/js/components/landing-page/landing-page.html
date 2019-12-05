@@ -1,5 +1,5 @@
 ﻿<div class="container" data-bind="foreach: questions">
-    <div class="row border-bottom " style="margin-top: 15px;">
+    <div class="row border-bottom" style="margin-top: 15px;">
         <div class="col-xs-1 col-sm-1 col-md-1 d-none d-sm-block questions-score">
             <div data-bind="text: submission.score"></div>
             <p style="font-size: 12px;">votes</p>
@@ -9,7 +9,7 @@
                 <strong data-bind="text: submission.score"></strong>
                 <span>votes</span>
             </div>
-            <a class="row" data-bind="attr: { href: `question/${submissionId}` }, text: title">
+            <a class="row" data-bind="attr: {href: `question/${submissionId}`, title: title }, text: title, click: $parent.selectQuestion.bind($data, submission)">
             </a>
             <div class="row" data-bind="foreach: questionsTags.$values">
                 <a class="border rounded-lg bg-light tags" data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>

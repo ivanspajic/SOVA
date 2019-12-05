@@ -4,9 +4,11 @@
         jquery: "../lib/jquery/dist/jquery",
         knockout: "../lib/knockout/build/output/knockout-latest",
         text: "../lib/requirejs-text/text",
-        dataService: "services/dataservice"
+        dataService: "services/dataservice",
+        store: "services/store"
     },
     shim: {
+        jqcloud: ["jquery"],
         knockout: {
             exports: "ko"
         }
@@ -29,6 +31,7 @@ require(["knockout"], function (ko) {
     });
 });
 
-require(["knockout", "app"], function (ko, app, ds) {
+require(["knockout", "app", "store"], function (ko, app, store) {
+    store.subscribe(() => console.log(store.getState()));
     ko.applyBindings(app);
 });
