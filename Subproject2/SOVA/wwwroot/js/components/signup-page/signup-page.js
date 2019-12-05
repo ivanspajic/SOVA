@@ -2,7 +2,9 @@
 
     var activeComponent = ko.observable("signup-page");
 
-    return function (params) {
-        activeComponent
+    return function () {
+        return {
+            activeComponent
+        }
     };
 });

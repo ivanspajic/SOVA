@@ -1,6 +1,7 @@
 ﻿define([], function () {
     const selectQuestion = "SELECT_QUESTION";
     const selectMenu = "SELECT_MENU";
+    const signupUser = "SIGN_UP";
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
@@ -16,9 +17,11 @@
     var reducer = function (state, action) {
         switch (action.type) {
             case selectQuestion:
-                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId });
+                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: "question-with-answers" });
             case selectMenu:
-                return Object.assign({}, state, { selectedMenu: action.selectedMenu });
+                return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: "login-page" });
+            case signupUser:
+                return Object.assign({}, state, { activeComponent: "signup-page" });
             default:
                 return state;
         }
@@ -33,14 +36,22 @@
         selectQuestion: function (questionId) {
             return {
                 type: selectQuestion,
-                selectedQuestionId: questionId
+                selectedQuestionId: questionId,
+                activeComponent: "question-with-answers"
             };
         },
         selectMenu: function (menu) {
             return {
                 type: selectMenu,
-                selectedMenu: menu
+                selectedMenu: menu,
+                activeComponent: "login-page"
             };
+        },
+        signupUser: function (menu) {
+            return {
+                type: signupUser,
+                activeComponent: "signup-page"
+            }
         }
     };
 

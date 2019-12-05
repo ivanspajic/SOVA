@@ -2,14 +2,14 @@
 
     var activeComponent = ko.observable("login-page");
 
-    var signupUser = function (params) {
-        activeComponent = ko.observable("signup-page");
+    var signupUser = function () {
+        store.dispatch(store.actions.signupUser());
     };
 
-    return function (params) {
+    return function () {
         return {
             activeComponent,
             signupUser
         };
-    };    
+    };
 });

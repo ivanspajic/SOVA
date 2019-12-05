@@ -3,8 +3,7 @@
     var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
 
     store.subscribe(function () {
-        state = store.getState();
-        selectedQuestionId(state.selectedQuestionId);
+        selectedQuestionId(store.getState().selectedQuestionId);
     });
 
     var getQuestions = async (callback) => {
