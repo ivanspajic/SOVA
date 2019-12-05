@@ -16,7 +16,14 @@
     },
     {
       "library": "knockout@3.5.1",
-      "destination": "wwwroot/knockout/"
+      "destination": "wwwroot/lib/knockout/"
+    },
+    {
+      "library": "moment@2.24.0",
+      "destination": "wwwroot/lib/moment/",
+      "files": [
+        "min/moment-with-locales.js"
+      ]
     }
   ]
 }

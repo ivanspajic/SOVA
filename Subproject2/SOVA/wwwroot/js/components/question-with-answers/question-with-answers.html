@@ -14,7 +14,7 @@
                 <div class="col-sm-4 offset-md-10 pl-3 pt-3 question-list-so-member">
                     <div class="row text-secondary">
                         <span>asked on:&nbsp</span>
-                        <span data-bind="text: submission.creationDate"></span><br />
+                        <span data-bind="text: moment(submission.creationDate).format(L)"></span><br />
                         <a data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
                     </div>
                 </div>
