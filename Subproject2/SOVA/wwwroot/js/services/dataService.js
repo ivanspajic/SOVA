@@ -18,5 +18,12 @@
         var data = await response.json();
         callback(data);
     }
-    return { getQuestions, getQuestionByIdWithAnswers, selectedQuestionId };
+
+    var bookmark = async (callback) => {
+        var response = await fetch(`api/${selectedQuestionId()}/bookmarks`, {method: 'PUT'});
+        var data = await response.json();
+        callback(data);
+    }
+
+    return { getQuestions, getQuestionByIdWithAnswers, bookmark, selectedQuestionId };
 });
