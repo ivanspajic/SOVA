@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <div class="row mt-4 answer-body">
+        <div class="row mt-4 question-body">
             <div class="col-1 text-center d-none d-md-block">
                 <div>
                     <h3 data-bind="text: submission.score"></h3>
@@ -28,8 +28,30 @@
                 <span>votes</span>
             </div>
 
-            <div class="col-10 answer-body">
+            <div class="col-10">
                 <p data-bind="html: submission.body"></p>
+            </div>
+        </div>
+    </div>
+
+    <div data-bind="with: answers.$values[0]">
+        <div data-bind="foreach: question.answers.$values">
+            <div class="border-bottom border-dark">
+                <div class="row mb-2 mb-md-4">
+                    <!-- Read here for more: https://stackoverflow.com/questions/15300322/skip-item-in-foreach-knockout-js-array -->
+                    <!-- ko if: $index() != 0 -->
+                    <div class="col-1 text-center d-none d-md-block">
+                        <div>
+                            <h3 data-bind="text: submission.score"></h3>
+                        </div>
+                        <span>votes</span>
+                    </div>
+                    <div class="col-10">
+                        <p data-bind="html: submission.body"></p>
+                    </div>
+                    <!-- /ko -->
+                </div>
+
             </div>
         </div>
     </div>
