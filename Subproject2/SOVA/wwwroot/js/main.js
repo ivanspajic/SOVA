@@ -29,6 +29,10 @@ require(["knockout"], function (ko) {
                 "text!components/question-with-answers/question-with-answers.html"
         }
     });
+    ko.components.register("login-page", {
+        viewModel: { require: "components/login-page/login-page" },
+        template: { require: "text!components/login-page/login-page.html" }
+    });
 });
 
 require(["knockout", "app", "store"], function (ko, app, store) {
