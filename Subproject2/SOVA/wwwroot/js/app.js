@@ -8,7 +8,7 @@
             component: "login-page"
         }];
 
-    var currentMenu = menuElements[0];
+    var currentMenu = ko.observable(menuElements[0]);
 
     var changeContent = function (menu, questionId) {
         store.dispatch(store.actions.selectQuestion(questionId));
@@ -21,12 +21,12 @@
         var menu = menuElements.find(x => x.name === menuName);
         if (menu) {
             currentMenu(menu);
-            currentComponent(menu.component);
+            activeComponent(menu.component);
         }
     });
 
     var isSelected = function (menu) {
-        return menu === currentMenu ? "active" : "";
+        return menu === currentMenu() ? "active" : "";
     };
 
     return { activeComponent, activeParams, changeContent, menuElements, isSelected, currentMenu };
