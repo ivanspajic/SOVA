@@ -15,11 +15,11 @@
                 <a class="border rounded-lg bg-light tags" data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
             </div>
         </div>
-        <div class="col-sm-4 offset-md-9 pl-3 pt-3 question-list-so-member">
-            <div class="row">
-                <p style="color: #9199a1;">
-                    asked by:&nbsp
-                </p>
+        <div class="col-sm-4 offset-md-9 pl-3 pt-3 pb-md-2 question-list-so-member">
+            <div class="row text-secondary">
+                <span>
+                    asked by:&nbsp;
+                </span>
                 <a data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
             </div>
         </div>

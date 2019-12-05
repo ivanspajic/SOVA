@@ -1,13 +1,11 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Data_Layer.Database_Context;
 using Data_Layer_Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using Npgsql;
-using System.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Data_Layer
 {
@@ -31,6 +29,7 @@ namespace Data_Layer
         public Question GetById(int submissionId)
         {
             return _databaseContext.Questions
+                .Include(q => q.Submission.SoMember)
                 .Include(question => question.Submission)
                     .ThenInclude(submission => submission.Comments)
                         .ThenInclude(comment => comment.Submission)
@@ -40,6 +39,8 @@ namespace Data_Layer
                     .ThenInclude(answer => answer.Submission)
                         .ThenInclude(submission => submission.Comments)
                             .ThenInclude(comment => comment.Submission)
+                .Include(question => question.Answers)
+                    .ThenInclude(a => a.Submission.SoMember)
                 .Include(question => question.LinkedPosts)
                     .ThenInclude(linkPost => linkPost.LinkedPost)
                         .ThenInclude(linkedPost => linkedPost.Submission)
