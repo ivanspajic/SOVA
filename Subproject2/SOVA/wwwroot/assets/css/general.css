@@ -14,6 +14,12 @@ a:hover {
     margin-right: 5px
 }
 
+.question-details-so-member {
+    text-align: center;
+    font-size: 13px;
+    padding-left: 0px;
+}
+
 .questions-score {
     text-align: center;
 }
