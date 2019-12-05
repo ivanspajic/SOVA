@@ -2,13 +2,13 @@
     var activeComponent = ko.observable("landing-page");
     var activeParams = ko.observable({});
 
-    var currentMenu = menuElements[0];
-
     var menuElements = [
         {
             name: "Login",
             component: "login-page"
         }];
+
+    var currentMenu = menuElements[0];
 
     var changeContent = function (menu, questionId) {
         store.dispatch(store.actions.selectQuestion(questionId));
