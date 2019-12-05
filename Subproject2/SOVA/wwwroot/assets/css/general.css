@@ -56,11 +56,9 @@ a:hover {
 
     .answer-body {
         line-height: normal;
+        overflow: auto;
+        box-sizing: content-box !important;
     }
-}
-
-.answer-body *:before, .answer-body *:after {
-    box-sizing: content-box !important;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {

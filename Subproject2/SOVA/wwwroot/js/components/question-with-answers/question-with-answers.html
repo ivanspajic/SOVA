@@ -1,5 +1,5 @@
 ﻿<div class="container" data-bind="with: questionByIdWithAnswers">
-    <div class="row" style="margin-top: 15px;">
+    <div class="row border-bottom border-dark" style="margin-top: 15px;">
         <div class="border-bottom border-dark" style="width: 100%">
             <div class="mb-2 mb-md-4">
                 <h2 class="question-title" data-bind="text: title"></h2>
@@ -10,6 +10,7 @@
                             <a class="border rounded-lg bg-light tags" data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
                         </div>
                     </div>
+                    <div></div>
                 </div>
 
                 <div class="d-block d-md-none" style="font-size: 14px;">
@@ -19,7 +20,7 @@
             </div>
         </div>
 
-        <div class="row mt-4">
+        <div class="row mt-4 answer-body">
             <div class="col-1 text-center d-none d-md-block">
                 <div>
                     <h3 data-bind="text: submission.score"></h3>
@@ -27,7 +28,7 @@
                 <span>votes</span>
             </div>
 
-            <div class="col-10 answer-body border-bottom border-dark">
+            <div class="col-10 answer-body">
                 <p data-bind="html: submission.body"></p>
             </div>
         </div>
