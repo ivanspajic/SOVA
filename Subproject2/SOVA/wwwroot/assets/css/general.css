@@ -91,17 +91,7 @@ a:hover {
     text-align: center;
 }
 
-#formsignup {
-    background-color: #f5fafc;
-    padding: 10px;
-    text-align: center;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border: 5px 5px 5px 5px;
-    border-color: #56a0ed;
-    border-radius: 5px 5px 5px 5px;
-}
-
-input[type=button], input[type=submit], input[type=reset], input[type=password] {
+input[type=submit], input[type=reset], input[type=password] {
     background-color: #56a0ed;
     border: none;
     color: white;
