@@ -18,5 +18,6 @@
         var data = await response.json();
         callback(data);
     }
+
     return { getQuestions, getQuestionByIdWithAnswers, selectedQuestionId };
 });
