@@ -19,5 +19,5 @@
         callback(data);
     }
 
-    return { getQuestions, getQuestionByIdWithAnswers, bookmark, selectedQuestionId };
+    return { getQuestions, getQuestionByIdWithAnswers, selectedQuestionId };
 });

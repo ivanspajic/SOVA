@@ -26,8 +26,8 @@
     });
 
     var isSelected = function (menu) {
-        return menu === currentMenu() ? "active" : "";
+        return menu === currentMenu ? "active" : "";
     };
 
-    return { activeComponent, activeParams, changeContent, menuElements, isSelected };
+    return { activeComponent, activeParams, changeContent, menuElements, isSelected, currentMenu };
 });
