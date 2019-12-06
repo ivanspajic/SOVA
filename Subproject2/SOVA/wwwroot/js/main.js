@@ -33,6 +33,10 @@ require(["knockout"], function (ko) {
         viewModel: { require: "components/login-page/login-page" },
         template: { require: "text!components/login-page/login-page.html" }
     });
+    ko.components.register("signup-page", {
+        viewModel: { require: "components/signup-page/signup-page" },
+        template: { require: "text!components/signup-page/signup-page.html" }
+    });
 });
 
 require(["knockout", "app", "store"], function (ko, app, store) {
