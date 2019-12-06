@@ -69,10 +69,12 @@
                         </div>
                     </div>
 
-                    <div class=" bg-secondary text-white d-block d-md-none px-3 py-2" style="font-size: 14px">
-                        <strong data-bind="text: submission.score"></strong>
-                        <span>votes</span>
-                        <span style="font-size: 14px;" class="badge badge-success ml-2" data-bind="if: accepted === true">
+                    <div class="d-block d-md-none" style="font-size: 14px">
+                        <span class=" bg-secondary text-white  px-3 py-2">
+                            <strong data-bind="text: submission.score"></strong>
+                            <span>votes</span>
+                        </span>
+                        <span style="font-size: 14px;" class="badge badge-success ml-2 py-2" data-bind="if: accepted === true">
                             Accepted ✔
                         </span>
                     </div>
