@@ -6,6 +6,7 @@
         text: "../lib/requirejs-text/text",
         dataService: "services/dataservice",
         store: "services/store"
+        //history: "services/history"
     },
     shim: {
         jqcloud: ["jquery"],
