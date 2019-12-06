@@ -1,35 +1,84 @@
 ﻿<div class="container" data-bind="with: questionByIdWithAnswers">
-    <div class="row" style="margin-top: 15px;">
+    <div class="row border-bottom border-dark" style="margin-top: 15px;">
         <div class="border-bottom border-dark" style="width: 100%">
-            <div class="mb-2 mb-md-4">
+            <div class="mb-2">
                 <h2 class="question-title" data-bind="text: title"></h2>
 
                 <div data-bind="with: answers.$values[0]">
                     <div data-bind="if: question">
-                        <div class="row pl-3 pb-3" data-bind="foreach: question.questionsTags.$values">
+                        <div class="row pl-3" data-bind="foreach: question.questionsTags.$values">
                             <a class="border rounded-lg bg-light tags" data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
                         </div>
                     </div>
                 </div>
+                <div class="col-sm-4 offset-md-9 question-details-so-member">
+                    <div class="text-secondary">
+                        <span>asked</span>
+                        <span data-bind="text: moment(submission.creationDate).format('ll')"></span>
+                        <span>at</span>
+                        <span data-bind="text: moment(submission.creationDate).format('LT')"></span>
+                        <br />
+                        <a data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
+                    </div>
+                </div>
 
-                <div class="d-block d-md-none" style="font-size: 14px;">
+                <div class="d-block d-md-none" style="font-size: 14px">
                     <strong data-bind="text: submission.score"></strong>
                     <span>votes</span>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-4">
-            <div class="col-1 text-center d-none d-md-block">
+        <div class="row mt-4 question-body">
+            <div class="col-1 text-center d-none d-md-block text-secondary">
                 <div>
                     <h3 data-bind="text: submission.score"></h3>
                 </div>
                 <span>votes</span>
             </div>
 
-            <div class="col-10 answer-body border-bottom border-dark">
+            <div class="col-10">
                 <p data-bind="html: submission.body"></p>
             </div>
+        </div>
+        <div class="col-10 m-md-3 h4">
+            <div class="row">
+                    <div data-bind="text: answers.$values[0].question.answers.$values.length - 1"></div>
+                    <span>&nbsp;Answer(s)</span>
+            </div>
+        </div>
+    </div>
+
+    <div data-bind="with: answers.$values[0]">
+        <div data-bind="foreach: question.answers.$values">
+            <!-- Read here for more: https://stackoverflow.com/questions/15300322/skip-item-in-foreach-knockout-js-array -->
+            <!-- ko if: $index() != 0 -->
+            <div class="mt-2 mt-md-4 border-bottom">
+                <div class="row">
+                    <div class="col-1 m-md-3 text-center d-none d-md-block">
+                        <div class="text-secondary">
+                            <h3 data-bind="text: submission.score"></h3>
+                        </div>
+                        <span>votes</span>
+                        <div class="my-3" data-bind="if: accepted === true">
+                            <h3>✔</h3>
+                        </div>
+                    </div>
+                    <div class="col-10">
+                        <p data-bind="html: submission.body"></p>
+                    </div>
+                    <div class="text-secondary offset-md-9 pl-md-5 pb-md-2 question-details-so-member">
+                        <span>answered</span>
+                        <span data-bind="text: moment(submission.creationDate).format('ll')"></span>
+                        <span>at</span>
+                        <span data-bind="text: moment(submission.creationDate).format('LT')"></span>
+                        <br />
+                        <a data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /ko -->
         </div>
     </div>
 </div>

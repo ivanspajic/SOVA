@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Data_Layer_Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SOVA.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SOVA.Controllers
 {
@@ -85,10 +85,11 @@ namespace SOVA.Controllers
             dto.Submission.Comments = null; // this ensures we don't have duplicate comment collections, since we have a direct property already containing comments
 
             //handling linked posts
-            dto.LinkPosts = question.LinkedPosts; 
+            dto.LinkPosts = question.LinkedPosts;
 
             //handling tags
             dto.Tags = question.QuestionsTags;
+            dto.SoMember = question.Submission.SoMember;
 
             return dto;
         }

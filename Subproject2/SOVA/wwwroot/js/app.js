@@ -16,13 +16,13 @@
     };
 
     store.subscribe(() => {
-        activeComponent("question-with-answers");
         var menuName = store.getState().selectedMenu;
         var menu = menuElements.find(x => x.name === menuName);
         if (menu) {
             currentMenu(menu);
             activeComponent(menu.component);
         }
+        activeComponent(store.getState().activeComponent);
     });
 
     var isSelected = function (menu) {
