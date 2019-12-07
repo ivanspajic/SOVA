@@ -42,6 +42,10 @@ a:hover {
     font-weight: 500;
 }
 
+.comment-body {
+    font-size:14px;
+}
+
 @media (max-width: 768px) {
     .container {
         width: 100%;
