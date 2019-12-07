@@ -3,18 +3,6 @@
   "defaultProvider": "unpkg",
   "libraries": [
     {
-      "library": "requirejs@2.3.6",
-      "destination": "wwwroot/lib/requirejs/"
-    },
-    {
-      "library": "requirejs-text@2.0.15",
-      "destination": "wwwroot/lib/requirejs-text/"
-    },
-    {
-      "library": "jquery@3.4.1",
-      "destination": "wwwroot/lib/jquery/"
-    },
-    {
       "library": "knockout@3.5.1",
       "destination": "wwwroot/lib/knockout/"
     },
@@ -23,6 +11,34 @@
       "destination": "wwwroot/lib/moment/",
       "files": [
         "min/moment-with-locales.js"
+      ]
+    },
+    {
+      "library": "jquery@3.4.1",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "dist/jquery.js"
+      ]
+    },
+    {
+      "library": "requirejs@2.3.6",
+      "destination": "wwwroot/lib/requirejs/",
+      "files": [
+        "require.js"
+      ]
+    },
+    {
+      "library": "requirejs-text@2.0.15",
+      "destination": "wwwroot/lib/requirejs-text/",
+      "files": [
+        "text.js"
+      ]
+    },
+    {
+      "library": "knockout@3.5.1",
+      "destination": "wwwroot/lib/knockout/",
+      "files": [
+        "build/output/knockout-latest.js"
       ]
     }
   ]
