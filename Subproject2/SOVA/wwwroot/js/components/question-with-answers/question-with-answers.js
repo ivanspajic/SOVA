@@ -10,7 +10,6 @@
         });
 
         ds.getQuestionByIdWithAnswers((data) => {
-            console.log(data);
             questionByIdWithAnswers(data);
         });
 

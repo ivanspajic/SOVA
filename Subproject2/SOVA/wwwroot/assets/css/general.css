@@ -15,9 +15,7 @@ a:hover {
 }
 
 .question-details-so-member {
-    text-align: center;
     font-size: 13px;
-    padding-left: 0px;
 }
 
 .questions-score {
@@ -34,6 +32,15 @@ a:hover {
         color: #316795;
         background-color: #CEE0EE;
     }
+
+.question-body {
+    overflow: hidden;
+}
+
+.answer-count {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
 
 @media (max-width: 768px) {
     .container {
@@ -64,13 +71,13 @@ a:hover {
 
     .question-body {
         line-height: normal;
-        overflow: auto;
+        overflow: hidden;
         box-sizing: content-box !important;
     }
-}
 
-.question-body {
-    overflow: auto;
+    .answer-count {
+        font-size: 1.0rem
+    }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {

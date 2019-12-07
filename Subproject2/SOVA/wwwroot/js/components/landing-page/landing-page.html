@@ -1,10 +1,10 @@
-﻿<div class="container" data-bind="foreach: questions">
+﻿<div class="container px-4" data-bind="foreach: questions">
     <div class="row border-bottom" style="margin-top: 15px;">
-        <div class="col-xs-1 col-sm-1 col-md-1 d-none d-sm-block questions-score">
+        <div class="col-sm-1 col-md-1 d-none d-sm-block questions-score">
             <div data-bind="text: submission.score"></div>
             <p style="font-size: 12px;">votes</p>
         </div>
-        <div class="col-xs-8 col-sm-8 pl-3">
+        <div class="col col-sm-10 pl-3 ml-sm-2">
             <div class="row d-block d-sm-none" style="font-size:12px;">
                 <strong data-bind="text: submission.score"></strong>
                 <span>votes</span>
@@ -15,7 +15,7 @@
                 <a class="border rounded-lg bg-light tags" data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
             </div>
         </div>
-        <div class="col-sm-4 offset-md-9 pl-3 pt-3 pb-md-2 question-list-so-member">
+        <div class="col-sm-6 col-md-3 offset-sm-1 offset-md-9 pl-3 pt-3 pb-2 mb-sm-2 question-list-so-member">
             <div class="row text-secondary">
                 <span>
                     asked by:&nbsp;
