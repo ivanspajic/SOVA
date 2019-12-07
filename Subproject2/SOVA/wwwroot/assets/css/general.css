@@ -43,7 +43,18 @@ a:hover {
 }
 
 .comment-body {
-    font-size:14px;
+    font-size: 14px;
+}
+
+.comment-user {
+    white-space: nowrap;
+    background-color: #E1ECF4;
+    color: #07C
+}
+
+.comment-count {
+    margin-left: -14px;
+    font-size: 13px;
 }
 
 @media (max-width: 768px) {
@@ -89,5 +100,3 @@ a:hover {
         margin: 5px auto 10px 20px;
     }
 }
-
-

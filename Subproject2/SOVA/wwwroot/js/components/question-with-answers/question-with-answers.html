@@ -46,10 +46,18 @@
             </div>
 
             <div data-bind="if: comments.$values.length > 0">
-                <div class="col-10 offset-1 px-3 pt-3 border-bottom" data-bind="foreach: comments.$values">
+                <div class="d-md-none" style="font-size:14px;">
+                    <span class="comment-user p-1">
+                        <span>Comments&nbsp;</span><span data-bind="text: comments.$values.length"></span>
+                    </span>
+                </div>
+                <div class="col-10 offset-1 px-3 pt-3 border-bottom d-none d-md-block" data-bind="foreach: comments.$values">
                     <div class="row pl-3 py-2 text-secondary border-top comment-body">
-                        <span class="px-2 text-center" data-bind="text: submission.score"></span>
-                        <span class="col" data-bind="html: submission.body"> </span>
+                        <div class="px-2 text-center" data-bind="text: submission.score"></div>
+                        <div class="col">
+                            <span data-bind="html: submission.body"></span>
+                            <span>-&nbsp;</span><span class="comment-user px-1" data-bind="text: submission.soMember.displayName ? submission.soMember.displayName : 'deletedUser'"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -79,7 +87,7 @@
                     </div>
 
                     <div class="d-block d-md-none" style="font-size: 14px">
-                        <span class=" bg-secondary text-white  px-3 py-2">
+                        <span class="bg-secondary text-white  px-3 py-2">
                             <strong data-bind="text: submission.score"></strong>
                             <span>votes</span>
                         </span>
@@ -99,11 +107,19 @@
                         <br />
                         <a data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
                     </div>
-                    <div data-bind="if: submission.comments.$values.length > 0">
-                        <div class="col-10 offset-1 px-3 pt-3" data-bind="foreach: submission.comments.$values">
-                            <div class="row pl-3 py-2 text-secondary border-top comment-body">
-                                <span class="px-2 text-center" data-bind="text: submission.score"></span>
-                                <span class="col" data-bind="html: submission.body"> </span>
+                </div>
+                <div data-bind="if: submission.comments.$values.length > 0">
+                    <div class="d-md-none comment-count">
+                        <span class="comment-user p-1">
+                            <span>Comments&nbsp;</span><span data-bind="text: submission.comments.$values.length"></span>
+                        </span>
+                    </div>
+                    <div class="col-11 offset-1 px-3 pt-3 d-none d-md-block" data-bind="foreach: submission.comments.$values">
+                        <div class="row pl-3 py-2 text-secondary border-top comment-body">
+                            <span class="px-2 text-center" data-bind="text: submission.score"></span>
+                            <div class="col">
+                                <span data-bind="html: submission.body"></span>
+                                <span>-&nbsp;</span><span class="comment-user px-1" data-bind="text: submission.soMember.displayName ? submission.soMember.displayName : 'deletedUser'"></span>
                             </div>
                         </div>
                     </div>
