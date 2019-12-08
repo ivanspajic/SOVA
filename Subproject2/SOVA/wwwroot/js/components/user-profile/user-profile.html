@@ -1,1 +1,6 @@
-﻿
+﻿<div data-bind="with: currentUser">
+    <div data-bind="if: username">
+        <img class="ml-3" src="https://dankmemer.lol/40326fed0d1bc75a2688535e70dd31be.png" width="40" alt="User profile picture" />
+        <span class="ml-1" data-bind="text: username"></span>
+    </div>
+</div>

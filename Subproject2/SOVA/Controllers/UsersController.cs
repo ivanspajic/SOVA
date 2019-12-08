@@ -45,11 +45,7 @@ namespace SOVA.Controllers
         {
             var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var userById = _userRepository.GetUserById(userId);
-            if (userById == null)
-            {
-                return NotFound($"Not found. UserId: '{userId}'");
-            }
-            return Ok(CreateUserDto(userById));
+            return userById == null ? Ok("Not authorized.") : Ok(CreateUserDto(userById));
         }
         ///////////////////
         //

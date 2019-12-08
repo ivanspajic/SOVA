@@ -1,6 +1,5 @@
-﻿define(['knockout', 'store'], function (ko, store) {
+﻿define(['knockout', 'store', 'dataService'], function (ko, store, ds) {
     return function () {
-
         var activeComponent = ko.observable("login-page");
         var menuElements = [
             {
@@ -9,6 +8,14 @@
             }
         ];
         var currentMenu = ko.observable(menuElements[0]);
+        var currentUser = ko.observable();
+
+        ds.getCurrentUser((data) => {
+            currentUser(data);
+        }); ((data) => {
+            currentUser(data);
+        });
+
         var changeContent = function (menu) {
             store.dispatch(store.actions.selectMenu(menu.name));
         };
@@ -27,6 +34,6 @@
             return menu === currentMenu() ? "active" : "";
         };
 
-        return { activeComponent, changeContent, menuElements, isSelected, currentMenu };
+        return { activeComponent, changeContent, menuElements, isSelected, currentMenu, currentUser };
     };
 });

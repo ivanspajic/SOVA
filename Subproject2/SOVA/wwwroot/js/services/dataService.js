@@ -18,5 +18,15 @@
         callback(data);
     }
 
-    return { getQuestions, getQuestionByIdWithAnswers, selectedQuestionId };
+    var getCurrentUser = async (callback) => {
+        try {
+            var response = await fetch("api/users/currentUser");
+            var data = await response.json();
+            callback(data);
+        } catch (e) {
+            return;
+        }
+    }
+
+    return { getQuestions, getQuestionByIdWithAnswers, selectedQuestionId, getCurrentUser };
 });
