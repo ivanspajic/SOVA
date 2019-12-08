@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Data_Layer_Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SOVA.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SOVA.Controllers
 {
@@ -31,6 +31,19 @@ namespace SOVA.Controllers
         [HttpGet("{userId}", Name = nameof(GetUserById))]
         public ActionResult GetUserById(int userId)
         {
+            var userById = _userRepository.GetUserById(userId);
+            if (userById == null)
+            {
+                return NotFound($"Not found. UserId: '{userId}'");
+            }
+            return Ok(CreateUserDto(userById));
+        }
+
+        //[Authorize]
+        [HttpGet("currentUser", Name = nameof(GetCurrentUser))]
+        public ActionResult GetCurrentUser()
+        {
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var userById = _userRepository.GetUserById(userId);
             if (userById == null)
             {
