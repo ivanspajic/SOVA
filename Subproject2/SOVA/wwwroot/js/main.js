@@ -5,8 +5,8 @@
         knockout: "../lib/knockout/build/output/knockout-latest",
         text: "../lib/requirejs-text/text",
         dataService: "services/dataservice",
-        store: "services/store"
-        //history: "services/history"
+        store: "services/store",
+        history: "services/history"
     },
     shim: {
         jqcloud: ["jquery"],
@@ -40,7 +40,7 @@ require(["knockout"], function (ko) {
     });
 });
 
-require(["knockout", "app", "store"], function (ko, app, store) {
+require(["knockout", "app", "store", "history"], function (ko, app, store, history) {
     store.subscribe(() => console.log(store.getState()));
     ko.applyBindings(app);
 });
