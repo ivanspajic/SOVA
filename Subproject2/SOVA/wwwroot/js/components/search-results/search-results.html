@@ -1,7 +1,7 @@
-﻿<div class="container px-4" data-bind="foreach: results">
+﻿<div class="container px-4" data-bind="foreach: results.items.$values">
     <div class="row border-bottom" style="margin-top: 15px;">
         <div class="col col-sm-10 pl-3 ml-sm-2">
-            <a class="row" data-bind="attr: {href: `question/${Id}`, body: body }, text: body, click: $parent.selectResult.bind($data, searchResult)">
+            <a class="row" data-bind="attr: {href: `question/${id}`, body: body }, text: body, click: $parent.selectResult.bind($data, searchResult)">
             </a>
         </div>
     </div>
