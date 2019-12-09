@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
-using Models;
 
 namespace SOVA.Models
 {
@@ -14,5 +14,6 @@ namespace SOVA.Models
         public IEnumerable<Comment> Comments { get; set; }
         public IEnumerable<QuestionsTag> Tags { get; set; }
         public IEnumerable<LinkPost> LinkPosts { get; set; }
+        public SoMember SoMember { get; set; }
     }
 }

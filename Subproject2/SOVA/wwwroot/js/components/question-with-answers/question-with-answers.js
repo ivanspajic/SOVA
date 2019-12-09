@@ -6,12 +6,10 @@
         var questionByIdWithAnswers = ko.observable();
 
         store.subscribe(function () {
-            var state = store.getState();
-            selectedQuestionId(state.selectedQuestionId);
+            selectedQuestionId(store.getState().selectedQuestionId);
         });
 
         ds.getQuestionByIdWithAnswers((data) => {
-            console.log(data);
             questionByIdWithAnswers(data);
         });
 
@@ -19,7 +17,6 @@
             selectedQuestionId,
             activeComponent,
             questionByIdWithAnswers,
-            state
         };
 
     };

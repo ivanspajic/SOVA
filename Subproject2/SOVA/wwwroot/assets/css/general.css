@@ -14,6 +14,10 @@ a:hover {
     margin-right: 5px
 }
 
+.question-details-so-member {
+    font-size: 13px;
+}
+
 .questions-score {
     text-align: center;
 }
@@ -29,10 +33,35 @@ a:hover {
         background-color: #CEE0EE;
     }
 
+.question-body {
+    overflow: hidden;
+}
+
+.answer-count {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.comment-body {
+    font-size: 14px;
+}
+
+.comment-user {
+    white-space: nowrap;
+    background-color: #E1ECF4;
+    color: #07C
+}
+
+.comment-count {
+    margin-left: -14px;
+    font-size: 13px;
+}
+
 @media (max-width: 768px) {
     .container {
         width: 100%;
         max-width: none;
+        padding-right: 20px;
     }
 
     .header-image {
@@ -54,13 +83,15 @@ a:hover {
         font-size: 20px;
     }
 
-    .answer-body {
+    .question-body {
         line-height: normal;
+        overflow: hidden;
+        box-sizing: content-box !important;
     }
-}
 
-.answer-body *:before, .answer-body *:after {
-    box-sizing: content-box !important;
+    .answer-count {
+        font-size: 1.0rem
+    }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
