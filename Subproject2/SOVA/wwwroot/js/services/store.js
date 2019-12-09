@@ -30,7 +30,7 @@
             case authentication:
                 return Object.assign({}, state, { token: action.token, username: action.username, activeComponent: action.activeComponent });
             case searching:
-                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
+                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token, searchTerm: action.searchTerm});
             default:
                 return state;
         }

@@ -1,11 +1,10 @@
-﻿<!--
-<div class="container px-4" data-bind="foreach: results.items.$values">
-    <div class="row border-bottom" style="margin-top: 15px;">
-        <div class="col col-sm-10 pl-3 ml-sm-2">
-            <a class="row" data-bind="attr: {href: `question/${id}`, body: body }, text: body, click: $parent.selectResult.bind($data, searchResult)">
-            </a>
+﻿<div class="container px-4" data-bind="with: results">
+    <div data-bind="foreach: items.$values">
+        <div class="row border-bottom" style="margin-top: 15px;">
+            <div class="col col-sm-10 pl-3 ml-sm-2">
+                <a class="row" data-bind="text: body">
+                </a>
+            </div>
         </div>
     </div>
 </div>
-    !-->
-<div data-bind="text: ko.toJSON($data)"></div>
