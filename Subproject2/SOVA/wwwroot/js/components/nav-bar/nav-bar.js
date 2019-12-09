@@ -11,6 +11,11 @@
         var currentUser = ko.observable();
         var authenticationToken = ko.observable();
 
+        var search = function () {
+            var queryTerm = document.getElementById("searchterm").value;
+            store.dispatch(store.actions.searching(queryTerm));
+        };
+
         store.subscribe(() => {
             authenticationToken(store.getState().token);
             currentUser(store.getState().username);
@@ -39,7 +44,8 @@
             isSelected,
             currentMenu,
             currentUser,
-            authenticationToken
+            authenticationToken,
+            search
         };
     };
 });
