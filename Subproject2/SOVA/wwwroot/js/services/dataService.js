@@ -34,8 +34,8 @@
         callback(data);
     }
 
-    var search = async (queryTerm, callback) => {
-        var response = await fetch(`/api/questions/query/${queryTerm}`);
+    var search = async (callback) => {
+        var response = await fetch(`/api/questions/query/${searchTerm()}`);
         var data = await response.json();
         callback(data);
     }
