@@ -17,7 +17,8 @@
         return {
             activeComponent,
             results,
-            selectResult
+            selectResult,
+            search
         };
     };
 });
