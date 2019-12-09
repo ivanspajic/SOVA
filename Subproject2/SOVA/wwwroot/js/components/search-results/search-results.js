@@ -6,6 +6,8 @@
         results(data.items.$values);
     });
 
+    ds.search(queryTerm, data);
+
     var selectResult = (data, searchResult) => {
         store.dispatch(store.actions.selectResult(searchResult.Id));
     }
@@ -14,7 +16,8 @@
         return {
             activeComponent,
             results,
-            selectResult
+            selectResult,
+            queryTerm
         };
     };
 });
