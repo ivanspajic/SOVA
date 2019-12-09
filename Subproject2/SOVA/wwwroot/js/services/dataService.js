@@ -28,5 +28,17 @@
         }
     }
 
-    return { getQuestions, getQuestionByIdWithAnswers, selectedQuestionId, getCurrentUser };
+    var authenticateUser = async () => {
+        var response = await fetch("api/auth/tokens", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username: "manish", password: "password" })
+        });
+        var data = await response.json();
+        console.log(data);
+    }
+
+    return { getQuestions, getQuestionByIdWithAnswers, selectedQuestionId, getCurrentUser, authenticateUser };
 });

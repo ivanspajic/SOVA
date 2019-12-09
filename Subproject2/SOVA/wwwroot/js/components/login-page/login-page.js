@@ -3,7 +3,7 @@
     var activeComponent = ko.observable("login-page");
 
     var signupUser = function () {
-        store.dispatch(store.actions.signupUser());
+        ds.authenticateUser();        //store.dispatch(store.actions.signupUser());
     };
 
     return function () {
