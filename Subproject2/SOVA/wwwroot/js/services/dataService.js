@@ -2,7 +2,6 @@
 
     var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
     var authenticationToken = ko.observable();
-    var queryTerm = ko.observable(store.getState().searchTerm);
 
     store.subscribe(function () {
         authenticationToken(store.getState().token);
@@ -46,7 +45,6 @@
         selectedQuestionId,
         authenticateUser,
         authenticationToken,
-        queryTerm,
         search
     };
 });
