@@ -1,5 +1,4 @@
-﻿
-using Data_Layer.Database_Context;
+﻿using Data_Layer.Database_Context;
 using Data_Layer_Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Models;
@@ -33,12 +32,19 @@ namespace Data_Layer
                 .Include(question => question.Submission)
                     .ThenInclude(submission => submission.Comments)
                         .ThenInclude(comment => comment.Submission)
+                .Include(question => question.Submission)
+                    .ThenInclude(submission => submission.Comments)
+                        .ThenInclude(comment => comment.Submission.SoMember)
                 .Include(question => question.QuestionsTags)
                     .ThenInclude(questionTag => questionTag.Tag)
                 .Include(question => question.Answers)
                     .ThenInclude(answer => answer.Submission)
                         .ThenInclude(submission => submission.Comments)
                             .ThenInclude(comment => comment.Submission)
+                .Include(question => question.Answers)
+                    .ThenInclude(answer => answer.Submission)
+                        .ThenInclude(submission => submission.Comments)
+                            .ThenInclude(comment => comment.Submission.SoMember)
                 .Include(question => question.Answers)
                     .ThenInclude(a => a.Submission.SoMember)
                 .Include(question => question.LinkedPosts)

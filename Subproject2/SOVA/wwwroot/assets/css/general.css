@@ -15,9 +15,7 @@ a:hover {
 }
 
 .question-details-so-member {
-    text-align: center;
     font-size: 13px;
-    padding-left: 0px;
 }
 
 .questions-score {
@@ -35,10 +33,35 @@ a:hover {
         background-color: #CEE0EE;
     }
 
+.question-body {
+    overflow: hidden;
+}
+
+.answer-count {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.comment-body {
+    font-size: 14px;
+}
+
+.comment-user {
+    white-space: nowrap;
+    background-color: #E1ECF4;
+    color: #07C
+}
+
+.comment-count {
+    margin-left: -14px;
+    font-size: 13px;
+}
+
 @media (max-width: 768px) {
     .container {
         width: 100%;
         max-width: none;
+        padding-right: 20px;
     }
 
     .header-image {
@@ -62,13 +85,13 @@ a:hover {
 
     .question-body {
         line-height: normal;
-        overflow: auto;
+        overflow: hidden;
         box-sizing: content-box !important;
     }
-}
 
-.question-body {
-    overflow: auto;
+    .answer-count {
+        font-size: 1.0rem
+    }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -76,5 +99,3 @@ a:hover {
         margin: 5px auto 10px 20px;
     }
 }
-
-

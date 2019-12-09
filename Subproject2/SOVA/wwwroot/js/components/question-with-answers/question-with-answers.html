@@ -1,18 +1,40 @@
 ﻿<div class="container" data-bind="with: questionByIdWithAnswers">
     <div class="row border-bottom border-dark" style="margin-top: 15px;">
-        <div class="border-bottom border-dark" style="width: 100%">
-            <div class="mb-2">
-                <h2 class="question-title" data-bind="text: title"></h2>
+        <div class="col">
+            <div class="border-bottom border-dark mb-2" style="width: 100%">
+                <div class="mb-2">
+                    <h2 class="question-title" data-bind="text: title"></h2>
 
-                <div data-bind="with: answers.$values[0]">
-                    <div data-bind="if: question">
-                        <div class="row pl-3" data-bind="foreach: question.questionsTags.$values">
-                            <a class="border rounded-lg bg-light tags" data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
+                    <div data-bind="with: answers.$values[0]">
+                        <div data-bind="if: question">
+                            <div class="row pl-3" data-bind="foreach: question.questionsTags.$values">
+                                <a class="border rounded-lg bg-light tags" data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="d-block d-md-none pt-2" style="font-size: 14px">
+                        <strong data-bind="text: submission.score"></strong>
+                        <span>votes</span>
+                    </div>
                 </div>
-                <div class="col-sm-4 offset-md-9 question-details-so-member">
-                    <div class="text-secondary">
+            </div>
+
+            <div class="row mt-4 question-body">
+                <div class="col-1 text-center d-none d-md-block text-secondary">
+                    <div>
+                        <h3 data-bind="text: submission.score"></h3>
+                    </div>
+                    <span>votes</span>
+                </div>
+
+                <div class="col-md-10 col-sm-12">
+                    <p data-bind="html: submission.body"></p>
+                </div>
+
+
+                <div class="col bg-light col-md-3 text-secondary offset-md-9 offset-4 offset-sm-7 pb-2 pt-2 question-details-so-member">
+                    <div class="text-secondary bg-light">
                         <span>asked</span>
                         <span data-bind="text: moment(submission.creationDate).format('ll')"></span>
                         <span>at</span>
@@ -21,30 +43,29 @@
                         <a data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
                     </div>
                 </div>
+            </div>
 
-                <div class="d-block d-md-none" style="font-size: 14px">
-                    <strong data-bind="text: submission.score"></strong>
-                    <span>votes</span>
+            <div data-bind="if: comments.$values.length > 0">
+                <div class="d-md-none comment-count">
+                    <span class="comment-user p-1">
+                        <span>Comments&nbsp;</span><span data-bind="text: comments.$values.length"></span>
+                    </span>
+                </div>
+                <div class="col-10 offset-1 px-3 pt-3 border-bottom d-none d-md-block" data-bind="foreach: comments.$values">
+                    <div class="row pl-3 py-2 text-secondary border-top comment-body">
+                        <div class="px-2 text-center" data-bind="text: submission.score"></div>
+                        <div class="col">
+                            <span data-bind="html: submission.body"></span>
+                            <span>-&nbsp;</span><span class="comment-user px-1" data-bind="text: submission.soMember.displayName ? submission.soMember.displayName : 'deletedUser'"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row mt-4 question-body">
-            <div class="col-1 text-center d-none d-md-block text-secondary">
-                <div>
-                    <h3 data-bind="text: submission.score"></h3>
-                </div>
-                <span>votes</span>
-            </div>
-
-            <div class="col-10">
-                <p data-bind="html: submission.body"></p>
-            </div>
-        </div>
-        <div class="col-10 m-md-3 h4">
-            <div class="row">
+            <div class="col-10 m-md-3 py-2 answer-count">
+                <div class="row">
                     <div data-bind="text: answers.$values[0].question.answers.$values.length - 1"></div>
                     <span>&nbsp;Answer(s)</span>
+                </div>
             </div>
         </div>
     </div>
@@ -53,10 +74,10 @@
         <div data-bind="foreach: question.answers.$values">
             <!-- Read here for more: https://stackoverflow.com/questions/15300322/skip-item-in-foreach-knockout-js-array -->
             <!-- ko if: $index() != 0 -->
-            <div class="mt-2 mt-md-4 border-bottom">
+            <div class="mt-2 mt-md-4 pb-2 border-bottom">
                 <div class="row">
-                    <div class="col-1 m-md-3 text-center d-none d-md-block">
-                        <div class="text-secondary">
+                    <div class="col-1 pt-md-2 text-center text-secondary d-none d-md-block">
+                        <div>
                             <h3 data-bind="text: submission.score"></h3>
                         </div>
                         <span>votes</span>
@@ -64,16 +85,43 @@
                             <h3>✔</h3>
                         </div>
                     </div>
-                    <div class="col-10">
+
+                    <div class="d-block d-md-none" style="font-size: 14px">
+                        <span class="bg-secondary text-white  px-3 py-2">
+                            <strong data-bind="text: submission.score"></strong>
+                            <span>votes</span>
+                        </span>
+                        <span style="font-size: 14px;" class="badge badge-success ml-2 py-2" data-bind="if: accepted === true">
+                            Accepted ✔
+                        </span>
+                    </div>
+
+                    <div class="col-md-10 col-sm-12 pt-2">
                         <p data-bind="html: submission.body"></p>
                     </div>
-                    <div class="text-secondary offset-md-9 pl-md-5 pb-md-2 question-details-so-member">
+                    <div class="col bg-light col-md-3 text-secondary offset-md-9 offset-4 offset-sm-7 pb-2 pt-2 question-details-so-member">
                         <span>answered</span>
                         <span data-bind="text: moment(submission.creationDate).format('ll')"></span>
                         <span>at</span>
                         <span data-bind="text: moment(submission.creationDate).format('LT')"></span>
                         <br />
                         <a data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
+                    </div>
+                </div>
+                <div data-bind="if: submission.comments.$values.length > 0">
+                    <div class="d-md-none comment-count">
+                        <span class="comment-user p-1">
+                            <span>Comments&nbsp;</span><span data-bind="text: submission.comments.$values.length"></span>
+                        </span>
+                    </div>
+                    <div class="col-11 offset-1 px-3 pt-3 d-none d-md-block" data-bind="foreach: submission.comments.$values">
+                        <div class="row pl-3 py-2 text-secondary border-top comment-body">
+                            <span class="px-2 text-center" data-bind="text: submission.score"></span>
+                            <div class="col">
+                                <span data-bind="html: submission.body"></span>
+                                <span>-&nbsp;</span><span class="comment-user px-1" data-bind="text: submission.soMember.displayName ? submission.soMember.displayName : 'deletedUser'"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
