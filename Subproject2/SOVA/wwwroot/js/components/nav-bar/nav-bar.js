@@ -1,4 +1,4 @@
-﻿define(['knockout', 'store', 'dataService'], function (ko, store, ds) {
+﻿define(["knockout", "store", "dataService"], function (ko, store, ds) {
     return function () {
         var activeComponent = ko.observable("login-page");
         var menuElements = [
@@ -8,12 +8,11 @@
             }
         ];
         var currentMenu = ko.observable(menuElements[0]);
-        var currentUser = ko.observable();
+        var currentUser = ko.observable(localStorage.getItem("username"));
         var authenticationToken = ko.observable();
 
         store.subscribe(() => {
             authenticationToken(store.getState().token);
-            currentUser(store.getState().username);
             var menuName = store.getState().selectedMenu;
             var menu = menuElements.find(x => x.name === menuName);
             if (menu) {

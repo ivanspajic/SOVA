@@ -2,9 +2,11 @@
 
     var activeComponent = ko.observable("signup-page");
 
-    return function () {
-        return {
-            activeComponent
-        }
-    };
+    var createUser = function () {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        ds.createUser(username, password);
+        store.dispatch(store.actions.selectMenu());
+    }
+
 });

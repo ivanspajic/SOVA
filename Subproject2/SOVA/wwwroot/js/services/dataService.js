@@ -32,11 +32,24 @@
         callback(data);
     }
 
+    var createUser = async (username, password) => {
+        var response = await fetch("api/auth/users", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username: username, password: password })
+        });
+        await response.json();
+        //callback(data);
+    }
+
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
         selectedQuestionId,
         authenticateUser,
-        authenticationToken
+        authenticationToken,
+        createUser
     };
 });

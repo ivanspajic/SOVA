@@ -8,9 +8,10 @@
             var password = document.getElementById("password").value;
 
             ds.authenticateUser(username, password, (data) => {
-                console.log(data);
                 store.dispatch(store.actions.authentication(`Bearer ${data.token}`, data.username));
                 store.dispatch(store.actions.landingPage(data.token));
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('username', data.username);
             });
         } catch (e) {
 

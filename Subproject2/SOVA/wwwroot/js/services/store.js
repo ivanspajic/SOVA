@@ -19,13 +19,13 @@
     var reducer = function (state, action) {
         switch (action.type) {
             case landingPage:
-                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
+                return Object.assign({}, state, { activeComponent: action.activeComponent});
             case selectQuestion:
-                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent, token: getState().token });
+                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent});
             case selectMenu:
-                return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: action.activeComponent, token: getState().token });
+                return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: action.activeComponent});
             case signupUser:
-                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
+                return Object.assign({}, state, { activeComponent: action.activeComponent });
             case authentication:
                 return Object.assign({}, state, { token: action.token, username: action.username, activeComponent: action.activeComponent });
             default:
