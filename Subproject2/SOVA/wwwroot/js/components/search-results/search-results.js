@@ -6,7 +6,12 @@
         results(data.items.$values);
     });
 
-    ds.search(queryTerm, data);
+    var search = function () {
+        var queryTerm = document.getElementById("searchterm").value;
+        ds.search(queryTerm, (data) => {
+            results(data);
+        }
+    };
 
     var selectResult = (data, searchResult) => {
         store.dispatch(store.actions.selectResult(searchResult.Id));
