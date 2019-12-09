@@ -2,10 +2,12 @@
 
     var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
     var authenticationToken = ko.observable();
+    var queryTerm = document.getElementById("searchterm").value;
 
     store.subscribe(function () {
         authenticationToken(store.getState().token);
         selectedQuestionId(store.getState().selectedQuestionId);
+        queryTerm(store.getState().selectedResult);
     });
 
     var getQuestions = async (callback) => {
@@ -32,11 +34,19 @@
         callback(data);
     }
 
+    var search = async (queryTerm, callback) => {
+        var response = await fetch(`/api/questions/query/${queryTerm}`);
+        var data = await response.json();
+        callback(data);
+    }
+
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
         selectedQuestionId,
         authenticateUser,
-        authenticationToken
+        authenticationToken,
+        queryTerm,
+        search
     };
 });

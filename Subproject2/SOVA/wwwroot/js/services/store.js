@@ -4,6 +4,7 @@
     const selectMenu = "SELECT_MENU";
     const signupUser = "SIGN_UP";
     const authentication = "AUTHENTICATION";
+    const searching = "SEARCHING";
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
@@ -28,6 +29,8 @@
                 return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
             case authentication:
                 return Object.assign({}, state, { token: action.token, username: action.username, activeComponent: action.activeComponent });
+            case searching:
+                return Object.assign({}, state, { selectedResult: action.selectedResult, activeComponent: action.activeComponent, token: getState().token });
             default:
                 return state;
         }
@@ -57,6 +60,13 @@
                 type: selectMenu,
                 selectedMenu: menu,
                 activeComponent: "login-page"
+            };
+        },
+        selectResult: function (queryTerm) {
+            return {
+                type: selectResult,
+                searchTerm: queryTerm,
+                activeComponent: "search-results"
             };
         },
         signupUser: function () {
