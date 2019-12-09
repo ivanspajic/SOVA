@@ -12,8 +12,6 @@
 
         ds.getCurrentUser((data) => {
             currentUser(data);
-        }); ((data) => {
-            currentUser(data);
         });
 
         var changeContent = function (menu) {

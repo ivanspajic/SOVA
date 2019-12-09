@@ -2,6 +2,7 @@
     const selectQuestion = "SELECT_QUESTION";
     const selectMenu = "SELECT_MENU";
     const signupUser = "SIGN_UP";
+    const authenticateUser = "AUTHENTICATE_USER";
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
@@ -22,6 +23,8 @@
                 return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: "login-page" });
             case signupUser:
                 return Object.assign({}, state, { activeComponent: "signup-page" });
+            case authenticateUser:
+                return Object.assign({}, state, { token: action.authenticateUser, activeComponent: "login-page" });
             default:
                 return state;
         }
@@ -47,10 +50,18 @@
                 activeComponent: "login-page"
             };
         },
-        signupUser: function (menu) {
+        signupUser: function () {
             return {
                 type: signupUser,
                 activeComponent: "signup-page"
+            }
+        },
+        authenticateUser: function (username, password) {
+            return {
+                type: authenticateUser,
+                username: username, // We need to store token here. not username password
+                password: password,
+                activeComponent: "landing-page"
             }
         }
     };
