@@ -1,15 +1,15 @@
 ﻿define(['knockout', 'dataService', 'store'], function (ko, ds, store) {
     var activeComponent = ko.observable("search-results");
+    var results = ko.observableArray([]);
 
-    var selectResult = (data, searchResult) => {
-        store.dispatch(store.actions.selectResult(searchResult.Id));
-    }
+    ds.search((data) => {
+        results(data)
+    });
 
     return function () {
         return {
             activeComponent,
-            results,
-            selectResult
+            results
         };
     };
 });

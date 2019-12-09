@@ -11,13 +11,9 @@
         var currentUser = ko.observable();
         var authenticationToken = ko.observable();
 
-        var results = ko.observableArray([]);
-
         var search = function () {
             var queryTerm = document.getElementById("searchterm").value;
-            ds.search(queryTerm, (data) => {
-                results(data);
-            });
+            store.dispatch(store.actions.searching(queryTerm));
         };
 
         store.subscribe(() => {

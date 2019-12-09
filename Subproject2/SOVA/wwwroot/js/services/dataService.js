@@ -2,11 +2,12 @@
 
     var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
     var authenticationToken = ko.observable();
+    var searchTerm = ko.observable();
 
     store.subscribe(function () {
         authenticationToken(store.getState().token);
         selectedQuestionId(store.getState().selectedQuestionId);
-        queryTerm(store.getState().selectedResult);
+        searchTerm(store.getState().searchTerm);
     });
 
     var getQuestions = async (callback) => {
