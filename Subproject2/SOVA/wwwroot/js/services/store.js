@@ -27,7 +27,7 @@
             case signupUser:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
             case authentication:
-                return Object.assign({}, state, { token: action.token, activeComponent: action.activeComponent });
+                return Object.assign({}, state, { token: action.token, username: action.username, activeComponent: action.activeComponent });
             default:
                 return state;
         }
@@ -43,14 +43,13 @@
             return {
                 type: landingPage,
                 activeComponent: "landing-page",
-                token: token
             }
         },
         selectQuestion: function (questionId) {
             return {
                 type: selectQuestion,
                 selectedQuestionId: questionId,
-                activeComponent: "question-with-answers"
+                activeComponent: "question-with-answers",
             };
         },
         selectMenu: function (menu) {
@@ -66,10 +65,11 @@
                 activeComponent: "signup-page"
             }
         },
-        authentication: function (token) {
+        authentication: function (token, username) {
             return {
                 type: authentication,
                 token: token,
+                username: username,
                 activeComponent: "landing-page"
             }
         }

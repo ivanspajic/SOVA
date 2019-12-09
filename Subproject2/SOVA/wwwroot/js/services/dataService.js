@@ -1,9 +1,10 @@
 ﻿define(['knockout', 'store'], function (ko, store) {
 
     var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
-
+    var authenticationToken = ko.observable();
 
     store.subscribe(function () {
+        authenticationToken(store.getState().token);
         selectedQuestionId(store.getState().selectedQuestionId);
     });
 
@@ -19,15 +20,22 @@
         callback(data);
     }
 
-    var getCurrentUser = async (callback) => {
-        try {
-            var response = await fetch("api/users/currentUser");
-            var data = await response.json();
-            callback(data);
-        } catch (e) {
-            return;
-        }
-    }
+    //var getCurrentUser = async (callback) => {
+    //    try {
+    //        console.log(authenticationToken());
+    //        var response = await fetch("api/users/currentUser",
+    //            {
+    //                method: "GET",
+    //                headers: {
+    //                    "Authorization": authenticationToken()
+    //                }
+    //            });
+    //        var data = await response.json();
+    //        callback(data);
+    //    } catch (e) {
+    //        return;
+    //    }
+    //}
 
     var authenticateUser = async (username, password, callback) => {
         console.log(username);
@@ -46,7 +54,8 @@
         getQuestions,
         getQuestionByIdWithAnswers,
         selectedQuestionId,
-        getCurrentUser,
+        //getCurrentUser,
         authenticateUser,
+        authenticationToken
     };
 });

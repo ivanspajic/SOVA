@@ -1,6 +1,7 @@
 ﻿define(['knockout', 'dataService', 'store'], function (ko, ds, store) {
     var activeComponent = ko.observable("landing-page");
     var questions = ko.observableArray([]);
+
     ds.getQuestions((data) => {
         questions(data.items.$values);
     });
