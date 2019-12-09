@@ -11,7 +11,7 @@
         ds.search(queryTerm, (data) => {
             results(data);
         }
-    };
+    });
 
     var selectResult = (data, searchResult) => {
         store.dispatch(store.actions.selectResult(searchResult.Id));
