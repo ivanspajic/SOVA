@@ -11,6 +11,15 @@
         var currentUser = ko.observable();
         var authenticationToken = ko.observable();
 
+        var results = ko.observableArray([]);
+
+        var search = function () {
+            var queryTerm = document.getElementById("searchterm").value;
+            ds.search(queryTerm, (data) => {
+                results(data);
+            });
+        };
+
         store.subscribe(() => {
             authenticationToken(store.getState().token);
             currentUser(store.getState().username);
@@ -39,7 +48,8 @@
             isSelected,
             currentMenu,
             currentUser,
-            authenticationToken
+            authenticationToken,
+            search
         };
     };
 });
