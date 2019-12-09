@@ -30,7 +30,7 @@
             case authentication:
                 return Object.assign({}, state, { token: action.token, username: action.username, activeComponent: action.activeComponent });
             case searching:
-                return Object.assign({}, state, { selectedResult: action.selectedResult, activeComponent: action.activeComponent, token: getState().token });
+                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
             default:
                 return state;
         }
@@ -62,9 +62,9 @@
                 activeComponent: "login-page"
             };
         },
-        selectResult: function (queryTerm) {
+        searching: function (queryTerm) {
             return {
-                type: selectResult,
+                type: searching,
                 searchTerm: queryTerm,
                 activeComponent: "search-results"
             };
