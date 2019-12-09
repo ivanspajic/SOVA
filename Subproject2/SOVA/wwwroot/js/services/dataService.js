@@ -20,23 +20,6 @@
         callback(data);
     }
 
-    //var getCurrentUser = async (callback) => {
-    //    try {
-    //        console.log(authenticationToken());
-    //        var response = await fetch("api/users/currentUser",
-    //            {
-    //                method: "GET",
-    //                headers: {
-    //                    "Authorization": authenticationToken()
-    //                }
-    //            });
-    //        var data = await response.json();
-    //        callback(data);
-    //    } catch (e) {
-    //        return;
-    //    }
-    //}
-
     var authenticateUser = async (username, password, callback) => {
         console.log(username);
         var response = await fetch("api/auth/tokens", {
@@ -54,7 +37,6 @@
         getQuestions,
         getQuestionByIdWithAnswers,
         selectedQuestionId,
-        //getCurrentUser,
         authenticateUser,
         authenticationToken
     };
