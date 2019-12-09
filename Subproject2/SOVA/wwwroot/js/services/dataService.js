@@ -21,7 +21,6 @@
     }
 
     var authenticateUser = async (username, password, callback) => {
-        console.log(username);
         var response = await fetch("api/auth/tokens", {
             method: "POST",
             headers: {
