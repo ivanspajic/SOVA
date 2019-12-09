@@ -1,14 +1,14 @@
-﻿<div class="container px-4" data-bind="foreach: results">
+﻿<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" id="searchterm" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" data-bind="click: search">Search</button>
+    </form>
+</div>
+<div class="container px-4" data-bind="foreach: results">
     <div class="row border-bottom" style="margin-top: 15px;">
         <div class="col col-sm-10 pl-3 ml-sm-2">
             <a class="row" data-bind="attr: {href: `question/${Id}`, body: body }, text: body, click: $parent.selectResult.bind($data, searchResult)">
             </a>
         </div>
-    </div>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" id="searchterm" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" data-bind="click: search">Search</button>
-        </form>
     </div>
 </div>
