@@ -1,7 +1,9 @@
 ﻿define([], function () {
+    const landingPage = "LANDING_PAGE";
     const selectQuestion = "SELECT_QUESTION";
     const selectMenu = "SELECT_MENU";
     const signupUser = "SIGN_UP";
+    const authentication = "AUTHENTICATION";
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
@@ -16,12 +18,16 @@
 
     var reducer = function (state, action) {
         switch (action.type) {
+            case landingPage:
+                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
             case selectQuestion:
-                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: "question-with-answers" });
+                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent, token: getState().token });
             case selectMenu:
-                return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: "login-page" });
+                return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: action.activeComponent, token: getState().token });
             case signupUser:
-                return Object.assign({}, state, { activeComponent: "signup-page" });
+                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
+            case authentication:
+                return Object.assign({}, state, { token: action.token, username: action.username, activeComponent: action.activeComponent });
             default:
                 return state;
         }
@@ -33,11 +39,17 @@
     };
 
     var actions = {
+        landingPage: function (token) {
+            return {
+                type: landingPage,
+                activeComponent: "landing-page",
+            }
+        },
         selectQuestion: function (questionId) {
             return {
                 type: selectQuestion,
                 selectedQuestionId: questionId,
-                activeComponent: "question-with-answers"
+                activeComponent: "question-with-answers",
             };
         },
         selectMenu: function (menu) {
@@ -47,10 +59,18 @@
                 activeComponent: "login-page"
             };
         },
-        signupUser: function (menu) {
+        signupUser: function () {
             return {
                 type: signupUser,
                 activeComponent: "signup-page"
+            }
+        },
+        authentication: function (token, username) {
+            return {
+                type: authentication,
+                token: token,
+                username: username,
+                activeComponent: "landing-page"
             }
         }
     };

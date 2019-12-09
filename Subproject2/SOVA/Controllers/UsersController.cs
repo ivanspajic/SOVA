@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data_Layer_Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SOVA.Models;
@@ -39,7 +40,7 @@ namespace SOVA.Controllers
             return Ok(CreateUserDto(userById));
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("currentUser", Name = nameof(GetCurrentUser))]
         public ActionResult GetCurrentUser()
         {
