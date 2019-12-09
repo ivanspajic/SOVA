@@ -9,7 +9,7 @@
         store.dispatch(store.actions.selectQuestion(submission.submissionId));
     }
 
-    return function (params) {
+    return function () {
         return {
             activeComponent,
             questions,

@@ -5,14 +5,18 @@
 
 
     var login = function () {
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
+        try {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
 
-        store.dispatch(store.actions.authenticateUser(username, password));
-        console.log(store.getState().username);
-        ds.authenticateUser((data) => {
-            authenticationToken(data.token);
-        });
+            ds.authenticateUser(username, password, (data) => {
+                authenticationToken(data.token);
+                store.dispatch(store.actions.authentication(data.token));
+                store.dispatch(store.actions.landingPage(data.token));
+            });
+        } catch (e) {
+
+        }
     }
 
     var signupUser = function () {

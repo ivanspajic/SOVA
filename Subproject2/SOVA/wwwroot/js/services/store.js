@@ -1,8 +1,9 @@
 ﻿define([], function () {
+    const landingPage = "LANDING_PAGE";
     const selectQuestion = "SELECT_QUESTION";
     const selectMenu = "SELECT_MENU";
     const signupUser = "SIGN_UP";
-    const authenticateUser = "AUTHENTICATE_USER";
+    const authentication = "AUTHENTICATION";
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
@@ -17,14 +18,16 @@
 
     var reducer = function (state, action) {
         switch (action.type) {
+            case landingPage:
+                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
             case selectQuestion:
-                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: "question-with-answers" });
+                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent, token: getState().token });
             case selectMenu:
-                return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: "login-page" });
+                return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: action.activeComponent, token: getState().token });
             case signupUser:
-                return Object.assign({}, state, { activeComponent: "signup-page" });
-            case authenticateUser:
-                return Object.assign({}, state, { token: action.authenticateUser, activeComponent: "login-page" });
+                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
+            case authentication:
+                return Object.assign({}, state, { token: action.token, activeComponent: action.activeComponent });
             default:
                 return state;
         }
@@ -36,6 +39,13 @@
     };
 
     var actions = {
+        landingPage: function (token) {
+            return {
+                type: landingPage,
+                activeComponent: "landing-page",
+                token: token
+            }
+        },
         selectQuestion: function (questionId) {
             return {
                 type: selectQuestion,
@@ -56,11 +66,10 @@
                 activeComponent: "signup-page"
             }
         },
-        authenticateUser: function (username, password) {
+        authentication: function (token) {
             return {
-                type: authenticateUser,
-                username: username, // We need to store token here. not username password
-                password: password,
+                type: authentication,
+                token: token,
                 activeComponent: "landing-page"
             }
         }
