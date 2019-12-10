@@ -7,7 +7,7 @@
     });
 
     var selectPost = (data, id, isQuestion) => {
-        store.dispatch(store.actions.selectPost(id, isQuestion));
+        store.dispatch(store.actions.selectPost(id, isQuestion.isQuestion));
     }
 
     return function () {

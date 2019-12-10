@@ -27,7 +27,7 @@
             case selectMenu:
                 return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: action.activeComponent });
             case selectPost:
-                return Object.assign({}, state, { selectedPostId: action.selectedPostId, isQuestion: action.isQuestion, activeComponent: action.activeComponent });
+                return Object.assign({}, state, { selectedQuestionId: action.selectedPostId, selectedPostId: action.selectedPostId, isQuestion: action.isQuestion, activeComponent: action.activeComponent });
             case signupUser:
                 return Object.assign({}, state, { activeComponent: action.activeComponent });
             case authentication:
@@ -60,7 +60,9 @@
             };
         },
         selectPost: function (postId, isQ) {
-            console.log("hello");
+            console.log(postId);
+            console.log(isQ);
+
             switch (isQ) {
                 case true:
                     return {

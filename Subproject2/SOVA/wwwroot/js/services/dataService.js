@@ -18,7 +18,10 @@
     }
 
     var getQuestionByIdWithAnswers = async (callback) => {
-        var response = await fetch(`api/questions/${selectedQuestionId()}`);
+        if (selectedQuestionId !== undefined)
+            var response = await fetch(`api/questions/${selectedQuestionId()}`);
+        else if (selectedPostId !== undefined)
+            var response = await fetch(`api/questions/${selectedPostId()}`);
         var data = await response.json();
         callback(data);
     }
