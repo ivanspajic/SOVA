@@ -8,6 +8,7 @@
     store.subscribe(function () {
         authenticationToken(store.getState().token);
         selectedQuestionId(store.getState().selectedQuestionId);
+        selectedPostId(store.getState().selectedPostId);
         searchTerm(store.getState().searchTerm);
     });
 

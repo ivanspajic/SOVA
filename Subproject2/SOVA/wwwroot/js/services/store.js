@@ -6,6 +6,7 @@
     const authentication = "AUTHENTICATION";
     const searching = "SEARCHING";
     const selectPost = "SELECT_POST";
+    const answerPage = "ANSWER_PAGE";
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
@@ -22,6 +23,8 @@
         switch (action.type) {
             case landingPage:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, username: action.username });
+            case answerPage:
+                return Object.assign({}, state, { selectedPostId: action.selectedPostId, activeComponent: action.activeComponent });
             case selectQuestion:
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent });
             case selectMenu:
@@ -50,6 +53,13 @@
                 type: landingPage,
                 activeComponent: "landing-page",
                 token: username
+            }
+        },
+        answerPage: function (postId) {
+            return {
+                type: answerPage,
+                activeComponent: "individual-answer",
+                selectedPostId: postId                
             }
         },
         selectQuestion: function (questionId) {
