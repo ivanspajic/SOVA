@@ -2,10 +2,12 @@
 
     var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
     var authenticationToken = ko.observable();
+    var searchTerm = ko.observable();
 
     store.subscribe(function () {
         authenticationToken(store.getState().token);
         selectedQuestionId(store.getState().selectedQuestionId);
+        searchTerm(store.getState().searchTerm);
     });
 
     var getQuestions = async (callback) => {
@@ -32,11 +34,31 @@
         callback(data);
     }
 
+    var createUser = async (username, password, callback) => {
+        var response = await fetch("api/auth/users", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username: username, password: password })
+        });
+        var data = await response.json();
+        callback(data);
+    }
+
+    var search = async (callback) => {
+        var response = await fetch(`/api/questions/query/${searchTerm()}`);
+        var data = await response.json();
+        callback(data);
+    }
+
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
         selectedQuestionId,
         authenticateUser,
-        authenticationToken
+        authenticationToken,
+        createUser,
+        search
     };
 });
