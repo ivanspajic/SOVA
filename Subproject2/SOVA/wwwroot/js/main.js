@@ -20,6 +20,10 @@ require(["knockout"], function (ko) {
         viewModel: { require: "components/landing-page/landing-page" },
         template: { require: "text!components/landing-page/landing-page.html" }
     });
+    ko.components.register("individual-answer", {
+        viewModel: { require: "components/individual-answer/individual-answer" },
+        template: { require: "text!components/individual-answer/individual-answer.html" }
+    });
     ko.components.register("search-results", {
         viewModel: { require: "components/search-results/search-results" },
         template: { require: "text!components/search-results/search-results.html" }

@@ -5,6 +5,7 @@
     const signupUser = "SIGN_UP";
     const authentication = "AUTHENTICATION";
     const searching = "SEARCHING";
+    const selectPost = "SELECT_POST";
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
@@ -25,6 +26,8 @@
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent });
             case selectMenu:
                 return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: action.activeComponent });
+            case selectPost:
+                return Object.assign({}, state, { selectedPostId: action.selectedPostId, isQuestion: action.isQuestion, activeComponent: action.activeComponent });
             case signupUser:
                 return Object.assign({}, state, { activeComponent: action.activeComponent });
             case authentication:
@@ -53,8 +56,27 @@
             return {
                 type: selectQuestion,
                 selectedQuestionId: questionId,
-                activeComponent: "question-with-answers",
+                activeComponent: "question-with-answers"
             };
+        },
+        selectPost: function (postId, isQ) {
+            console.log("hello");
+            switch (isQ) {
+                case true:
+                    return {
+                        type: selectPost,
+                        selectedPostId: postId,
+                        isQuestion: isQ,
+                        activeComponent: "question-with-answers"
+                    };
+                default:
+                    return {
+                        type: selectPost,
+                        selectedPostId: postId,
+                        isQuestion: isQ,
+                        activeComponent: "individual-answer"
+                    };
+            }
         },
         selectMenu: function (menu) {
             return {

@@ -1,6 +1,7 @@
 ﻿define(['knockout', 'store'], function (ko, store) {
 
     var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
+    var selectedPostId = ko.observable(store.getState().selectedPostId);
     var authenticationToken = ko.observable();
     var searchTerm = ko.observable();
 
@@ -18,6 +19,12 @@
 
     var getQuestionByIdWithAnswers = async (callback) => {
         var response = await fetch(`api/questions/${selectedQuestionId()}`);
+        var data = await response.json();
+        callback(data);
+    }
+
+    var getAnswerById = async (callback) => {
+        var response = await fetch(`api/answers/${selectedPostId()}`);
         var data = await response.json();
         callback(data);
     }
@@ -55,6 +62,7 @@
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
+        getAnswerById,
         selectedQuestionId,
         authenticateUser,
         authenticationToken,

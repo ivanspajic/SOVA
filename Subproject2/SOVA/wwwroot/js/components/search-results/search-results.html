@@ -2,7 +2,7 @@
     <div data-bind="foreach: items.$values">
         <div class="row border-bottom" style="margin-top: 15px;">
             <div class="col col-sm-10 pl-3 ml-sm-2">
-                <a class="row" data-bind="text: title">
+                <a class="row" data-bind="text: title, click: $parent.selectPost.bind($data, searchResult)">
                 </a>
             </div>
         </div>
