@@ -1,0 +1,53 @@
+﻿<div class="container" data-bind="with: answerById">
+    <div class="mt-2 mt-md-4 pb-2 border-bottom">
+        <div class="row">
+            <div class="col-1 pt-md-2 text-center text-secondary d-none d-md-block">
+                <div>
+                    <h3 data-bind="text: submission.score"></h3>
+                </div>
+                <span>votes</span>
+                <div class="my-3" data-bind="if: accepted === true">
+                    <h3>✔</h3>
+                </div>
+            </div>
+
+            <div class="d-block d-md-none" style="font-size: 14px">
+                <span class="bg-secondary text-white  px-3 py-2">
+                    <strong data-bind="text: submission.score"></strong>
+                    <span>votes</span>
+                </span>
+                <span style="font-size: 14px;" class="badge badge-success ml-2 py-2" data-bind="if: accepted === true">
+                    Accepted ✔
+                </span>
+            </div>
+
+            <div class="col-md-10 col-sm-12 pt-2">
+                <p data-bind="html: submission.body"></p>
+            </div>
+            <div class="col bg-light col-md-3 text-secondary offset-md-9 offset-4 offset-sm-7 pb-2 pt-2 question-details-so-member">
+                <span>answered</span>
+                <span data-bind="text: moment(submission.creationDate).format('ll')"></span>
+                <span>at</span>
+                <span data-bind="text: moment(submission.creationDate).format('LT')"></span>
+                <br />
+                <a data-bind="text: submission.soMember.displayName"> </a>
+            </div>
+        </div>
+        <div data-bind="if: submission.comments.$values.length > 0">
+            <div class="d-md-none comment-count">
+                <span class="comment-user p-1">
+                    <span>Comments&nbsp;</span><span data-bind="text: submission.comments.$values.length"></span>
+                </span>
+            </div>
+            <div class="col-11 offset-1 px-3 pt-3 d-none d-md-block" data-bind="foreach: submission.comments.$values">
+                <div class="row pl-3 py-2 text-secondary border-top comment-body">
+                    <span class="px-2 text-center" data-bind="text: submission.score"></span>
+                    <div class="col">
+                        <span data-bind="html: submission.body"></span>
+                        <span>-&nbsp;</span><span class="comment-user px-1" data-bind="text: submission.soMember.displayName ? submission.soMember.displayName : 'deletedUser'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

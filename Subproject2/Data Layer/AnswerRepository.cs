@@ -18,7 +18,13 @@ namespace Data_Layer
 
         public Answer GetAnswerById(int answerId)
         {
-            return _databaseContext.Answers.Include(a => a.Submission).FirstOrDefault(a => a.SubmissionId == answerId);
+            return _databaseContext.Answers.Include(a => a.Submission)
+                .Include(a => a.Submission.SoMember)
+                .Include(a => a.Submission)
+                .ThenInclude(submission => submission.Comments)
+                .ThenInclude(comment => comment.Submission)
+                .ThenInclude(a => a.SoMember)                
+                .FirstOrDefault(a => a.SubmissionId == answerId);
         }
 
         public IEnumerable<Answer> GetAnswersForQuestionById(int questionId)

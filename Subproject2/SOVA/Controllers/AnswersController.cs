@@ -37,7 +37,7 @@ namespace SOVA.Controllers
             var dto = _mapper.Map<AnswerDto>(answer);
             dto.Link = Url.Link(
                     nameof(GetAnswerById),
-                    new { answerId = answer.SubmissionId });
+                    new { answerId = answer.SubmissionId});
             return dto;
         }
     }
