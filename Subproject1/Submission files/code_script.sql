@@ -138,7 +138,7 @@ CREATE OR REPLACE FUNCTION best_match_weighted(authenticated_user_id integer def
                 postid int4,
                 rank   decimal,
                 title text,		
-								isQuestion bool,
+								is_question bool,
                 body   text
             )
 AS
@@ -187,7 +187,7 @@ BEGIN
             perform log_search(w_elem, authenticated_user_id);
         END LOOP;
     return query
-        (select distinct temp_table.postid, temp_table.rank as rank, temp_table.posttitle as title, temp_table.isQ as isQuestion, submissions.body
+        (select distinct temp_table.postid, temp_table.rank as rank, temp_table.posttitle as title, temp_table.isQ as is_question, submissions.body
          from temp_table
                   join submissions on temp_table.postid = submissions.id
          group by temp_table.postid, submissions.body, temp_table.posttitle, temp_table.isQ, temp_table.rank

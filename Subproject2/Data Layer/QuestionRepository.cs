@@ -74,7 +74,14 @@ namespace Data_Layer
         {
             if (queryString == null)
                 return null;
-            return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", userId, queryString)
+            var newStr = "\'";
+            newStr += queryString.Replace(" ","\', \'" );
+            newStr += "\'";
+
+            var query = $"SELECT * from best_match_weighted({userId}, {newStr})";
+            
+
+            return _databaseContext.SearchResults.FromSqlRaw(query)
                 .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
                 .Take(pagingAttributes.PageSize)
                 .ToList();
