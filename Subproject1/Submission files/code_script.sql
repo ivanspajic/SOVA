@@ -129,6 +129,7 @@ $$
     LANGUAGE 'plpgsql';
 
 --d6
+DROP FUNCTION if exists best_match_weighted(integer,text[]);
 drop function if exists best_match_weighted();
 CREATE OR REPLACE FUNCTION best_match_weighted(authenticated_user_id integer default null,
                                                VARIADIC w text[] default null)
@@ -136,6 +137,8 @@ CREATE OR REPLACE FUNCTION best_match_weighted(authenticated_user_id integer def
             (
                 postid int4,
                 rank   decimal,
+                title text,		
+								is_question bool,
                 body   text
             )
 AS
@@ -146,6 +149,8 @@ BEGIN
     create table temp_table
     (
         postid int4 unique,
+        posttitle text,
+				isQ bool,
         rank   decimal
     );
     FOREACH w_elem IN ARRAY w
@@ -161,20 +166,36 @@ BEGIN
             from wi_weighted
             where temp_table.postid = wi_weighted.id
               and wi_weighted.word = w_elem;
+                            
+                      update temp_table
+                        set posttitle = questions.title
+                        from questions
+                        where temp_table.postid = questions.submission_id;
+                        
+                        update temp_table
+                        set posttitle = questions.title
+                        from answers join questions on answers.parent_id = questions.submission_id
+                        where temp_table.postid = answers.submission_id;
+												
+												update temp_table
+                        set isQ = true
+                        where temp_table.postid in (select questions.submission_id from questions);
+												update temp_table
+                        set isQ = false
+                        where temp_table.postid not in (select questions.submission_id from questions);
 
             perform log_search(w_elem, authenticated_user_id);
         END LOOP;
     return query
-        (select distinct temp_table.postid, temp_table.rank as rank, submissions.body
+        (select distinct temp_table.postid, temp_table.rank as rank, temp_table.posttitle as title, temp_table.isQ as is_question, submissions.body
          from temp_table
                   join submissions on temp_table.postid = submissions.id
-         group by temp_table.postid, submissions.body, temp_table.rank
+         group by temp_table.postid, submissions.body, temp_table.posttitle, temp_table.isQ, temp_table.rank
          order by rank desc);
     drop table temp_table;
 END
 $$
     LANGUAGE 'plpgsql';
-
 
 --d7
 drop function if exists word_2_words();
