@@ -29,7 +29,7 @@
             case questionWithAnswersComponent:
                 return store.actions.selectQuestion(state.selectedQuestionId);
             case loginPageComponent:
-                return store.actions.selectMenu(state.selectedMenu);
+                return store.actions.login();
             case signupPageComponent:
                 return store.actions.signupUser();
             case searchPageComponent:
