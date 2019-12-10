@@ -20,6 +20,10 @@
                 activeComponent(menu.component);
             }
             activeComponent(store.getState().activeComponent);
+            if (!currentUser()) {
+                console.log(store.getState().username);
+                currentUser(store.getState().username);
+            }
         });
 
         var changeContent = function (menu) {

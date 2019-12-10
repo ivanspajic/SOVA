@@ -9,7 +9,7 @@
 
             ds.authenticateUser(username, password, (data) => {
                 store.dispatch(store.actions.authentication(`Bearer ${data.token}`, data.username));
-                store.dispatch(store.actions.landingPage(data.token));
+                store.dispatch(store.actions.landingPage(data.username));
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('username', data.username);
             });
