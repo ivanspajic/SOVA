@@ -14,7 +14,6 @@
         }
     });
     window.onpopstate = function (event) {
-        console.log(event.state);
         popState = true;
         if (event.state === null) {
             var firstLandingPageAction = store.actions.landingPage();
