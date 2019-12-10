@@ -4,10 +4,10 @@
 
         var currentUser = ko.observable(localStorage.getItem("username"));
         var authenticationToken = ko.observable(store.getState().token);
-        var searchTerm = ko.observable();
+        var queryTerm = ko.observable();
 
         var search = function () {
-            store.dispatch(store.actions.searching(searchTerm()));
+            store.dispatch(store.actions.searching(queryTerm()));
         };
 
         store.subscribe(() => {
@@ -43,7 +43,7 @@
             login,
             logout,
             signUp,
-            searchTerm
+            queryTerm
         };
     };
 });
