@@ -11,6 +11,11 @@
         var currentUser = ko.observable(localStorage.getItem("username"));
         var authenticationToken = ko.observable();
 
+        var search = function () {
+            var queryTerm = document.getElementById("searchterm").value;
+            store.dispatch(store.actions.searching(queryTerm));
+        };
+
         store.subscribe(() => {
             authenticationToken(store.getState().token);
             var menuName = store.getState().selectedMenu;
@@ -41,7 +46,8 @@
             isSelected,
             currentMenu,
             currentUser,
-            authenticationToken
+            authenticationToken,
+            search
         };
     };
 });

@@ -2,10 +2,12 @@
 
     var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
     var authenticationToken = ko.observable();
+    var searchTerm = ko.observable();
 
     store.subscribe(function () {
         authenticationToken(store.getState().token);
         selectedQuestionId(store.getState().selectedQuestionId);
+        searchTerm(store.getState().searchTerm);
     });
 
     var getQuestions = async (callback) => {
@@ -42,6 +44,12 @@
         });
         await response.json();
     }
+    
+    var search = async (callback) => {
+        var response = await fetch(`/api/questions/query/${searchTerm()}`);
+        var data = await response.json();
+        callback(data);
+    }
 
     return {
         getQuestions,
@@ -49,6 +57,7 @@
         selectedQuestionId,
         authenticateUser,
         authenticationToken,
-        createUser
+        createUser,
+        search
     };
 });
