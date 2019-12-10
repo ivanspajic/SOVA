@@ -1,11 +1,13 @@
 ﻿define([], function () {
     const landingPage = "LANDING_PAGE";
     const selectQuestion = "SELECT_QUESTION";
-    const selectMenu = "SELECT_MENU";
+    const login = "LOGIN";
     const signupUser = "SIGN_UP";
     const authentication = "AUTHENTICATION";
     const searching = "SEARCHING";
     const userPage = "USER";
+    const selectPost = "SELECT_POST";
+    const answerPage = "ANSWER_PAGE";
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
@@ -22,14 +24,16 @@
         switch (action.type) {
             case landingPage:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, username: action.username });
+            case answerPage:
+                return Object.assign({}, state, { selectedPostId: action.selectedPostId, activeComponent: action.activeComponent });
             case selectQuestion:
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent });
-            case selectMenu:
-                return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: action.activeComponent });
+            case login:
+                return Object.assign({}, state, { activeComponent: action.activeComponent });
+            case selectPost:
+                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, selectedPostId: action.selectedPostId, isQuestion: action.isQuestion, activeComponent: action.activeComponent });
             case signupUser:
                 return Object.assign({}, state, { activeComponent: action.activeComponent });
-            case landingPage:
-                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
             case authentication:
                 return Object.assign({}, state, { token: action.token, username: action.username, activeComponent: action.activeComponent });
             case searching:
@@ -54,19 +58,45 @@
                 token: username
             }
         },
+        answerPage: function (postId) {
+            return {
+                type: answerPage,
+                activeComponent: "individual-answer",
+                selectedPostId: postId
+            }
+        },
         selectQuestion: function (questionId) {
             return {
                 type: selectQuestion,
                 selectedQuestionId: questionId,
-                activeComponent: "question-with-answers",
+                activeComponent: "question-with-answers"
             };
         },
-        selectMenu: function (menu) {
+        login: function () {
             return {
-                type: selectMenu,
-                selectedMenu: menu,
+                type: login,
                 activeComponent: "login-page"
             };
+        },
+        selectPost: function (postId, isQ) {
+            switch (isQ) {
+                case true:
+                    return {
+                        type: selectPost,
+                        selectedPostId: postId,
+                        isQuestion: isQ,
+                        activeComponent: "question-with-answers",
+                        selectedQuestionId: postId
+                    };
+                default:
+                    return {
+                        type: selectPost,
+                        selectedPostId: postId,
+                        isQuestion: isQ,
+                        activeComponent: "individual-answer",
+                        selectedQuestionId: undefined
+                    };
+            }
         },
         searching: function (queryTerm) {
             return {

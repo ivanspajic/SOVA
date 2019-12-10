@@ -40,7 +40,7 @@
                         <span>at</span>
                         <span data-bind="text: moment(submission.creationDate).format('LT')"></span>
                         <br />
-                        <a data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
+                        <a data-bind="text: submission.soMember.displayName"> </a>
                     </div>
                 </div>
             </div>
@@ -105,7 +105,7 @@
                         <span>at</span>
                         <span data-bind="text: moment(submission.creationDate).format('LT')"></span>
                         <br />
-                        <a data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
+                        <a data-bind="text: submission.soMember.displayName"> </a>
                     </div>
                 </div>
                 <div data-bind="if: submission.comments.$values.length > 0">
