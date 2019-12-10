@@ -1,19 +1,27 @@
-﻿define(['knockout', 'store', 'dataService'], function (ko, store, ds) {
+﻿define(["knockout", "store", "dataService"], function (ko, store, ds) {
     return function () {
         var activeComponent = ko.observable("login-page");
         var menuElements = [
             {
                 name: "Login",
                 component: "login-page"
+            },
+            {
+                name: "Log out",
+                component: "landing-page"
             }
         ];
         var currentMenu = ko.observable(menuElements[0]);
-        var currentUser = ko.observable();
+        var currentUser = ko.observable(localStorage.getItem("username"));
         var authenticationToken = ko.observable();
+
+        var search = function () {
+            var queryTerm = document.getElementById("searchterm").value;
+            store.dispatch(store.actions.searching(queryTerm));
+        };
 
         store.subscribe(() => {
             authenticationToken(store.getState().token);
-            currentUser(store.getState().username);
             var menuName = store.getState().selectedMenu;
             var menu = menuElements.find(x => x.name === menuName);
             if (menu) {
@@ -21,6 +29,9 @@
                 activeComponent(menu.component);
             }
             activeComponent(store.getState().activeComponent);
+            if (!currentUser()) {
+                currentUser(store.getState().username);
+            }
         });
 
         var changeContent = function (menu) {
@@ -39,7 +50,8 @@
             isSelected,
             currentMenu,
             currentUser,
-            authenticationToken
+            authenticationToken,
+            search
         };
     };
 });
