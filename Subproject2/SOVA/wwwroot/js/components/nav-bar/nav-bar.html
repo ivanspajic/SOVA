@@ -4,11 +4,10 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="form-inline my-2 my-lg-0">
+        <form class="form-inline my-2">
             <input class="form-control mr-sm-2" type="search" id="searchterm" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit" data-bind="click: search">Search</button>
         </form>
-
         <user-profile></user-profile>
         <div data-bind="if:!currentUser()">
             <button type="button" class="btn btn-primary ml-2" data-bind="click: login">Login</button>
