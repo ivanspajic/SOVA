@@ -28,7 +28,7 @@
             case selectQuestion:
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent });
             case login:
-                return Object.assign({}, state, { activeComponent: action.activeComponent });
+                return Object.assign({}, state, { activeComponent: action.activeComponent, optionalMessage: action.optionalMessage });
             case selectPost:
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, selectedPostId: action.selectedPostId, isQuestion: action.isQuestion, activeComponent: action.activeComponent });
             case signupUser:
@@ -69,10 +69,11 @@
                 activeComponent: "question-with-answers"
             };
         },
-        login: function () {
+        login: function (message) {
             return {
                 type: login,
-                activeComponent: "login-page"
+                activeComponent: "login-page",
+                optionalMessage: message
             };
         },
         selectPost: function (postId, isQ) {

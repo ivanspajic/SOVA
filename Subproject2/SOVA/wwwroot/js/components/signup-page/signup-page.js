@@ -8,12 +8,13 @@
 
         var createUser = function () {
             ds.createUser(username(), password(), (data) => {
-                if (data.message && data.message.toLowerCase().includes("taken")) {
-                    errorMessage(`Someone already has that username. Try another? <br \> Suggestions: <strong>${username()}69 </strong> or <strong>${username()}420</strong>`);
-                } else if (data.message && data.message.toLowerCase().includes("fields")) {
+                if (!username() || !password()) {
                     errorMessage(`Please provide all fields.`);
+                }
+                else if (data.message && data.message.toLowerCase().includes("taken")) {
+                    errorMessage(`Someone already has that username. Try another? <br \> Suggestions: <strong>${username()}69 </strong> or <strong>${username()}420</strong>`);
                 } else {
-                    store.dispatch(store.actions.login());
+                    store.dispatch(store.actions.login(`Welcome ${username()}. Please log in continue.`));
                 }
             });
         }

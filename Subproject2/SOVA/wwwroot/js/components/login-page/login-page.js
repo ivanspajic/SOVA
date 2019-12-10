@@ -4,6 +4,11 @@
     var errorMessage = ko.observable();
     var username = ko.observable();
     var password = ko.observable();
+    var message = ko.observable(store.getState().optionalMessage);
+
+    store.subscribe(function () {
+        message(store.getState().optionalMessage);
+    });
 
     var login = function () {
         ds.authenticateUser(username(), password(), (data) => {
@@ -27,7 +32,8 @@
             login,
             errorMessage,
             username,
-            password
+            password,
+            message
         };
     };
 });
