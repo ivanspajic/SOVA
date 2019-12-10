@@ -21,6 +21,10 @@ require(["knockout"], function (ko) {
         viewModel: { require: "components/landing-page/landing-page" },
         template: { require: "text!components/landing-page/landing-page.html" }
     });
+    ko.components.register("search-results", {
+        viewModel: { require: "components/search-results/search-results" },
+        template: { require: "text!components/search-results/search-results.html" }
+    });
     ko.components.register("question-with-answers", {
         viewModel: {
             require: "components/question-with-answers/question-with-answers"

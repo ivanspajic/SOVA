@@ -5,6 +5,7 @@
     const signupUser = "SIGN_UP";
     const landingPage = "LANDING_PAGE";
     const authentication = "AUTHENTICATION";
+    const searching = "SEARCHING";
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
@@ -20,17 +21,19 @@
     var reducer = function (state, action) {
         switch (action.type) {
             case landingPage:
-                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
+                return Object.assign({}, state, { activeComponent: action.activeComponent, username: action.username });
             case selectQuestion:
-                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent, token: getState().token });
+                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent });
             case selectMenu:
-                return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: action.activeComponent, token: getState().token });
+                return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: action.activeComponent });
             case signupUser:
                 return Object.assign({}, state, { activeComponent: "signup-page" });
             case landingPage:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
             case authentication:
                 return Object.assign({}, state, { token: action.token, username: action.username, activeComponent: action.activeComponent });
+            case searching:
+                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token, searchTerm: action.searchTerm});
             default:
                 return state;
         }
@@ -42,10 +45,11 @@
     };
 
     var actions = {
-        landingPage: function (token) {
+        landingPage: function (username) {
             return {
                 type: landingPage,
                 activeComponent: "landing-page",
+                token: username
             }
         },
         selectQuestion: function (questionId) {
@@ -60,6 +64,13 @@
                 type: selectMenu,
                 selectedMenu: menu,
                 activeComponent: "login-page"
+            };
+        },
+        searching: function (queryTerm) {
+            return {
+                type: searching,
+                searchTerm: queryTerm,
+                activeComponent: "search-results"
             };
         },
         signupUser: function () {
