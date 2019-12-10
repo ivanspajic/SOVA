@@ -18,6 +18,12 @@
         callback(data);
     }
 
+    var moreQuestions = async (callback) => {
+        var response = await fetch("api/questions?page=1&pageSize=10");
+        var data = await response.json();
+        callback(data);
+    }
+
     var getQuestionByIdWithAnswers = async (callback) => {
         if (selectedQuestionId !== undefined)
             var response = await fetch(`api/questions/${selectedQuestionId()}`);
@@ -71,6 +77,7 @@
         authenticateUser,
         authenticationToken,
         createUser,
-        search
+        search,
+        moreQuestions
     };
 });

@@ -10,13 +10,18 @@
     var selectQuestion = (data, submission) => {
         store.dispatch(store.actions.selectQuestion(submission.submissionId));
     }
-
+    var nextPage = () => {
+        ds.moreQuestions((data) => {
+            questions(data.items.$values);
+        });
+    }
     return function () {
         return {
             activeComponent,
             questions,
             selectQuestion,
-            sessionStorage
+            sessionStorage,
+            nextPage
         };
     };
 });
