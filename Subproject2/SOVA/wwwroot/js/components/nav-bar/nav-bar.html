@@ -4,20 +4,17 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto" data-bind="foreach: menuElements">
-            <li class="nav-item" data-bind="css: $parent.isSelected($data)">
-                <div data-bind="if: name==='Login' && !($parent.currentUser())">
-                    <a class="nav-link" href="#" data-bind="click: $parent.changeContent">
-                        <span data-bind="text: name"></span>
-                    </a>
-                </div>
-            </li>
-        </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" id="searchterm" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit" data-bind="click: search">Search</button>
-        </form>    
+        </form>
 
         <user-profile></user-profile>
+        <div data-bind="if:!currentUser()">
+            <button type="button" class="btn btn-primary ml-2" data-bind="click: login">Login</button>
+        </div>
+        <div data-bind="if: currentUser()">
+            <button type="button" class="btn btn-light ml-2" data-bind="click: logout">Logout</button>
+        </div>
     </div>
 </nav>
