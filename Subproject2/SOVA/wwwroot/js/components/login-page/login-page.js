@@ -2,6 +2,21 @@
 
     var activeComponent = ko.observable("login-page");
 
+    var login = function () {
+        try {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            ds.authenticateUser(username, password, (data) => {
+                console.log(data);
+                store.dispatch(store.actions.authentication(`Bearer ${data.token}`, data.username));
+                store.dispatch(store.actions.landingPage(data.token));
+            });
+        } catch (e) {
+
+        }
+    }
+
     var signupUser = function () {
         store.dispatch(store.actions.signupUser());
     };
@@ -9,7 +24,8 @@
     return function () {
         return {
             activeComponent,
-            signupUser
+            signupUser,
+            login,
         };
     };
 });
