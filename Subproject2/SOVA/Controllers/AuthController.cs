@@ -1,14 +1,14 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using Data_Layer_Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SOVA.Models;
 using SOVA.Service;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace SOVA.Controllers
 {
@@ -71,13 +71,13 @@ namespace SOVA.Controllers
             var user = _userRepository.GetUserByUsername(dto.Username);
             if (user == null)
             {
-                return BadRequest();
+                return BadRequest(new { message = "Username not found." });
             }
             var pwd = PasswordService.HashPassword(dto.Password, user.Salt, _size);
 
             if (user.Password != pwd)
             {
-                return BadRequest();
+                return BadRequest(new { message = "Wrong password." });
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();

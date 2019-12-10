@@ -41,7 +41,6 @@
             body: JSON.stringify({ username: username, password: password })
         });
         await response.json();
-        //callback(data);
     }
 
     return {
