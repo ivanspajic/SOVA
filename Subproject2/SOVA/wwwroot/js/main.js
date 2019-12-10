@@ -54,6 +54,14 @@ require(["knockout"], function (ko) {
         viewModel: { require: "components/signup-page/signup-page" },
         template: { require: "text!components/signup-page/signup-page.html" }
     });
+    ko.components.register("user-search-history", {
+        viewModel: {
+            require: "components/user-page/userSearchHistory"
+        },
+        template: {
+            require: "text!components/user-page/userSearchHistory.html"
+        }
+    })
 });
 
 require(["knockout", "app", "store", "history"], function (ko, app, store, history) {

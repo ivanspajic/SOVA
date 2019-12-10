@@ -5,6 +5,7 @@
     const signupUser = "SIGN_UP";
     const authentication = "AUTHENTICATION";
     const searching = "SEARCHING";
+    const userPage = "USER";
     const selectPost = "SELECT_POST";
     const answerPage = "ANSWER_PAGE";
     var subscribers = [];
@@ -37,6 +38,8 @@
                 return Object.assign({}, state, { token: action.token, username: action.username, activeComponent: action.activeComponent });
             case searching:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token, searchTerm: action.searchTerm });
+            case userPage:
+                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
             default:
                 return state;
         }
@@ -115,6 +118,14 @@
                 token: token,
                 username: username,
                 activeComponent: "landing-page"
+            }
+        },
+        userPage: function (token, username) {
+            return {
+                type: userPage,
+                token: token,
+                username: username,
+                activeComponent: "user-page"
             }
         }
     };
