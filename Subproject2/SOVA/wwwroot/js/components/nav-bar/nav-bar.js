@@ -5,6 +5,10 @@
             {
                 name: "Login",
                 component: "login-page"
+            },
+            {
+                name: "Log out",
+                component: "landing-page"
             }
         ];
         var currentMenu = ko.observable(menuElements[0]);

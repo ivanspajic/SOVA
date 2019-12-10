@@ -2,16 +2,26 @@
     return function () {
 
         var activeComponent = ko.observable("signup-page");
+        var errorMessage = ko.observable();
 
         var createUser = function () {
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
-            ds.createUser(username, password);
-            store.dispatch(store.actions.selectMenu());
+            ds.createUser(username, password, (data) => {
+                console.log(data.message);
+                if (data.message && data.message.toLowerCase().includes("taken")) {
+                    errorMessage(`Provided username is already taken. Please choose a different one. Suggestions: ${username}69 or ${username}420`);
+                } else if (data.message && data.message.toLowerCase().includes("fields")) {
+                    errorMessage(`Please provide all fields.`);
+                } else {
+                    store.dispatch(store.actions.selectMenu());
+                }
+            });
         }
         return {
             activeComponent,
-            createUser
+            createUser,
+            errorMessage
         }
     }
 });

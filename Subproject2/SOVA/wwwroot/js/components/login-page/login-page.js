@@ -8,7 +8,6 @@
             var password = document.getElementById("password").value;
 
             ds.authenticateUser(username, password, (data) => {
-                console.log(data.status);
                 if (data.message && data.message.toLowerCase().includes("username")) {
                     errorMessage("Provided username is not registered in the database");
                 }

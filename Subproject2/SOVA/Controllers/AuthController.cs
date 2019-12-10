@@ -31,9 +31,14 @@ namespace SOVA.Controllers
         [HttpPost("users")]
         public ActionResult CreateUser([FromBody] UserForCreation dto)
         {
+            if (dto.Username == null || dto.Password == null)
+            {
+                Console.WriteLine("am I here?");
+                return BadRequest(new { message = "Please fill out all fields." });
+            }
             if (_userRepository.GetUserByUsername(dto.Username) != null)
             {
-                return BadRequest("Username is already taken. Please choose another username.");
+                return BadRequest(new { message = "Username is already taken. Please choose another username." });
             }
 
             var salt = PasswordService.GenerateSalt(_size);
@@ -54,7 +59,7 @@ namespace SOVA.Controllers
             // Check if username is already taken in database.
             if (_userRepository.GetUserByUsername(dto.Username) != null && _userRepository.GetUserByUsername(dto.Username).Username != dto.Username)
             {
-                return BadRequest("Username is already taken. Please choose another username.");
+                return BadRequest(new { message = "Username is already taken. Please choose another username." });
             }
 
             var updatedSalt = dto.Password != null ? PasswordService.GenerateSalt(_size) : null;

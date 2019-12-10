@@ -34,7 +34,7 @@
         callback(data);
     }
 
-    var createUser = async (username, password) => {
+    var createUser = async (username, password, callback) => {
         var response = await fetch("api/auth/users", {
             method: "POST",
             headers: {
@@ -42,9 +42,10 @@
             },
             body: JSON.stringify({ username: username, password: password })
         });
-        await response.json();
+        var data = await response.json();
+        callback(data);
     }
-    
+
     var search = async (callback) => {
         var response = await fetch(`/api/questions/query/${searchTerm()}`);
         var data = await response.json();
