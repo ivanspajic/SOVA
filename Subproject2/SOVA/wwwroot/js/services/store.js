@@ -27,7 +27,7 @@
             case selectMenu:
                 return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: action.activeComponent });
             case selectPost:
-                return Object.assign({}, state, { selectedQuestionId: action.selectedPostId, selectedPostId: action.selectedPostId, isQuestion: action.isQuestion, activeComponent: action.activeComponent });
+                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, selectedPostId: action.selectedPostId, isQuestion: action.isQuestion, activeComponent: action.activeComponent });
             case signupUser:
                 return Object.assign({}, state, { activeComponent: action.activeComponent });
             case authentication:
@@ -60,23 +60,22 @@
             };
         },
         selectPost: function (postId, isQ) {
-            console.log(postId);
-            console.log(isQ);
-
             switch (isQ) {
                 case true:
                     return {
                         type: selectPost,
                         selectedPostId: postId,
                         isQuestion: isQ,
-                        activeComponent: "question-with-answers"
+                        activeComponent: "question-with-answers",
+                        selectedQuestionId: postId
                     };
                 default:
                     return {
                         type: selectPost,
                         selectedPostId: postId,
                         isQuestion: isQ,
-                        activeComponent: "individual-answer"
+                        activeComponent: "individual-answer",
+                        selectedQuestionId: undefined
                     };
             }
         },
