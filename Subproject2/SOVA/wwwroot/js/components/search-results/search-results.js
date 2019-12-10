@@ -3,12 +3,11 @@
     var results = ko.observable();
 
     ds.search((data) => {
-        results(data)
+        results(data.items.$values);
     });
 
-    var selectPost = (data, searchResult) => {
-        console.log(searchResult);
-        store.dispatch(store.actions.selectPost(searchResult.id, searchResult.isQuestion));
+    var selectPost = (data, id, isQuestion) => {
+        store.dispatch(store.actions.selectPost(id, isQuestion));
     }
 
     return function () {
