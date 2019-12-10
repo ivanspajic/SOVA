@@ -2,11 +2,11 @@
 
     var activeComponent = ko.observable("login-page");
     var errorMessage = ko.observable();
-    var login = function () {
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
+    var username = ko.observable();
+    var password = ko.observable();
 
-        ds.authenticateUser(username, password, (data) => {
+    var login = function () {
+        ds.authenticateUser(username(), password(), (data) => {
             if (data.message && data.message.toLowerCase().includes("username")) {
                 errorMessage("Provided username is not registered in the database");
             }
@@ -25,7 +25,9 @@
         return {
             activeComponent,
             login,
-            errorMessage
+            errorMessage,
+            username,
+            password
         };
     };
 });
