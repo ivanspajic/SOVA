@@ -34,6 +34,18 @@
         callback(data);
     }
 
+    var createUser = async (username, password, callback) => {
+        var response = await fetch("api/auth/users", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username: username, password: password })
+        });
+        var data = await response.json();
+        callback(data);
+    }
+
     var search = async (callback) => {
         var response = await fetch(`/api/questions/query/${searchTerm()}`);
         var data = await response.json();
@@ -46,6 +58,7 @@
         selectedQuestionId,
         authenticateUser,
         authenticationToken,
+        createUser,
         search
     };
 });
