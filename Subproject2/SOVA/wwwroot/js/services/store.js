@@ -3,7 +3,6 @@
     const selectQuestion = "SELECT_QUESTION";
     const selectMenu = "SELECT_MENU";
     const signupUser = "SIGN_UP";
-    const landingPage = "LANDING_PAGE";
     const authentication = "AUTHENTICATION";
     const searching = "SEARCHING";
     var subscribers = [];
@@ -27,7 +26,7 @@
             case selectMenu:
                 return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: action.activeComponent });
             case signupUser:
-                return Object.assign({}, state, { activeComponent: "signup-page" });
+                return Object.assign({}, state, { activeComponent: action.activeComponent });
             case landingPage:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
             case authentication:
