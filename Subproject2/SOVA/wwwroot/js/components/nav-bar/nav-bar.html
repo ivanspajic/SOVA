@@ -3,17 +3,24 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="form-inline my-2">
-            <input class="form-control mr-sm-2" type="search" id="searchterm" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" data-bind="click: search">Search</button>
+    <div class="collapse navbar-collapse row" id="navbarSupportedContent">
+        <form class="form-inline my-1 col-6 offset-3" data-bind="if: activeComponent && !(activeComponent() === 'login-page' || activeComponent() ===  'signup-page')">
+            <input class="form-control mr-sm-2" type="search" id="searchterm" placeholder="Search" aria-label="Search" style="width: 80%" data-bind="textInput: searchTerm">
+            <button class="btn btn-outline-success my-1 my-sm-0" type="submit" data-bind="click: search">Search</button>
         </form>
-        <user-profile></user-profile>
-        <div data-bind="if:!currentUser()">
-            <button type="button" class="btn btn-primary ml-2" data-bind="click: login">Login</button>
-        </div>
-        <div data-bind="if: currentUser()">
-            <button type="button" class="btn btn-light ml-2" data-bind="click: logout">Logout</button>
+        <div class="ml-auto my-1 mr-5">
+            <div class="row">
+                <user-profile></user-profile>
+                <div data-bind="if:!currentUser()">
+                    <button type="button" class="btn btn-primary" data-bind="click: login">Login</button>
+                </div>
+                <div data-bind="if:!currentUser()">
+                    <button type="button" class="btn btn-secondary ml-2" data-bind="click: signUp">Sign up</button>
+                </div>
+                <div data-bind="if: currentUser()">
+                    <button type="button" class="btn btn-light ml-2" data-bind="click: logout">Logout</button>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

@@ -8,13 +8,13 @@
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
             ds.createUser(username, password, (data) => {
-                console.log(data.message);
+                console.log(data);
                 if (data.message && data.message.toLowerCase().includes("taken")) {
                     errorMessage(`Provided username is already taken. Please choose a different one. Suggestions: ${username}69 or ${username}420`);
                 } else if (data.message && data.message.toLowerCase().includes("fields")) {
                     errorMessage(`Please provide all fields.`);
                 } else {
-                    store.dispatch(store.actions.selectMenu());
+                    store.dispatch(store.actions.login());
                 }
             });
         }

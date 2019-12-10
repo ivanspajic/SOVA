@@ -44,7 +44,7 @@ namespace SOVA.Controllers
             var salt = PasswordService.GenerateSalt(_size);
             var pwd = PasswordService.HashPassword(dto.Password, salt, _size);
             _userRepository.CreateUser(dto.Username, pwd, salt);
-            return CreatedAtRoute(null, dto.Username);
+            return CreatedAtRoute(null, new { username = dto.Username });
         }
 
         [HttpPatch("users/{userId}")]
