@@ -5,7 +5,7 @@
 
     <div class="collapse navbar-collapse row" id="navbarSupportedContent">
         <form class="form-inline my-1 col-6 offset-3" data-bind="if: activeComponent && !(activeComponent() === 'login-page' || activeComponent() ===  'signup-page')">
-            <input class="form-control mr-sm-2" type="search" id="searchterm" placeholder="Search" aria-label="Search" style="width: 80%" data-bind="textInput: searchTerm">
+            <input class="form-control mr-sm-2" type="search" id="searchterm" placeholder="Search" aria-label="Search" style="width: 80%" data-bind="textInput: queryTerm">
             <button class="btn btn-outline-success my-1 my-sm-0" type="submit" data-bind="click: search">Search</button>
         </form>
         <div class="ml-auto my-1 mr-5">
