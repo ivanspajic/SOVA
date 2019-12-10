@@ -1,12 +1,14 @@
 ﻿define(['knockout', 'store'], function (ko, store) {
 
     var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
+    var selectedPostId = ko.observable(store.getState().selectedPostId);
     var authenticationToken = ko.observable();
     var searchTerm = ko.observable();
 
     store.subscribe(function () {
         authenticationToken(store.getState().token);
         selectedQuestionId(store.getState().selectedQuestionId);
+        selectedPostId(store.getState().selectedPostId);
         searchTerm(store.getState().searchTerm);
     });
 
@@ -17,7 +19,16 @@
     }
 
     var getQuestionByIdWithAnswers = async (callback) => {
-        var response = await fetch(`api/questions/${selectedQuestionId()}`);
+        if (selectedQuestionId !== undefined)
+            var response = await fetch(`api/questions/${selectedQuestionId()}`);
+        else if (selectedPostId !== undefined)
+            var response = await fetch(`api/questions/${selectedPostId()}`);
+        var data = await response.json();
+        callback(data);
+    }
+
+    var getAnswerById = async (callback) => {
+        var response = await fetch(`api/answers/${selectedPostId()}`);
         var data = await response.json();
         callback(data);
     }
@@ -55,6 +66,7 @@
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
+        getAnswerById,
         selectedQuestionId,
         authenticateUser,
         authenticationToken,
