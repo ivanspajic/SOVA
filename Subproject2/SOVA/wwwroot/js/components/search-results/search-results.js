@@ -1,6 +1,11 @@
 ﻿define(['knockout', 'dataService', 'store'], function (ko, ds, store) {
-    var activeComponent = ko.observable("search-results");
     var results = ko.observable();
+
+    store.subscribe(() => {
+        ds.search((data) => {
+            results(data.items.$values);
+        });
+    });
 
     ds.search((data) => {
         results(data.items.$values);
@@ -12,7 +17,6 @@
 
     return function () {
         return {
-            activeComponent,
             selectPost,
             results
         };
