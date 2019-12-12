@@ -122,9 +122,9 @@
         },
         userSearchHistory: function (token, username) {
             return {
-                type: userPage,
+                type: userSearchHistory,
                 username: username,
-                activeComponent: "user-page"
+                activeComponent: "user-search-history"
             }
         }
     };
