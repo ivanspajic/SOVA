@@ -56,10 +56,10 @@ require(["knockout"], function (ko) {
     });
     ko.components.register("user-search-history", {
         viewModel: {
-            require: "components/user-page/userSearchHistory"
+            require: "components/user-search-history/userSearchHistory"
         },
         template: {
-            require: "text!components/user-page/userSearchHistory.html"
+            require: "text!components/user-search-history/userSearchHistory.html"
         }
     })
 });

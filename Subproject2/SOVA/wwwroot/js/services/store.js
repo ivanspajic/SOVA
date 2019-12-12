@@ -123,6 +123,7 @@
         userSearchHistory: function (token, username) {
             return {
                 type: userSearchHistory,
+                token: username,
                 username: username,
                 activeComponent: "user-search-history"
             }
