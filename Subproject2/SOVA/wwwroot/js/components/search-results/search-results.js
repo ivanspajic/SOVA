@@ -11,7 +11,7 @@
                 results(data.items.$values);
             }),
             ds.getWord2Words((data) => {
-                words = data;
+                words = data.items.$values;
                 $('#cloud').jQCloud(words,
                     {
                         width: width,
@@ -22,6 +22,14 @@
 
         ds.search((data) => {
             results(data.items.$values);
+        });
+        ds.getWord2Words((data) => {
+            words = data.items.$values;
+            $('#cloud').jQCloud(words,
+                {
+                    width: width,
+                    height: height
+                });
         });
 
         var selectPost = (data, id, isQuestion) => {
