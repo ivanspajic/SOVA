@@ -2,8 +2,8 @@
     return function (params) {
         var results = ko.observable();
 
-        var width = params.width || 300;
-        var height = params.height || 300;
+        var width = params.width || 250;
+        var height = params.height || 250;
         var words = [];
 
         store.subscribe(() => {
