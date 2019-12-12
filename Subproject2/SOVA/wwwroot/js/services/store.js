@@ -1,10 +1,11 @@
 ﻿define([], function () {
     const landingPage = "LANDING_PAGE";
     const selectQuestion = "SELECT_QUESTION";
-    const selectMenu = "SELECT_MENU";
+    const login = "LOGIN";
     const signupUser = "SIGN_UP";
     const authentication = "AUTHENTICATION";
     const searching = "SEARCHING";
+    const userSearchHistory = "USER_SEARCH_HISTORY";
     const selectPost = "SELECT_POST";
     const answerPage = "ANSWER_PAGE";
     var subscribers = [];
@@ -27,8 +28,8 @@
                 return Object.assign({}, state, { selectedPostId: action.selectedPostId, activeComponent: action.activeComponent });
             case selectQuestion:
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent });
-            case selectMenu:
-                return Object.assign({}, state, { selectedMenu: action.selectedMenu, activeComponent: action.activeComponent });
+            case login:
+                return Object.assign({}, state, { activeComponent: action.activeComponent, optionalMessage: action.optionalMessage });
             case selectPost:
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, selectedPostId: action.selectedPostId, isQuestion: action.isQuestion, activeComponent: action.activeComponent });
             case signupUser:
@@ -36,7 +37,9 @@
             case authentication:
                 return Object.assign({}, state, { token: action.token, username: action.username, activeComponent: action.activeComponent });
             case searching:
-                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token, searchTerm: action.searchTerm});
+                return Object.assign({}, state, { activeComponent: action.activeComponent, searchTerm: action.searchTerm });
+            case userSearchHistory:
+                return Object.assign({}, state, { activeComponent: action.activeComponent });
             default:
                 return state;
         }
@@ -52,14 +55,14 @@
             return {
                 type: landingPage,
                 activeComponent: "landing-page",
-                token: username
+                username: username
             }
         },
         answerPage: function (postId) {
             return {
                 type: answerPage,
                 activeComponent: "individual-answer",
-                selectedPostId: postId                
+                selectedPostId: postId
             }
         },
         selectQuestion: function (questionId) {
@@ -67,6 +70,13 @@
                 type: selectQuestion,
                 selectedQuestionId: questionId,
                 activeComponent: "question-with-answers"
+            };
+        },
+        login: function (message) {
+            return {
+                type: login,
+                activeComponent: "login-page",
+                optionalMessage: message
             };
         },
         selectPost: function (postId, isQ) {
@@ -89,13 +99,6 @@
                     };
             }
         },
-        selectMenu: function (menu) {
-            return {
-                type: selectMenu,
-                selectedMenu: menu,
-                activeComponent: "login-page"
-            };
-        },
         searching: function (queryTerm) {
             return {
                 type: searching,
@@ -115,6 +118,14 @@
                 token: token,
                 username: username,
                 activeComponent: "landing-page"
+            }
+        },
+        userSearchHistory: function (token, username) {
+            return {
+                type: userSearchHistory,
+                token: username,
+                username: username,
+                activeComponent: "user-search-history"
             }
         }
     };

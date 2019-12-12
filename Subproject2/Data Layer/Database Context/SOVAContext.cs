@@ -62,6 +62,7 @@ namespace Data_Layer.Database_Context
         }
 
         public DbSet<SearchResult> SearchResults { get; set; }
+        public DbSet<CloudElement> CloudElements { get; set; }
         public DbSet<Annotation> Annotations { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -86,8 +87,7 @@ namespace Data_Layer.Database_Context
             modelBuilder.CreateMap();
 
             modelBuilder.Entity<SearchResult>().HasNoKey().Property(x => x.Id).HasColumnName("postid");
-            modelBuilder.Entity<SearchResult>().HasNoKey().Property(x => x.Body).HasColumnName("body");
-            modelBuilder.Entity<SearchResult>().HasNoKey().Property(x => x.Rank).HasColumnName("rank");
+            modelBuilder.Entity<CloudElement>().HasNoKey().Property(x => x.Text).HasColumnName("word");
 
             modelBuilder.Entity<Annotation>().HasKey(a => new { a.SubmissionId, a.UserId });
             modelBuilder.Entity<Question>().HasKey(q => q.SubmissionId);

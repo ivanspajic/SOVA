@@ -3,21 +3,34 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto" data-bind="foreach: menuElements">
-            <li class="nav-item" data-bind="css: $parent.isSelected($data)">
-                <div data-bind="if: name==='Login' && !($parent.currentUser())">
-                    <a class="nav-link" href="#" data-bind="click: $parent.changeContent">
-                        <span data-bind="text: name"></span>
-                    </a>
+    <div class="collapse navbar-collapse row" id="navbarSupportedContent">
+        <form class="form-inline my-1 col-6 offset-3" data-bind="if: activeComponent && !(activeComponent() === 'login-page' || activeComponent() ===  'signup-page')">
+            <input class="form-control mr-sm-2" type="search" id="searchterm" placeholder="Search" aria-label="Search" style="width: 80%" data-bind="textInput: queryTerm">
+            <button class="btn btn-outline-success my-1 my-sm-0" type="submit" data-bind="click: search">Search</button>
+        </form>
+        <div class="ml-auto my-1 mr-5">
+            <div class="row">
+                <user-profile></user-profile>
+                <div data-bind="if:!currentUser() && activeComponent() === 'signup-page'">
+                    <p class="mt-2 mr-2" style="margin-bottom: 0px">
+                        Already registered?
+                    </p>
                 </div>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" id="searchterm" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" data-bind="click: search">Search</button>
-        </form>    
-
-        <user-profile></user-profile>
+                <div data-bind="if: !currentUser() && activeComponent() !== 'login-page'">
+                    <button type="button" class="btn btn-primary" data-bind="click: login">Login</button>
+                </div>
+                <div data-bind="if: !currentUser() && activeComponent() === 'login-page'">
+                    <p class="mt-2" style="margin-bottom: 0px">
+                        Not registered yet?
+                    </p>
+                </div>
+                <div data-bind="if:!currentUser() && activeComponent() !== 'signup-page'">
+                    <button type="button" class="btn btn-secondary ml-2" data-bind="click: signUp">Sign up</button>
+                </div>
+                <div data-bind="if: currentUser()">
+                    <button type="button" class="btn btn-light ml-2" data-bind="click: logout">Logout</button>
+                </div>
+            </div>
+        </div>
     </div>
 </nav>

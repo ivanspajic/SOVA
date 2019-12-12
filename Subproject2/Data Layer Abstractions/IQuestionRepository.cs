@@ -12,5 +12,6 @@ namespace Data_Layer_Abstractions
         IEnumerable<SearchResult> SearchQuestions(string queryString, int? userId, PagingAttributes pagingAttributes);
         IEnumerable<QuestionsTag> GetQuestionsByTags(string tagName, PagingAttributes pagingAttributes);
         IEnumerable<QuestionsTag> GetQuestionsTags(int questionId);
+        IEnumerable<CloudElement> GetWord2Words(string queryString, int? userId);
     }
 }

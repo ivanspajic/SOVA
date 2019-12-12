@@ -3,25 +3,27 @@
 
         var activeComponent = ko.observable("signup-page");
         var errorMessage = ko.observable();
+        var username = ko.observable();
+        var password = ko.observable();
 
         var createUser = function () {
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
-            ds.createUser(username, password, (data) => {
-                console.log(data.message);
-                if (data.message && data.message.toLowerCase().includes("taken")) {
-                    errorMessage(`Provided username is already taken. Please choose a different one. Suggestions: ${username}69 or ${username}420`);
-                } else if (data.message && data.message.toLowerCase().includes("fields")) {
+            ds.createUser(username(), password(), (data) => {
+                if (!username() || !password()) {
                     errorMessage(`Please provide all fields.`);
+                }
+                else if (data.message && data.message.toLowerCase().includes("taken")) {
+                    errorMessage(`Someone already has that username. Try another? <br \> Suggestions: <strong>${username()}69 </strong> or <strong>${username()}420</strong>`);
                 } else {
-                    store.dispatch(store.actions.selectMenu());
+                    store.dispatch(store.actions.login(`Welcome ${username()}. Please log in continue.`));
                 }
             });
         }
         return {
             activeComponent,
             createUser,
-            errorMessage
+            errorMessage,
+            username,
+            password
         }
     }
 });

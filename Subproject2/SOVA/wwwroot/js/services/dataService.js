@@ -25,16 +25,23 @@
     }
 
     var getQuestionByIdWithAnswers = async (callback) => {
+        var response;
         if (selectedQuestionId !== undefined)
-            var response = await fetch(`api/questions/${selectedQuestionId()}`);
+            response = await fetch(`api/questions/${selectedQuestionId()}`);
         else if (selectedPostId !== undefined)
-            var response = await fetch(`api/questions/${selectedPostId()}`);
+            response = await fetch(`api/questions/${selectedPostId()}`);
         var data = await response.json();
         callback(data);
     }
 
     var getAnswerById = async (callback) => {
         var response = await fetch(`api/answers/${selectedPostId()}`);
+        var data = await response.json();
+        callback(data);
+    }
+
+    var getWord2Words = async (callback) => {
+        var response = await fetch(`/api/questions/wordcloud/${searchTerm()}`);
         var data = await response.json();
         callback(data);
     }
@@ -94,6 +101,7 @@
         getQuestions,
         getQuestionByIdWithAnswers,
         getAnswerById,
+        getWord2Words,
         selectedQuestionId,
         authenticateUser,
         authenticationToken,

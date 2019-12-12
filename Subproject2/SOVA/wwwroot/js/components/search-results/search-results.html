@@ -2,9 +2,14 @@
     <div data-bind="foreach: results">
         <div class="row border-bottom" style="margin-top: 15px;">
             <div class="col col-sm-10 pl-3 ml-sm-2">
-                <a class="row" data-bind="text: title, click: $parent.selectPost.bind($data, isQuestion, id)">
+                <a class="row" data-bind="text: title, click: $parent.selectPost.bind($data, isQuestion, id)" style="cursor: pointer">
                 </a>
             </div>
         </div>
     </div>
+    <div style="margin-top: 15px">
+        <div id="cloud" style="border: 2px solid #86cdef"></div>
+    </div>
 </div>
+
+
