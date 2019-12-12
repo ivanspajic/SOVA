@@ -41,7 +41,7 @@
     }
 
     var getWord2Words = async (callback) => {
-        var response = await fetch(`/api/questions/wordcloud/${searchTerm()}`);
+        var response = await fetch(`api/questions/wordcloud/${searchTerm()}`);
         var data = await response.json();
         callback(data);
     }
@@ -71,14 +71,26 @@
     }
 
     var search = async (callback) => {
-        var response = await fetch(`/api/questions/query/${searchTerm()}`);
+        var response = await fetch(`api/questions/query/${searchTerm()}`);
         var data = await response.json();
         callback(data);
+    }
+
+    var searchOtherPages = async (link, callback) => {
+        console.log(link());
+        if (link()) {
+            console.log("hello");
+            var newLink = link().replace("https://localhost:5001/", "");
+            var response = await fetch(newLink);
+            var data = await response.json();
+            callback(data);
+        }
     }
 
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
+        searchOtherPages,
         getAnswerById,
         getWord2Words,
         selectedQuestionId,
