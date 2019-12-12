@@ -17,6 +17,7 @@
                         width: width,
                         height: height
                     });
+                $('#cloud').jQCloud('update', words);
             });
         });
 
