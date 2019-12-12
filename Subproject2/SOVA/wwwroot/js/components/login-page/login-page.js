@@ -4,14 +4,20 @@
     var errorMessage = ko.observable();
     var username = ko.observable();
     var password = ko.observable();
+    var message = ko.observable(store.getState().optionalMessage);
+
+    store.subscribe(function () {
+        message(store.getState().optionalMessage);
+    });
 
     var login = function () {
         ds.authenticateUser(username(), password(), (data) => {
-            if (data.message && data.message.toLowerCase().includes("username")) {
-                errorMessage("Provided username is not registered in the database");
-            }
-            else if (data.message && data.message.toLowerCase().includes("password")) {
-                errorMessage("Wrong username or password");
+            if (!username() || !password()) {
+                errorMessage("Please provide both username and password.");
+            } else if (data.message && data.message.toLowerCase().includes("username")) {
+                errorMessage("Provided username is not registered in the database.");
+            } else if (data.message && data.message.toLowerCase().includes("password")) {
+                errorMessage("Wrong username or password.");
             } else {
                 store.dispatch(store.actions.authentication(`Bearer ${data.token}`, data.username));
                 store.dispatch(store.actions.landingPage(data.username));
@@ -27,7 +33,8 @@
             login,
             errorMessage,
             username,
-            password
+            password,
+            message
         };
     };
 });

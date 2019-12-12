@@ -29,7 +29,7 @@
             case selectQuestion:
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent });
             case login:
-                return Object.assign({}, state, { activeComponent: action.activeComponent });
+                return Object.assign({}, state, { activeComponent: action.activeComponent, optionalMessage: action.optionalMessage });
             case selectPost:
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, selectedPostId: action.selectedPostId, isQuestion: action.isQuestion, activeComponent: action.activeComponent });
             case signupUser:
@@ -37,9 +37,9 @@
             case authentication:
                 return Object.assign({}, state, { token: action.token, username: action.username, activeComponent: action.activeComponent });
             case searching:
-                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token, searchTerm: action.searchTerm });
+                return Object.assign({}, state, { activeComponent: action.activeComponent, searchTerm: action.searchTerm });
             case userSearchHistory:
-                return Object.assign({}, state, { activeComponent: action.activeComponent, token: getState().token });
+                return Object.assign({}, state, { activeComponent: action.activeComponent });
             default:
                 return state;
         }
@@ -55,7 +55,7 @@
             return {
                 type: landingPage,
                 activeComponent: "landing-page",
-                token: username
+                username: username
             }
         },
         answerPage: function (postId) {
@@ -72,10 +72,11 @@
                 activeComponent: "question-with-answers"
             };
         },
-        login: function () {
+        login: function (message) {
             return {
                 type: login,
-                activeComponent: "login-page"
+                activeComponent: "login-page",
+                optionalMessage: message
             };
         },
         selectPost: function (postId, isQ) {
@@ -122,7 +123,6 @@
         userSearchHistory: function (token, username) {
             return {
                 type: userPage,
-                token: token,
                 username: username,
                 activeComponent: "user-page"
             }

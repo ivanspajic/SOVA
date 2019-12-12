@@ -86,9 +86,7 @@ namespace Data_Layer.Database_Context
             modelBuilder.CreateMap();
 
             modelBuilder.Entity<SearchResult>().HasNoKey().Property(x => x.Id).HasColumnName("postid");
-            modelBuilder.Entity<SearchResult>().HasNoKey().Property(x => x.Body).HasColumnName("body");
-            modelBuilder.Entity<SearchResult>().HasNoKey().Property(x => x.Rank).HasColumnName("rank");
-
+          
             modelBuilder.Entity<Annotation>().HasKey(a => new { a.SubmissionId, a.UserId });
             modelBuilder.Entity<Question>().HasKey(q => q.SubmissionId);
             modelBuilder.Entity<Answer>().HasKey(a => a.SubmissionId);
