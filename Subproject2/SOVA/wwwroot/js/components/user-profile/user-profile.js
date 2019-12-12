@@ -7,11 +7,12 @@
             }
         });
         var userSearchHistory = function () {
-            var userSearchHistoryAction = store.actions.
-            store.dispatch();
+            var userSearchHistoryAction = store.actions.userSearchHistory(null, null);
+            store.dispatch(userSearchHistoryAction);
         }
         return {
-            currentUser
+            currentUser,
+            userSearchHistory
         };
     };
 });
