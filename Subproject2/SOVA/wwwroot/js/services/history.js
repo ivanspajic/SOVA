@@ -1,8 +1,10 @@
 ﻿define(["store"], function (store) {
+    const landingPageComponent = "landing-page";
     const questionWithAnswersComponent = "question-with-answers";
     const loginPageComponent = "login-page";
     const signupPageComponent = "signup-page";
     const searchPageComponent = "search-results";
+    const answerPageComponent = "individual-answer";
     var popState = false;
     store.subscribe(function () {
         var state = store.getState();
@@ -21,11 +23,15 @@
         } else {
             var parsedState = JSON.parse(event.state);
             var action = getMatchingAction(parsedState);
-            store.dispatch(action);
+            if (action) {
+                store.dispatch(action);
+            }
         }
     }
     var getMatchingAction = function (state) {
         switch (state.activeComponent) {
+            case landingPageComponent:
+                return store.actions.landingPage();
             case questionWithAnswersComponent:
                 return store.actions.selectQuestion(state.selectedQuestionId);
             case loginPageComponent:
@@ -34,8 +40,10 @@
                 return store.actions.signupUser();
             case searchPageComponent:
                 return store.actions.searching(state.searchTerm);
+            case answerPageComponent:
+                return store.actions.selectPost(state.selectedPostId, state.isQuestion);
             default:
-                return store.actions.landingPage();
+                return null;
         }
     }
 });
