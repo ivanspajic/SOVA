@@ -9,7 +9,7 @@
                 <strong data-bind="text: submission.score"></strong>
                 <span>votes</span>
             </div>
-            <a class="row" data-bind="text: title, click: $parent.selectQuestion.bind($data, submission)" style="cursor: pointer">
+            <a class="row" data-bind="text: title, click: $parent.selectQuestion.bind($data, submission)" style="cursor: pointer; color: #007BFF">
             </a>
             <div class="row" data-bind="foreach: questionsTags.$values">
                 <a class="border rounded-lg bg-light tags" data-bind="text: !!tag.tagString ? tag.tagString : 'regex'"></a>
