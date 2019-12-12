@@ -83,6 +83,7 @@
             var data = await response.json();
             callback(data);
         }
+    }
 
     var saveAnnotation = async (annotationText, questionId, callback) => {
         var response = await fetch(`api/annotations/${questionId}`, {
