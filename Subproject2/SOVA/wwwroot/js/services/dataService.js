@@ -77,9 +77,7 @@
     }
 
     var searchOtherPages = async (link, callback) => {
-        console.log(link());
         if (link()) {
-            console.log("hello");
             var newLink = link().replace("https://localhost:5001/", "");
             var response = await fetch(newLink);
             var data = await response.json();
