@@ -8,6 +8,15 @@ a:hover {
     text-decoration: none;
 }
 
+.questions {
+    cursor: pointer; 
+    color: #007BFF !important;
+}
+
+    .questions:hover {
+        color: #0064bd !important;
+    }
+
 .question-list-so-member {
     font-size: 14px;
     text-align: center;
@@ -26,12 +35,8 @@ a:hover {
     font-size: 12px;
     margin: 10px 10px 0px 0px;
     padding: .4em;
+    color: #dc6c1c !important;
 }
-
-    .tags:hover {
-        color: #316795;
-        background-color: #CEE0EE;
-    }
 
 .question-body {
     overflow: hidden;
