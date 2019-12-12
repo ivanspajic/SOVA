@@ -40,6 +40,12 @@
         callback(data);
     }
 
+    var getWord2Words = async (callback) => {
+        var response = await fetch(`/api/questions/wordcloud/${searchTerm()}`);
+        var data = await response.json();
+        callback(data);
+    }
+
     var authenticateUser = async (username, password, callback) => {
         var response = await fetch("api/auth/tokens", {
             method: "POST",
@@ -74,6 +80,7 @@
         getQuestions,
         getQuestionByIdWithAnswers,
         getAnswerById,
+        getWord2Words,
         selectedQuestionId,
         authenticateUser,
         authenticationToken,

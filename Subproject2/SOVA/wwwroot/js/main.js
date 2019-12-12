@@ -5,6 +5,7 @@
         knockout: "../lib/knockout/build/output/knockout-latest",
         text: "../lib/requirejs-text/text",
         dataService: "services/dataservice",
+        jqcloud: "../lib/jqcloud2/dist/jqcloud",
         store: "services/store",
         history: "services/history"
     },

@@ -60,6 +60,14 @@ namespace SOVA.Controllers
             return Ok(CreateSearchResult(searchResults, queryString, userId, pagingAttributes));
         }
 
+        [HttpGet("wordcloud/{queryString}", Name = nameof(GetCloudElements))]
+        public ActionResult GetCloudElements(string queryString)
+        {
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            var cloudElements = _questionRepository.GetWord2Words(queryString, userId);
+            return Ok(CreateCloudElement(cloudElements));
+        }
+
         [HttpGet("tag/{tagString}", Name = nameof(SearchQuestionByTag))]
         public ActionResult SearchQuestionByTag([FromQuery] PagingAttributes pagingAttributes, string tagString)
         {
@@ -136,6 +144,15 @@ namespace SOVA.Controllers
                 items = questions
             };
         }
+
+        private object CreateCloudElement(IEnumerable<CloudElement> elements)
+        {
+            return new
+            {
+                items = elements
+            };
+        }
+
         private object CreateTagsResult(IEnumerable<QuestionsTag> questions, string str, PagingAttributes attr)
         {
             var totalItems = _questionRepository.NoOfResults(str, null);
