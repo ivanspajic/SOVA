@@ -38,11 +38,6 @@ a:hover {
     color: #007BFF !important;
 }
 
-    .tags:hover {
-        color: #316795;
-        background-color: #CEE0EE;
-    }
-
 .question-body {
     overflow: hidden;
 }
