@@ -87,6 +87,19 @@ namespace Data_Layer
                 .ToList();
         }
 
+        public IEnumerable<CloudElement> GetWord2Words(string queryString, int? userId)
+        {
+            if (queryString == null)
+                return null;
+            var newStr = "\'";
+            newStr += queryString.Replace(" ", "\', \'");
+            newStr += "\'";
+
+            var query = $"SELECT * from word_2_words({userId}, {newStr})";
+
+            return _databaseContext.CloudElements.FromSqlRaw(query);
+        }
+
         public int NoOfResults(string queryString, int? userId)
         {
             if (queryString == null || userId < 1)
