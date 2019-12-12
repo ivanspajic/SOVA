@@ -34,9 +34,6 @@
             location.reload();
         }
 
-        var userSearchHistory = function () {
-
-        }
 
         return {
             activeComponent,
