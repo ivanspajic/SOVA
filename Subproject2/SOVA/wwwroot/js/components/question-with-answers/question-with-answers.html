@@ -45,6 +45,18 @@
                 </div>
             </div>
 
+            <div data-bind="ifnot:$parent.annotationText">
+                <span data-bind="click: $parent.toggleAnnotationbox">Add an annotation </span>
+                <div data-bind="if:$parent.showAnnotations">
+                    <textarea data-bind=" textInput:$parent.textAreaValue"> </textarea>
+                    <button type="button" class="btn btn-primary" data-bind="click: $parent.saveAnnotation"> save </button>
+                    <button type="button" class="btn btn-outline-danger" data-bind="click: $parent.cancelAnnotation"> cancel </button>
+                </div>
+            </div>
+            <div data-bind="if:$parent.annotationText">
+                <span data-bind= "text: $parent.annotationText"></span>
+            </div>
+
             <div data-bind="if: comments.$values.length > 0">
                 <div class="d-md-none comment-count">
                     <span class="comment-user p-1">
