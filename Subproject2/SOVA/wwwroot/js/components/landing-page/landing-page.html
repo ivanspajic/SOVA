@@ -7,7 +7,12 @@
         <div class="col col-sm-10 pl-3 ml-sm-2">
             <div class="row d-block d-sm-none" style="font-size:12px;">
                 <strong data-bind="text: submission.score"></strong>
-                <span>votes</span>
+                <div data-bind="ifnot:submission.score === 1">
+                    <span>votes</span>
+                </div>
+                <div data-bind="if:submission.score === 1">
+                    <span>vote</span>
+                </div>
             </div>
             <a class="row questions" data-bind="text: title, click: $parent.selectQuestion.bind($data, submission)">
             </a>
