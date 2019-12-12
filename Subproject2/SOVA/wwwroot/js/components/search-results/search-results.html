@@ -7,8 +7,18 @@
             </div>
         </div>
     </div>
-    <div style="margin-top: 15px">
-        <div id="cloud" style="border: 2px solid #86cdef"></div>
+    <div>
+        <div data-bind="text:ko.toJSON($data)"></div>
+        <div style="margin-top: 15px">
+            <div id="cloud" style="border: 2px solid #86cdef"></div>
+        </div>
+    </div>
+    <div data-bind="if:!results || results.length === 0">
+        <div style="margin-top: 15px">
+            <p class="mt-2 mr-2 offset-5" style="font-size:32px">
+                No results.
+            </p>
+        </div>
     </div>
 </div>
 
