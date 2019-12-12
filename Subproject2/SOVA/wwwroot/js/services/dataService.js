@@ -69,17 +69,27 @@
         callback(data);
     }
 
-    var saveAnnotation = async (annotationText,questionId,callback) => {
+    var saveAnnotation = async (annotationText, questionId, callback) => {
         var response = await fetch(`api/annotations/${questionId}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ AnnotationString:annotationText})
+            body: JSON.stringify({ AnnotationString: annotationText })
         });
         var data = await response.json();
         callback(data);
     }
+
+    var getAnnotation = async (callback) => {
+        var response = await fetch(`api/annotations/${selectedQuestionId()}`);
+        var data = await response.json();
+        if (data.status === 404) {
+            data.message = "not found";
+        }
+        callback(data);
+    }
+
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
@@ -90,6 +100,7 @@
         createUser,
         search,
         moreQuestions,
-        saveAnnotation
+        saveAnnotation,
+        getAnnotation
     };
 });

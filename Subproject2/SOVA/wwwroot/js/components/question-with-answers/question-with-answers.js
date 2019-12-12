@@ -3,10 +3,9 @@
         var activeComponent = ko.observable("question-with-answers");
         var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
         var showAnnotations = ko.observable(false);
+        var textAreaValue = ko.observable();
         var annotationText = ko.observable();
         var response = ko.observable();
-
-
         var questionByIdWithAnswers = ko.observable();
 
         store.subscribe(function () {
@@ -16,21 +15,32 @@
         var toggleAnnotationbox = () => {
             console.log(showAnnotations())
             showAnnotations(!showAnnotations())
-        }
+        };
+
         ds.getQuestionByIdWithAnswers((data) => {
             questionByIdWithAnswers(data);
         });
+
+        ds.getAnnotation((data) => {
+            if (data.message && data.message.toLowerCase().includes("not found")) {
+                annotationText(null)
+            } else {
+                annotationText(data)
+            }
+        });
+
         var cancelAnnotation = () => {
             showAnnotations(false)
+        };
 
-        }
-    
         var saveAnnotation = () => {
-            console.log(annotationText())
-            console.log(selectedQuestionId())
+            console.log(annotationText());
+            console.log(selectedQuestionId());
+            annotationText(textAreaValue());
             ds.saveAnnotation(annotationText(), selectedQuestionId(), (data) => {
-            response(data)})
-
+                response(data);
+            })
+            showAnnotations(false);
         }
 
         return {
@@ -42,8 +52,8 @@
             cancelAnnotation,
             annotationText,
             saveAnnotation,
-            response
-
+            response,
+            textAreaValue
         };
 
     };
