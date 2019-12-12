@@ -9,10 +9,10 @@
                 <strong data-bind="text: submission.score"></strong>
                 <span>votes</span>
             </div>
-            <a class="row" data-bind="attr: {href: `question/${submissionId}`, title: title }, text: title, click: $parent.selectQuestion.bind($data, submission)">
+            <a class="row" data-bind="text: title, click: $parent.selectQuestion.bind($data, submission)" style="cursor: pointer">
             </a>
             <div class="row" data-bind="foreach: questionsTags.$values">
-                <a class="border rounded-lg bg-light tags" data-bind="attr: { href: `tag/${tag.id}` }, text: !!tag.tagString ? tag.tagString : 'regex'"></a>
+                <a class="border rounded-lg bg-light tags" data-bind="text: !!tag.tagString ? tag.tagString : 'regex'"></a>
             </div>
         </div>
         <div class="col-sm-6 col-md-3 offset-sm-1 offset-md-9 pl-3 pt-3 pb-2 mb-sm-2 question-list-so-member">
@@ -20,7 +20,7 @@
                 <span>
                     asked by:&nbsp;
                 </span>
-                <a data-bind="attr: { href: `user/${submission.soMember.id}` }, text: submission.soMember.displayName"> </a>
+                <a data-bind="text: submission.soMember.displayName"> </a>
             </div>
         </div>
     </div>
