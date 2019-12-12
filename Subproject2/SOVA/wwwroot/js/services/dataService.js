@@ -69,6 +69,17 @@
         callback(data);
     }
 
+    var saveAnnotation = async (annotationText,questionId,callback) => {
+        var response = await fetch(`api/annotations/${questionId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ AnnotationString:annotationText})
+        });
+        var data = await response.json();
+        callback(data);
+    }
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
@@ -78,6 +89,7 @@
         authenticationToken,
         createUser,
         search,
-        moreQuestions
+        moreQuestions,
+        saveAnnotation
     };
 });
