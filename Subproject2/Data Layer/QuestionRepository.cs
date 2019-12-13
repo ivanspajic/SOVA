@@ -58,7 +58,8 @@ namespace Data_Layer
             var tag = _databaseContext.Tags.FirstOrDefault(t => t.TagString == tagName);
             if (tag == null)
                 return null;
-            return _databaseContext.QuestionsTags.Include(qt => qt.Question).Where(qt => qt.TagId == tag.Id).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+            return _databaseContext.QuestionsTags.Include(qt => qt.Question).Where(qt => qt.TagId == tag.Id)
+                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
                 .Take(pagingAttributes.PageSize)
                 .ToList();
         }
@@ -106,6 +107,14 @@ namespace Data_Layer
                 return 0;
             return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", userId, queryString)
                 .Count();
+        }
+
+        public int NoOfResultsForTag(string tagString, int? userId)
+        {
+            var tag = _databaseContext.Tags.FirstOrDefault(t => t.TagString == tagString);
+            if (tag == null || userId < 1)
+                return 0;
+            return _databaseContext.QuestionsTags.Include(qt => qt.Question).Where(qt => qt.TagId == tag.Id).Count();
         }
 
         public int NoOfRandomQuestions()
