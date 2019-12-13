@@ -49,22 +49,27 @@
             ds.toggleBookmarkStatus((data) => {
                 if (data.message.toLowerCase().includes("not authorized")) {
                     errorMessage("Please log in or sign up to bookmark this post.");
-                    store.dispatch(store.actions.messageToShow(errorMessage));
+                    store.dispatch(store.actions.messageToShow(errorMessage(), null));
                     setTimeout(function () {
                         errorMessage("");
+                        store.dispatch(store.actions.messageToShow(null, null));
                     }, 2000);
                 } else {
                     isBookmarked(!isBookmarked());
                     if (isBookmarked() === true) {
                         successMessage("Bookmarked. You can find it under your profile.");
+                        store.dispatch(store.actions.messageToShow(null, successMessage()));
                         setTimeout(function () {
                             successMessage("");
-                        }, 2000);
+                            store.dispatch(store.actions.messageToShow(null, null));
+                        }, 5000);
                     } else {
                         successMessage("Bookmark removed.");
+                        store.dispatch(store.actions.messageToShow(null, successMessage()));
                         setTimeout(function () {
                             successMessage("");
-                        }, 2000);
+                            store.dispatch(store.actions.messageToShow(null, null));
+                        }, 5000);
                     }
                 }
             });

@@ -33,4 +33,10 @@
             </div>
         </div>
     </div>
+    <div data-bind="if: errorMessage">
+        <span data-bind="text: errorMessage"></span>
+    </div>
+    <div data-bind="if: successMessage">
+        <span data-bind="text: successMessage"></span>
+    </div>
 </nav>
