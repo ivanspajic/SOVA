@@ -8,7 +8,7 @@
                     <div data-bind="with: answers.$values[0]">
                         <div data-bind="if: question">
                             <div class="row pl-3" data-bind="foreach: question.questionsTags.$values">
-                                <div class="border rounded-lg bg-light tags" data-bind="text: !!tag.tagString ? tag.tagString : 'regex'"></div>
+                                <div class="border rounded-lg bg-light tags" data-bind="text: !!tag.tagString ? tag.tagString : 'regex', click: $component.selectQuestionsByTag.bind($data, tag)"></div>
                             </div>
                         </div>
                     </div>
