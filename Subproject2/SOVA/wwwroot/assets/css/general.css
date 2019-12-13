@@ -82,15 +82,17 @@ a:hover {
 
 /* Show the snackbar when clicking on a button (class added with JavaScript) */
 .showSuccess {
-    background-color: green;
+    font-size: 18px;
+    background-color: #339900;
     visibility: visible !important; /* Show the snackbar */
     /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
 However, delay the fade out process for 2.5 seconds */
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 3.2s;
 }
 
 .showError {
-    background-color: red;
+    font-size: 18px;
+    background-color: #cc3300;
     visibility: visible !important; /* Show the snackbar */
     /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
 However, delay the fade out process for 2.5 seconds */

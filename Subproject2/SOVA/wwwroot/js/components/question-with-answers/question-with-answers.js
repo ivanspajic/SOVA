@@ -64,19 +64,19 @@
         var toggleBookmark = () => {
             ds.toggleBookmarkStatus((data) => {
                 if (data.message.toLowerCase().includes("not authorized")) {
-                    errorMessage("Please log in or sign up to bookmark this post.");
+                    errorMessage("🙊 Please log in or sign up to bookmark this post.");
                     setTimeout(function () {
                         errorMessage("");
                     }, 3500);
                 } else {
                     isBookmarked(!isBookmarked());
                     if (isBookmarked() === true) {
-                        successMessage("Bookmarked. You can find it under your profile.");
+                        successMessage("💾 Bookmarked. You can find it under your profile.");
                         setTimeout(function () {
                             successMessage("");
                         }, 3500);
                     } else {
-                        successMessage("Bookmark removed.");
+                        successMessage("🙈 Bookmark removed.");
                         setTimeout(function () {
                             successMessage("");
                         }, 3500);
