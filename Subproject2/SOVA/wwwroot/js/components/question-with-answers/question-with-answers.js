@@ -19,6 +19,10 @@
             showAnnotations(!showAnnotations());
         };
 
+        var selectQuestionsByTag = (data, tag) => {
+            store.dispatch(store.actions.tagFilter(tag.tag.tagString));
+        }
+
         ds.getQuestionByIdWithAnswers((data) => {
             questionByIdWithAnswers(data);
         });
@@ -90,6 +94,7 @@
             selectedQuestionId,
             activeComponent,
             questionByIdWithAnswers,
+            selectQuestionsByTag,
             showAnnotations,
             toggleAnnotationField,
             cancelAnnotation,

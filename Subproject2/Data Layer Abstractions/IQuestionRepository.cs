@@ -7,6 +7,7 @@ namespace Data_Layer_Abstractions
     {
         int NoOfRandomQuestions();
         int NoOfResults(string queryString, int? userId);
+        int NoOfResultsForTag(string tagString, int? userId);
         IEnumerable<Question> GetQuestions(PagingAttributes pagingAttributes);
         Question GetById(int submissionId);
         IEnumerable<SearchResult> SearchQuestions(string queryString, int? userId, PagingAttributes pagingAttributes);
