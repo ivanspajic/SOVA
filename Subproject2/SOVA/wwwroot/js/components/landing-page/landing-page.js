@@ -12,7 +12,7 @@
     }
 
     var selectQuestionsByTag = (data, tag) => {
-        store.dispatch(store.actions.tagFilter(tag.tagString));
+        store.dispatch(store.actions.tagFilter(tag.tag.tagString));
     }
     var nextPage = () => {
         ds.moreQuestions((data) => {

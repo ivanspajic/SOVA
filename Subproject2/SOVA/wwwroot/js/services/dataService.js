@@ -84,7 +84,7 @@
         callback(data);
     }
 
-    var searchOtherPages = async (link, callback) => {
+    var getOtherPages = async (link, callback) => {
         if (link()) {
             var newLink = link().replace("https://localhost:5001/", "");
             var response = await fetch(newLink);
@@ -118,7 +118,7 @@
         getQuestions,
         getQuestionByIdWithAnswers,
         getQuestionsByTag,
-        searchOtherPages,
+        getOtherPages,
         getAnswerById,
         getWord2Words,
         selectedQuestionId,
