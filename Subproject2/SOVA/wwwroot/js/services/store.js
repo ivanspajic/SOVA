@@ -11,6 +11,7 @@
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
+    var messageToShow = "MESSAGE_TO_SHOW";
 
     var subscribe = function (callback) {
         subscribers.push(callback);
@@ -40,6 +41,8 @@
                 return Object.assign({}, state, { activeComponent: action.activeComponent, searchTerm: action.searchTerm });
             case userSearchHistory:
                 return Object.assign({}, state, { activeComponent: action.activeComponent });
+            case messageToShow:
+                return Object.assign({}, state, { errorMessage: action.badMessage, successMessage: action.goodMessage });
             default:
                 return state;
         }
@@ -120,12 +123,18 @@
                 activeComponent: "landing-page"
             }
         },
-        userSearchHistory: function (token, username) {
+        userSearchHistory: function (username) {
             return {
                 type: userSearchHistory,
-                token: username,
                 username: username,
                 activeComponent: "user-search-history"
+            }
+        },
+        messageToShow: function (badMessage, goodMessage) {
+            return {
+                type: messageToShow,
+                errorMessage: badMessage,
+                successMessage: goodMessage
             }
         }
     };

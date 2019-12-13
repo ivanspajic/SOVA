@@ -26,6 +26,16 @@
                         <h3 data-bind="text: submission.score"></h3>
                     </div>
                     <span>votes</span>
+                    <div class=" col-1 d-flex justify-content-center">
+                        <span class="row text-center" data-bind="if: $parent.isBookmarked() === false, click: $parent.toggleBookmark">☆</span>
+                        <span class="row" data-bind="if: $parent.isBookmarked() === true, click: $parent.toggleBookmark">⭐</span>
+                        <div data-bind="if: $parent.errorMessage">
+                            <span data-bind="text: $parent.errorMessage"></span>
+                        </div>
+                        <div data-bind="if: $parent.successMessage">
+                            <span data-bind="text: $parent.successMessage"></span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-md-10 col-sm-12">
@@ -54,7 +64,7 @@
                 </div>
             </div>
             <div data-bind="if:$parent.annotationText">
-                <span data-bind= "text: $parent.annotationText"></span>
+                <span data-bind="text: $parent.annotationText"></span>
             </div>
 
             <div data-bind="if: comments.$values.length > 0">

@@ -5,6 +5,7 @@
         var currentUser = ko.observable(localStorage.getItem("username"));
         var authenticationToken = ko.observable(store.getState().token);
         var queryTerm = ko.observable();
+        var errorMessage
 
         var search = function () {
             store.dispatch(store.actions.searching(queryTerm()));
