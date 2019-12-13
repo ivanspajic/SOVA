@@ -14,7 +14,6 @@
     var selectQuestionsByTag = (data, tag) => {
         store.dispatch(store.actions.tagFilter(tag.tagString));
     }
-
     var nextPage = () => {
         ds.moreQuestions((data) => {
             questions(data.items.$values);
@@ -27,7 +26,7 @@
             selectQuestion,
             selectQuestionsByTag,
             sessionStorage,
-            nextPage
+            nextPage,
         };
     };
 });
