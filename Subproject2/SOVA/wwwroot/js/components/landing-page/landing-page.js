@@ -10,6 +10,11 @@
     var selectQuestion = (data, submission) => {
         store.dispatch(store.actions.selectQuestion(submission.submissionId));
     }
+
+    var selectQuestionByTag = (data, tag) => {
+        store.dispatch(store.actions.tagFilter(tag.tagString));
+    }
+
     var nextPage = () => {
         ds.moreQuestions((data) => {
             questions(data.items.$values);
@@ -20,6 +25,7 @@
             activeComponent,
             questions,
             selectQuestion,
+            selectQuestionByTag,
             sessionStorage,
             nextPage
         };

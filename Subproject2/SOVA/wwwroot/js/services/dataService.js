@@ -11,7 +11,7 @@
         selectedQuestionId(store.getState().selectedQuestionId);
         selectedPostId(store.getState().selectedPostId);
         searchTerm(store.getState().searchTerm);
-        sekectedTag(store.getState().selectedTag);
+        selectedTag(store.getState().selectedTag);
     });
 
     var getQuestions = async (callback) => {

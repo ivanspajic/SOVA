@@ -12,10 +12,6 @@
         questionsByTag(data.items.$values);
     });
 
-    var selectQuestionByTag = (data, tag) => {
-        store.dispatch(store.actions.tagFilter(tag.tagString));
-    }
-
     var selectQuestion = (data, questionId) => {
         store.dispatch(store.actions.selectPost(questionId, true));
     }
