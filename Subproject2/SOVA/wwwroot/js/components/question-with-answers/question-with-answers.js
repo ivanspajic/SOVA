@@ -45,33 +45,44 @@
             showAnnotations(false);
         }
 
+        var showSnackBar = () => {
+            // Get the snackBar DIV
+            var snackBar = document.getElementById("snackBar");
+
+            if (!!errorMessage()) {
+                // Add the "showError" class to DIV if error
+                snackBar.className = "showError";
+            };
+
+            if (!!successMessage()) {
+                // Add the "showSuccess" class to DIV if success
+                snackBar.className = "showSuccess";
+            };
+
+        }
+
         var toggleBookmark = () => {
             ds.toggleBookmarkStatus((data) => {
                 if (data.message.toLowerCase().includes("not authorized")) {
                     errorMessage("Please log in or sign up to bookmark this post.");
-                    store.dispatch(store.actions.messageToShow(errorMessage(), null));
                     setTimeout(function () {
                         errorMessage("");
-                        store.dispatch(store.actions.messageToShow(null, null));
-                    }, 2000);
+                    }, 3500);
                 } else {
                     isBookmarked(!isBookmarked());
                     if (isBookmarked() === true) {
                         successMessage("Bookmarked. You can find it under your profile.");
-                        store.dispatch(store.actions.messageToShow(null, successMessage()));
                         setTimeout(function () {
                             successMessage("");
-                            store.dispatch(store.actions.messageToShow(null, null));
-                        }, 5000);
+                        }, 3500);
                     } else {
                         successMessage("Bookmark removed.");
-                        store.dispatch(store.actions.messageToShow(null, successMessage()));
                         setTimeout(function () {
                             successMessage("");
-                            store.dispatch(store.actions.messageToShow(null, null));
-                        }, 5000);
+                        }, 3500);
                     }
                 }
+                showSnackBar();
             });
         }
 

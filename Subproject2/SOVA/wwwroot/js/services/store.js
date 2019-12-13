@@ -1,4 +1,4 @@
-﻿define([], function () {
+﻿define(["knockout"], function (ko) {
     const landingPage = "LANDING_PAGE";
     const selectQuestion = "SELECT_QUESTION";
     const login = "LOGIN";
@@ -8,7 +8,6 @@
     const userSearchHistory = "USER_SEARCH_HISTORY";
     const selectPost = "SELECT_POST";
     const answerPage = "ANSWER_PAGE";
-    const messageToShow = "MESSAGE_TO_SHOW";
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
@@ -28,7 +27,7 @@
             case answerPage:
                 return Object.assign({}, state, { selectedPostId: action.selectedPostId, activeComponent: action.activeComponent });
             case selectQuestion:
-                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent, errorMessage: action.badMessage, successMessage: action.goodMessage });
+                return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent });
             case login:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, optionalMessage: action.optionalMessage });
             case selectPost:
@@ -41,8 +40,6 @@
                 return Object.assign({}, state, { activeComponent: action.activeComponent, searchTerm: action.searchTerm });
             case userSearchHistory:
                 return Object.assign({}, state, { activeComponent: action.activeComponent });
-            case messageToShow:
-                return Object.assign({}, state, { errorMessage: action.badMessage, successMessage: action.goodMessage });
             default:
                 return state;
         }
@@ -72,7 +69,7 @@
             return {
                 type: selectQuestion,
                 selectedQuestionId: questionId,
-                activeComponent: "question-with-answers"
+                activeComponent: "question-with-answers",
             };
         },
         login: function (message) {
@@ -130,15 +127,6 @@
                 activeComponent: "user-search-history"
             }
         },
-        messageToShow: function (badMessage, goodMessage) {
-            console.log(`good: ${goodMessage}`);
-            console.log(`bad: ${badMessage}`)
-            return {
-                type: messageToShow,
-                errorMessage: badMessage,
-                successMessage: goodMessage
-            }
-        }
     };
 
     return {

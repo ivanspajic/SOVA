@@ -29,12 +29,6 @@
                     <div class=" col-1 d-flex justify-content-center">
                         <span class="row text-center" data-bind="if: $parent.isBookmarked() === false, click: $parent.toggleBookmark">☆</span>
                         <span class="row" data-bind="if: $parent.isBookmarked() === true, click: $parent.toggleBookmark">⭐</span>
-                        <!--<div data-bind="if: $parent.errorMessage">
-                            <span data-bind="text: $parent.errorMessage"></span>
-                        </div>
-                        <div data-bind="if: $parent.successMessage">
-                            <span data-bind="text: $parent.successMessage"></span>
-                        </div>-->
                     </div>
                 </div>
 
@@ -150,5 +144,13 @@
             </div>
             <!-- /ko -->
         </div>
+    </div>
+</div>
+<div>
+    <div data-bind="if: errorMessage">
+        <span id="snackBar" data-bind="text: errorMessage"></span>
+    </div>
+    <div data-bind="if: successMessage">
+        <span id="snackBar" data-bind="text: successMessage"></span>
     </div>
 </div>

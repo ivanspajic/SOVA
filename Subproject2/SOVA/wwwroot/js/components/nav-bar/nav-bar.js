@@ -5,8 +5,6 @@
         var currentUser = ko.observable(localStorage.getItem("username"));
         var authenticationToken = ko.observable(store.getState().token);
         var queryTerm = ko.observable();
-        var errorMessage = ko.observable(store.getState().errorMessage);
-        var successMessage = ko.observable(store.getState().successMessage);
 
         var search = function () {
             store.dispatch(store.actions.searching(queryTerm()));
@@ -15,8 +13,6 @@
         store.subscribe(() => {
             authenticationToken(store.getState().token);
             activeComponent(store.getState().activeComponent);
-            errorMessage(store.getState().errorMessage);
-            successMessage(store.getState().successMessage);
             if (!currentUser()) {
                 currentUser(store.getState().username);
             }
@@ -47,9 +43,7 @@
             login,
             logout,
             signUp,
-            queryTerm,
-            errorMessage,
-            successMessage
+            queryTerm
         };
     };
 });
