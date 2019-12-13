@@ -41,7 +41,7 @@
     }
 
     var getWord2Words = async (callback) => {
-        var response = await fetch(`/api/questions/wordcloud/${searchTerm()}`);
+        var response = await fetch(`api/questions/wordcloud/${searchTerm()}`);
         var data = await response.json();
         callback(data);
     }
@@ -71,14 +71,45 @@
     }
 
     var search = async (callback) => {
-        var response = await fetch(`/api/questions/query/${searchTerm()}`);
+        var response = await fetch(`api/questions/query/${searchTerm()}`);
         var data = await response.json();
+        callback(data);
+    }
+
+    var searchOtherPages = async (link, callback) => {
+        if (link()) {
+            var newLink = link().replace("https://localhost:5001/", "");
+            var response = await fetch(newLink);
+            var data = await response.json();
+            callback(data);
+        }
+    }
+
+    var saveAnnotation = async (annotationText, questionId, callback) => {
+        var response = await fetch(`api/annotations/${questionId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ AnnotationString: annotationText })
+        });
+        var data = await response.json();
+        callback(data);
+    }
+
+    var getAnnotation = async (callback) => {
+        var response = await fetch(`api/annotations/${selectedQuestionId()}`);
+        var data = await response.json();
+        if (data.status === 404) {
+            data.message = "not found";
+        }
         callback(data);
     }
 
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
+        searchOtherPages,
         getAnswerById,
         getWord2Words,
         selectedQuestionId,
@@ -86,6 +117,8 @@
         authenticationToken,
         createUser,
         search,
-        moreQuestions
+        moreQuestions,
+        saveAnnotation,
+        getAnnotation
     };
 });
