@@ -26,9 +26,11 @@
                         <h3 data-bind="text: submission.score"></h3>
                     </div>
                     <span>votes</span>
-                    <div class=" col-1 d-flex justify-content-center">
-                        <span class="row text-center" data-bind="if: $parent.isBookmarked() === false, click: $parent.toggleBookmark">☆</span>
-                        <span class="row" data-bind="if: $parent.isBookmarked() === true, click: $parent.toggleBookmark">⭐</span>
+                    <div class="d-flex justify-content-center" data-bind="if: $parent.isBookmarked() === false">
+                        <span style="font-size: 30px; cursor: pointer;" data-bind="click: $parent.toggleBookmark">☆</span>
+                    </div>
+                    <div class="d-flex justify-content-center" data-bind="if: $parent.isBookmarked() === true">
+                        <span style="font-size: 24px; cursor: pointer; margin-top: 4px;" data-bind="if: $parent.isBookmarked() === true, click: $parent.toggleBookmark">⭐</span>
                     </div>
                 </div>
 
