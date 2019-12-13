@@ -12,7 +12,7 @@
             <a class="row questions" data-bind="text: title, click: $parent.selectQuestion.bind($data, submission)">
             </a>
             <div class="row" data-bind="foreach: questionsTags.$values">
-                <div class="border rounded-lg bg-light tags" style="cursor: pointer" data-bind="text: !!tag.tagString ? tag.tagString : 'regex', click:$parent.selectQuestionByTag.bind($data, tag)"></div>
+                <div class="border rounded-lg bg-light tags" style="cursor: pointer" data-bind="text: !!tag.tagString ? tag.tagString : 'regex', click: $parent.selectQuestionsByTag.bind($data, tag)"></div>
             </div>
         </div>
         <div class="col-sm-6 col-md-3 offset-sm-1 offset-md-9 pl-3 pt-3 pb-2 mb-sm-2 question-list-so-member">

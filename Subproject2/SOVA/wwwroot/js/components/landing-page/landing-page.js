@@ -11,7 +11,7 @@
         store.dispatch(store.actions.selectQuestion(submission.submissionId));
     }
 
-    var selectQuestionByTag = (data, tag) => {
+    var selectQuestionsByTag = (data, tag) => {
         store.dispatch(store.actions.tagFilter(tag.tagString));
     }
 
@@ -25,7 +25,7 @@
             activeComponent,
             questions,
             selectQuestion,
-            selectQuestionByTag,
+            selectQuestionsByTag,
             sessionStorage,
             nextPage
         };
