@@ -2,6 +2,7 @@
 
     var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
     var selectedPostId = ko.observable(store.getState().selectedPostId);
+    var selectedTag = ko.observable(store.getState().selectedTag);
     var authenticationToken = ko.observable();
     var searchTerm = ko.observable();
 
@@ -20,6 +21,12 @@
 
     var moreQuestions = async (callback) => {
         var response = await fetch("api/questions?page=1&pageSize=10");
+        var data = await response.json();
+        callback(data);
+    }
+
+    var getQuestionsByTag = async (callback) => {
+        var response = await fetch(`api/questions/tag/${selectedTag()}`);
         var data = await response.json();
         callback(data);
     }
@@ -109,6 +116,7 @@
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
+        getQuestionsByTag,
         searchOtherPages,
         getAnswerById,
         getWord2Words,
