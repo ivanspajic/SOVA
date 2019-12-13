@@ -58,7 +58,7 @@ namespace Data_Layer
             var tag = _databaseContext.Tags.FirstOrDefault(t => t.TagString == tagName);
             if (tag == null)
                 return null;
-            return _databaseContext.QuestionsTags.Where(qt => qt.TagId == tag.Id).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+            return _databaseContext.QuestionsTags.Include(qt => qt.Question).Where(qt => qt.TagId == tag.Id).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
                 .Take(pagingAttributes.PageSize)
                 .ToList();
         }
