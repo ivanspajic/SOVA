@@ -26,7 +26,7 @@
             selectQuestion,
             selectQuestionsByTag,
             sessionStorage,
-            nextPage,
+            nextPage
         };
     };
 });

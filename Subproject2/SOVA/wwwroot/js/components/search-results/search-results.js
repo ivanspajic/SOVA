@@ -37,7 +37,7 @@
                 results(data.items.$values);
                 nextPage(data.next);
                 prevPage(data.prev);
-            })
+            });
         };
 
         var searchPrev = function () {
@@ -45,7 +45,7 @@
                 results(data.items.$values);
                 nextPage(data.next);
                 prevPage(data.prev);
-            })
+            });
         };
 
         ds.getWord2Words((data) => {
@@ -59,7 +59,7 @@
 
         var selectPost = (data, id, isQuestion) => {
             store.dispatch(store.actions.selectPost(id, isQuestion.isQuestion));
-        }
+        };
 
         return function () {
             return {

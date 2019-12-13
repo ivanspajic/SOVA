@@ -1,4 +1,4 @@
-﻿define([], function () {
+﻿define(["knockout"], function (ko) {
     const landingPage = "LANDING_PAGE";
     const selectQuestion = "SELECT_QUESTION";
     const login = "LOGIN";
@@ -72,7 +72,7 @@
             return {
                 type: selectQuestion,
                 selectedQuestionId: questionId,
-                activeComponent: "question-with-answers"
+                activeComponent: "question-with-answers",
             };
         },
         tagFilter: function (tag) {
@@ -130,14 +130,13 @@
                 activeComponent: "landing-page"
             }
         },
-        userSearchHistory: function (token, username) {
+        userSearchHistory: function (username) {
             return {
                 type: userSearchHistory,
-                token: username,
                 username: username,
                 activeComponent: "user-search-history"
             }
-        }
+        },
     };
 
     return {

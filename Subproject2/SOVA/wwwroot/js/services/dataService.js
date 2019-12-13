@@ -7,7 +7,7 @@
     var searchTerm = ko.observable();
 
     store.subscribe(function () {
-        authenticationToken(store.getState().token);
+        authenticationToken(`Bearer ${localStorage.getItem('token')}`);
         selectedQuestionId(store.getState().selectedQuestionId);
         selectedPostId(store.getState().selectedPostId);
         searchTerm(store.getState().searchTerm);
@@ -114,6 +114,23 @@
         callback(data);
     }
 
+    var toggleBookmarkStatus = async (callback) => {
+        if (!localStorage.getItem('token')) {
+            callback({ message: "Not authorized" });
+        } else {
+
+            var response = await fetch(`api/${selectedQuestionId()}/bookmarks`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `${authenticationToken()}`
+                    }
+                });
+            var data = await response.json();
+            callback(data);
+        }
+    }
+
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
@@ -128,6 +145,7 @@
         search,
         moreQuestions,
         saveAnnotation,
-        getAnnotation
+        getAnnotation,
+        toggleBookmarkStatus
     };
 });

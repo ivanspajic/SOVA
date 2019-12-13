@@ -25,7 +25,7 @@
             questionsByTag(data.items.$values);
             nextPage(data.next);
             prevPage(data.prev);
-        })
+        });
     };
 
     var getPrev = function () {
@@ -33,12 +33,12 @@
             questionsByTag(data.items.$values);
             nextPage(data.next);
             prevPage(data.prev);
-        })
+        });
     };
 
     var selectQuestion = (data, questionId) => {
         store.dispatch(store.actions.selectPost(questionId, true));
-    }
+    };
 
     return function () {
         return {
