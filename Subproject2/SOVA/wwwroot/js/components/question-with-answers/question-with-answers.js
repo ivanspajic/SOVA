@@ -107,6 +107,5 @@
             errorMessage,
             successMessage
         };
-
     };
 });
