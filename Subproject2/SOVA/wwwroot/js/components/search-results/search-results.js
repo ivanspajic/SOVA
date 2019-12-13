@@ -33,7 +33,7 @@
         });
 
         var searchNext = function () {
-            ds.searchOtherPages(nextPage, (data) => {
+            ds.getOtherPages(nextPage, (data) => {
                 results(data.items.$values);
                 nextPage(data.next);
                 prevPage(data.prev);
@@ -41,7 +41,7 @@
         };
 
         var searchPrev = function () {
-            ds.searchOtherPages(prevPage, (data) => {
+            ds.getOtherPages(prevPage, (data) => {
                 results(data.items.$values);
                 nextPage(data.next);
                 prevPage(data.prev);

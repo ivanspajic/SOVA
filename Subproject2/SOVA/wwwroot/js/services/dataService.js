@@ -2,6 +2,7 @@
 
     var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
     var selectedPostId = ko.observable(store.getState().selectedPostId);
+    var selectedTag = ko.observable(store.getState().selectedTag);
     var authenticationToken = ko.observable();
     var searchTerm = ko.observable();
 
@@ -10,6 +11,7 @@
         selectedQuestionId(store.getState().selectedQuestionId);
         selectedPostId(store.getState().selectedPostId);
         searchTerm(store.getState().searchTerm);
+        selectedTag(store.getState().selectedTag);
     });
 
     var getQuestions = async (callback) => {
@@ -20,6 +22,12 @@
 
     var moreQuestions = async (callback) => {
         var response = await fetch("api/questions?page=1&pageSize=10");
+        var data = await response.json();
+        callback(data);
+    }
+
+    var getQuestionsByTag = async (callback) => {
+        var response = await fetch(`api/questions/tag/${selectedTag()}`);
         var data = await response.json();
         callback(data);
     }
@@ -76,7 +84,7 @@
         callback(data);
     }
 
-    var searchOtherPages = async (link, callback) => {
+    var getOtherPages = async (link, callback) => {
         if (link()) {
             var newLink = link().replace("https://localhost:5001/", "");
             var response = await fetch(newLink);
@@ -109,7 +117,8 @@
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
-        searchOtherPages,
+        getQuestionsByTag,
+        getOtherPages,
         getAnswerById,
         getWord2Words,
         selectedQuestionId,

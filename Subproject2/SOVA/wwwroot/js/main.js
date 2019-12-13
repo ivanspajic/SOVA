@@ -22,6 +22,10 @@ require(["knockout"], function (ko) {
         viewModel: { require: "components/landing-page/landing-page" },
         template: { require: "text!components/landing-page/landing-page.html" }
     });
+    ko.components.register("tag-filter", {
+        viewModel: { require: "components/tag-filter/tag-filter" },
+        template: { require: "text!components/tag-filter/tag-filter.html" }
+    });
     ko.components.register("individual-answer", {
         viewModel: { require: "components/individual-answer/individual-answer" },
         template: { require: "text!components/individual-answer/individual-answer.html" }
