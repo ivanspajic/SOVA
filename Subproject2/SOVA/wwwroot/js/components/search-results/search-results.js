@@ -4,7 +4,7 @@
 
         var width = params.width || 250;
         var height = params.height || 250;
-        var words = [];
+        var words = ko.observable();
 
         var prevPage = ko.observable();
         var nextPage = ko.observable();
@@ -19,13 +19,13 @@
                 prevPage(data.prev);
             }),
                 ds.getWord2Words((data) => {
-                    words = data.items.$values;
+                    words(data.items.$values);
                     $('#cloud').jQCloud(words,
                         {
                             width: width,
                             height: height
                         });
-                    $('#cloud').jQCloud('update', words);
+                    $('#cloud').jQCloud('update', words());
                 });
         });
 
@@ -52,8 +52,8 @@
         };
 
         ds.getWord2Words((data) => {
-            words = data.items.$values;
-            $('#cloud').jQCloud(words,
+            words(data.items.$values);
+            $('#cloud').jQCloud(words(),
                 {
                     width: width,
                     height: height
@@ -72,7 +72,8 @@
                 searchNext,
                 searchPrev,
                 results,
-                searchedTerm
+                searchedTerm,
+                words
             };
         };
     };

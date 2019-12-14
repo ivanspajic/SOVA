@@ -1,6 +1,6 @@
 ﻿<div class="container px-4">
-    <h3 class="border-bottom py-3" style="display: flex;align-items: center;">
-        <img src="../../../assets/images/Search icon.png" width="30" class="mr-2" />
+    <h3 class="border-bottom py-3" style="display: flex; align-items: center;">
+        <img src="../../../assets/images/search.png" width="30" class="mr-2" />
         Search results for '<span data-bind="text: searchedTerm"></span>'
     </h3>
 
@@ -21,10 +21,7 @@
         <img src="../../../assets/images/No-results.gif" width="600" />
     </div>
 
-    <div style="margin-top: 15px" class="d-flex justify-content-center">
+    <div style="margin-top: 15px" class="d-flex justify-content-center" data-bind="if: words">
         <div id="cloud"></div>
     </div>
 </div>
-
-
-
