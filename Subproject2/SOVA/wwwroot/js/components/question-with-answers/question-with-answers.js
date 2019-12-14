@@ -10,6 +10,7 @@
         var errorMessage = ko.observable();
         var successMessage = ko.observable();
         var deletionMessage = ko.observable();
+        var loginPrompt = ko.observable();
 
         store.subscribe(function () {
             selectedQuestionId(store.getState().selectedQuestionId);
@@ -53,6 +54,12 @@
             annotationText(textAreaValue());
             ds.saveAnnotation(annotationText(),
                 (data) => {
+                    if (data.message && data.message.toLowerCase().includes("not authorized")) {
+                        loginPrompt("Please log into save this annotation.");
+                    }
+                    else {
+                        loginPrompt(null);
+                    }
                     response(data);
                 });
             showAnnotations(false);
@@ -132,7 +139,8 @@
             toggleBookmark,
             errorMessage,
             successMessage,
-            deletionMessage
+            deletionMessage,
+            loginPrompt
         };
     };
 });
