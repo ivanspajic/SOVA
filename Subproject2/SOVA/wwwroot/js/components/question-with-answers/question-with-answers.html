@@ -51,8 +51,8 @@
             </div>
 
             <div data-bind="ifnot:$parent.annotationText()">
-                <span style="cursor: pointer" data-bind="click: $parent.toggleAnnotationField()">Add an annotation </span>
-                <div data-bind="if:$parent.showAnnotations">
+                <span style="cursor: pointer" data-bind="click: $parent.toggleAnnotationField">Add an annotation </span>
+                <div data-bind="if:$parent.showAnnotations()">
                     <textarea data-bind=" textInput:$parent.textAreaValue"> </textarea>
                     <button type="button" class="btn btn-outline-primary" data-bind="click: $parent.saveAnnotation"> save </button>
                     <button type="button" class="btn btn-outline-danger" data-bind="click: $parent.cancelAnnotation"> cancel </button>

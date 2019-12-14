@@ -32,7 +32,7 @@
             } else if (data.message.toLowerCase().includes("already bookmarked")) {
                 isBookmarked(true);
             }
-        })
+        });
 
         
         ds.getAnnotation((data) => {
