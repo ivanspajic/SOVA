@@ -9,6 +9,7 @@
         var isBookmarked = ko.observable(false);
         var errorMessage = ko.observable();
         var successMessage = ko.observable();
+        var deletionMessage = ko.observable();
 
         store.subscribe(function () {
             selectedQuestionId(store.getState().selectedQuestionId);
@@ -67,8 +68,9 @@
             }
             else {
                 ds.deleteAnnotation((data) => {
-                        response(data);
-                    });
+                    response(data);
+                    deletionMessage(data);
+                });
             }
             showAnnotations(false);
         }
@@ -129,7 +131,8 @@
             isBookmarked,
             toggleBookmark,
             errorMessage,
-            successMessage
+            successMessage,
+            deletionMessage
         };
     };
 });

@@ -52,12 +52,15 @@
 
             <div data-bind="ifnot:$parent.annotationText()">
                 <button type="button" class="btn btn-outline-dark" data-bind="click: $parent.toggleAnnotationField">
-                    Add an annotation 
+                    Add an annotation
                 </button>
                 <div class="mt-2" data-bind="if:$parent.showAnnotations()">
                     <textarea data-bind=" textInput:$parent.textAreaValue"> </textarea>
                     <button type="button" class="btn btn-outline-primary" data-bind="click: $parent.saveAnnotation"> save </button>
                     <button type="button" class="btn btn-outline-danger" data-bind="click: $parent.cancelAnnotation"> cancel </button>
+                </div>
+                <div data-bind="if:$parent.deletionMessage()">
+                    <span style="color: crimson" data-bind="text: $parent.deletionMessage()"></span>
                 </div>
             </div>
 
