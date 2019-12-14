@@ -160,9 +160,12 @@
                     "Authorization": `${authenticationToken()}`
                 }
             });
-            var data = await response.json();
-            if (data.status === 404) {
+            var data = await response;
+            if (data.status === 204) {
                 data.message = "not found";
+            }
+            else {
+                data = await response.json();
             }
             callback(data);
         }

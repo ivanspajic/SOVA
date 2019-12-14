@@ -28,7 +28,7 @@ namespace SOVA.Controllers
             var ant = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
             if (ant == null)
             {
-                return NotFound();
+                return NoContent();
             }
             return Ok(CreateAnnotationDto(ant));
         }
