@@ -1,10 +1,14 @@
 ﻿define(['knockout', 'store'], function (ko, store) {
 
-    var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
+    var selectedQuestionIdInLocalStorage = localStorage.getItem("selectedQuestionId");
+    var searchTermInLocalStorage = localStorage.getItem("searchTerm");
+    var selectedTagInLocalStorage = localStorage.getItem("selectedTag");
+
+    var selectedQuestionId = !!selectedQuestionIdInLocalStorage ? ko.observable(selectedQuestionIdInLocalStorage) : ko.observable(store.getState().selectedQuestionId);
     var selectedPostId = ko.observable(store.getState().selectedPostId);
-    var selectedTag = ko.observable(store.getState().selectedTag);
+    var selectedTag = !!selectedTagInLocalStorage ? ko.observable(selectedTagInLocalStorage) : ko.observable(store.getState().selectedTag);
     var authenticationToken = ko.observable();
-    var searchTerm = ko.observable();
+    var searchTerm = !!searchTermInLocalStorage ? ko.observable(searchTermInLocalStorage) : ko.observable();
 
     store.subscribe(function () {
         authenticationToken(`Bearer ${localStorage.getItem('token')}`);

@@ -1,6 +1,5 @@
 ﻿define(['knockout', 'dataService', 'store'], function (ko, ds, store) {
     return function () {
-        var activeComponent = ko.observable("question-with-answers");
         var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
         var showAnnotations = ko.observable(false);
         var textAreaValue = ko.observable();
@@ -92,7 +91,6 @@
 
         return {
             selectedQuestionId,
-            activeComponent,
             questionByIdWithAnswers,
             selectQuestionsByTag,
             showAnnotations,
