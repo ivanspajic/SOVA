@@ -9,7 +9,7 @@
         var prevPage = ko.observable();
         var nextPage = ko.observable();
 
-        var searchedTerm = ko.observable(store.getState().searchTerm);
+        var searchedTerm = ko.observable(localStorage.getItem("searchTerm"));
 
         store.subscribe(() => {
             searchedTerm(store.getState().searchTerm);

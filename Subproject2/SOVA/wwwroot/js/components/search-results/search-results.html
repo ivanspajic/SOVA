@@ -1,9 +1,10 @@
 ﻿<div class="container px-5">
     <h3 class="my-4">Search results for '<span data-bind="text: searchedTerm"></span>'</h3>
-    <div data-bind="foreach: results">
-        <div class="row border-bottom" style="margin-top: 15px;">
-            <div class="col col-sm-10 pl-3 ml-sm-2">
-                <a class="row" data-bind="text: title, click: $parent.selectPost.bind($data, isQuestion, id)" style="cursor: pointer">
+
+    <div class="pl-4" data-bind="foreach: results">
+        <div class="row border-bottom pl-2 pb-2" style="margin-top: 15px;">
+            <div class="col col-sm-10">
+                <a class="row questions" data-bind="text: title, click: $parent.selectPost.bind($data, isQuestion, id)" style="cursor: pointer">
                 </a>
             </div>
         </div>
