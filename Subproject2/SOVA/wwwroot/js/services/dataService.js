@@ -84,7 +84,13 @@
     }
 
     var search = async (callback) => {
-        var response = await fetch(`api/questions/query/${searchTerm()}`);
+        var response = await fetch(`api/questions/query/${searchTerm()}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `${authenticationToken()}`
+            }
+        });
         var data = await response.json();
         callback(data);
     }

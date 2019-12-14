@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Data_Layer_Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SOVA.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 
 namespace SOVA.Controllers
 {
@@ -51,7 +53,7 @@ namespace SOVA.Controllers
             return Ok(CreateAnswerResult(answers, questionId, pagingAttributes));
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("query/{queryString}", Name = nameof(SearchQuestion))]
         public ActionResult SearchQuestion([FromQuery] PagingAttributes pagingAttributes, string queryString)
         {
