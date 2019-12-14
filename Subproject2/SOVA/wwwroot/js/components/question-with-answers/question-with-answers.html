@@ -63,9 +63,14 @@
 
             <div data-bind="if:$parent.annotationText()">
                 <span data-bind="text: $parent.annotationText()"></span>
-                <button type="button" class="btn btn-outline-dark" data-bind="click: $parent.toggleAnnotationField">
+                <button type="button" class="btn btn-outline-dark ml-2" data-bind="click: $parent.toggleAnnotationField">
                     Edit annotation
                 </button>
+                <div class="mt-2" data-bind="if:$parent.showAnnotations()">
+                    <textarea data-bind=" textInput:$parent.textAreaValue"> </textarea>
+                    <button type="button" class="btn btn-outline-primary" data-bind="click: $parent.updateAnnotation"> save </button>
+                    <button type="button" class="btn btn-outline-danger" data-bind="click: $parent.cancelAnnotation"> cancel </button>
+                </div>
             </div>
 
             <div data-bind="if: comments.$values.length > 0">

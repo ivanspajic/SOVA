@@ -110,6 +110,26 @@
         callback(data);
     }
 
+    var updateAnnotation = async (annotationText, callback) => {
+        var response = await fetch(`api/annotations/${selectedQuestionId()}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ AnnotationString: annotationText })
+        });
+        var data = await response.json();
+        callback(data);
+    }
+
+    var deleteAnnotation = async (callback) => {
+        var response = await fetch(`api/annotations/${selectedQuestionId()}`, {
+            method: "DELETE"
+        });
+        var data = "deleted object";
+        callback(data);
+    }
+
     var getAnnotation = async (callback) => {
         var response = await fetch(`api/annotations/${selectedQuestionId()}`);
         var data = await response.json();
@@ -165,6 +185,8 @@
         search,
         moreQuestions,
         saveAnnotation,
+        updateAnnotation,
+        deleteAnnotation,
         getAnnotation,
         toggleBookmarkStatus,
         checkIfBookmarked

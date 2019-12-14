@@ -57,6 +57,22 @@
             showAnnotations(false);
         }
 
+        var updateAnnotation = () => {
+            annotationText(textAreaValue());
+            if (textAreaValue()) {
+                ds.updateAnnotation(annotationText(),
+                    (data) => {
+                        response(data);
+                    });
+            }
+            else {
+                ds.deleteAnnotation((data) => {
+                        response(data);
+                    });
+            }
+            showAnnotations(false);
+        }
+
         var showSnackBar = () => {
             // Get the snackBar DIV
             var snackBar = document.getElementById("snackBar");
@@ -105,6 +121,7 @@
             showAnnotations,
             toggleAnnotationField,
             cancelAnnotation,
+            updateAnnotation,
             annotationText,
             saveAnnotation,
             response,
