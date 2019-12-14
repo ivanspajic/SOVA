@@ -37,6 +37,11 @@
             location.reload();
         }
 
+        var goToHome = function () {
+            queryTerm(null);
+            store.dispatch(store.actions.landingPage());
+        }
+
 
         return {
             activeComponent,
@@ -46,7 +51,8 @@
             login,
             logout,
             signUp,
-            queryTerm
+            queryTerm,
+            goToHome
         };
     };
 });
