@@ -49,7 +49,7 @@
             case searching:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, searchTerm: action.searchTerm });
             case userSearchHistory:
-                return Object.assign({}, state, { activeComponent: action.activeComponent });
+                return Object.assign({}, state, { token: action.token, username: action.username, activeComponent: action.activeComponent });
             default:
                 return state;
         }
