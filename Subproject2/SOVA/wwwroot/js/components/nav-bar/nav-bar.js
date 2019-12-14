@@ -37,7 +37,8 @@
             location.reload();
         }
 
-        var goToHome = function() {
+        var goToHome = function () {
+            queryTerm(null);
             store.dispatch(store.actions.landingPage());
         }
 
