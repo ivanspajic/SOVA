@@ -98,25 +98,77 @@
         }
     }
 
-    var saveAnnotation = async (annotationText, questionId, callback) => {
-        var response = await fetch(`api/annotations/${questionId}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ AnnotationString: annotationText })
-        });
-        var data = await response.json();
-        callback(data);
+    var saveAnnotation = async (annotationText, callback) => {
+        if (!localStorage.getItem('token')) {
+            callback({ message: "Not authorized" });
+        }
+        else {
+            var response = await fetch(`api/annotations/${selectedQuestionId()}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `${authenticationToken()}`
+                },
+                body: JSON.stringify({ AnnotationString: annotationText })
+            });
+            var data = await response.json();
+            callback(data);
+        }
+    }
+
+    var updateAnnotation = async (annotationText, callback) => {
+        if (!localStorage.getItem('token')) {
+            callback({ message: "Not authorized" });
+        }
+        else {
+            var response = await fetch(`api/annotations/${selectedQuestionId()}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `${authenticationToken()}`
+                },
+                body: JSON.stringify({ AnnotationString: annotationText })
+            });
+            var data = await response.json();
+            callback(data);
+        }
+    }
+
+    var deleteAnnotation = async (callback) => {
+        if (!localStorage.getItem('token')) {
+            callback({ message: "Not authorized" });
+        }
+        else {
+            var response = await fetch(`api/annotations/${selectedQuestionId()}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `${authenticationToken()}`
+                }
+            });
+            var data = "Annotation deleted.";
+            callback(data);
+        }
     }
 
     var getAnnotation = async (callback) => {
-        var response = await fetch(`api/annotations/${selectedQuestionId()}`);
-        var data = await response.json();
-        if (data.status === 404) {
-            data.message = "not found";
+        if (!localStorage.getItem('token')) {
+            callback({ message: "Not authorized" });
         }
-        callback(data);
+        else {
+            var response = await fetch(`api/annotations/${selectedQuestionId()}`, {
+                headers: {
+                    "Authorization": `${authenticationToken()}`
+                }
+            });
+            var data = await response;
+            if (data.status === 204) {
+                data.message = "not found";
+            }
+            else {
+                data = await response.json();
+            }
+            callback(data);
+        }
     }
 
     var toggleBookmarkStatus = async (callback) => {
@@ -165,6 +217,8 @@
         search,
         moreQuestions,
         saveAnnotation,
+        updateAnnotation,
+        deleteAnnotation,
         getAnnotation,
         toggleBookmarkStatus,
         checkIfBookmarked

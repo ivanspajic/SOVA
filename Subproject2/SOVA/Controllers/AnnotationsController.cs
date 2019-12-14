@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data_Layer_Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SOVA.Models;
@@ -19,7 +20,7 @@ namespace SOVA.Controllers
             _mapper = mapper;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("{submissionId}", Name = nameof(GetAnnotation))]
         public ActionResult GetAnnotation(int submissionId)
         {
@@ -27,12 +28,12 @@ namespace SOVA.Controllers
             var ant = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
             if (ant == null)
             {
-                return NotFound();
+                return NoContent();
             }
             return Ok(CreateAnnotationDto(ant));
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost("{submissionId}")]
         public ActionResult CreateAnnotation(AnnotationForCreation antDto, int submissionId)
         {
@@ -47,7 +48,7 @@ namespace SOVA.Controllers
                 CreateAnnotationDto(ant));
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPut("{submissionId}")]
         public ActionResult UpdateAnnotation(int submissionId, Annotation annotation)
         {
@@ -63,7 +64,7 @@ namespace SOVA.Controllers
             return Ok(annotation);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpDelete("{submissionId}")]
         public ActionResult DeleteAnnotation(int submissionId)
         {
