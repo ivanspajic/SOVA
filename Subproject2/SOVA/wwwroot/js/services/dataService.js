@@ -102,7 +102,8 @@
         var response = await fetch(`api/annotations/${selectedQuestionId()}`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `${authenticationToken()}`
             },
             body: JSON.stringify({ AnnotationString: annotationText })
         });
@@ -114,7 +115,8 @@
         var response = await fetch(`api/annotations/${selectedQuestionId()}`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `${authenticationToken()}`
             },
             body: JSON.stringify({ AnnotationString: annotationText })
         });
@@ -124,14 +126,21 @@
 
     var deleteAnnotation = async (callback) => {
         var response = await fetch(`api/annotations/${selectedQuestionId()}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                "Authorization": `${authenticationToken()}`
+            }
         });
         var data = "Annotation deleted.";
         callback(data);
     }
 
     var getAnnotation = async (callback) => {
-        var response = await fetch(`api/annotations/${selectedQuestionId()}`);
+        var response = await fetch(`api/annotations/${selectedQuestionId()}`, {
+            headers: {
+                "Authorization": `${authenticationToken()}`
+            }
+        });
         var data = await response.json();
         if (data.status === 404) {
             data.message = "not found";
