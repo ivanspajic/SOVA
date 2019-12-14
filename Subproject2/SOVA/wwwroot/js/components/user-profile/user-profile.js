@@ -7,7 +7,7 @@
             }
         });
         var userSearchHistory = function () {
-            var userSearchHistoryAction = store.actions.userSearchHistory(null, null);
+            var userSearchHistoryAction = store.actions.userSearchHistory(null, currentUser);
             store.dispatch(userSearchHistoryAction);
         }
         return {
