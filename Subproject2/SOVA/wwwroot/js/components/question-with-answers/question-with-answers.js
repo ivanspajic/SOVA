@@ -34,13 +34,15 @@
             }
         })
 
+        
         ds.getAnnotation((data) => {
             if (data.message && data.message.toLowerCase().includes("not found")) {
                 annotationText(null);
             } else {
-                annotationText(data);
+                annotationText(data.annotationString);
             }
         });
+        
 
         var cancelAnnotation = () => {
             showAnnotations(false);
