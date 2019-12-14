@@ -4,26 +4,29 @@
 
         var width = params.width || 250;
         var height = params.height || 250;
-        var words = [];
+        var words = ko.observable();
 
         var prevPage = ko.observable();
         var nextPage = ko.observable();
 
+        var searchedTerm = ko.observable(localStorage.getItem("searchTerm"));
+
         store.subscribe(() => {
+            searchedTerm(store.getState().searchTerm);
             ds.search((data) => {
                 results(data.items.$values);
                 nextPage(data.next);
                 prevPage(data.prev);
             }),
-            ds.getWord2Words((data) => {
-                words = data.items.$values;
-                $('#cloud').jQCloud(words,
-                    {
-                        width: width,
-                        height: height
-                    });
-                $('#cloud').jQCloud('update', words);
-            });
+                ds.getWord2Words((data) => {
+                    words(data.items.$values);
+                    $('#cloud').jQCloud(words,
+                        {
+                            width: width,
+                            height: height
+                        });
+                    $('#cloud').jQCloud('update', words());
+                });
         });
 
         ds.search((data) => {
@@ -49,8 +52,8 @@
         };
 
         ds.getWord2Words((data) => {
-            words = data.items.$values;
-            $('#cloud').jQCloud(words,
+            words(data.items.$values);
+            $('#cloud').jQCloud(words(),
                 {
                     width: width,
                     height: height
@@ -68,7 +71,9 @@
                 prevPage,
                 searchNext,
                 searchPrev,
-                results
+                results,
+                searchedTerm,
+                words
             };
         };
     };

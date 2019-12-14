@@ -1,16 +1,16 @@
 ﻿define(['knockout', 'dataService', 'store'], function (ko, ds, store) {
     var questionsByTag = ko.observable();
-    var selectedTag = ko.observable(store.getState().selectedTag);
+    var selectedTag = ko.observable(localStorage.getItem("selectedTag"));
     var prevPage = ko.observable();
     var nextPage = ko.observable();
 
     store.subscribe(() => {
         selectedTag(store.getState().selectedTag),
-        ds.getQuestionsByTag((data) => {
-            questionsByTag(data.items.$values);
-            nextPage(data.next);
-            prevPage(data.prev);
-        });
+            ds.getQuestionsByTag((data) => {
+                questionsByTag(data.items.$values);
+                nextPage(data.next);
+                prevPage(data.prev);
+            });
     });
 
     ds.getQuestionsByTag((data) => {
@@ -35,8 +35,8 @@
         });
     };
 
-    var selectQuestion = (data, questionId) => {
-        store.dispatch(store.actions.selectPost(questionId, true));
+    var selectQuestion = (data, question) => {
+        store.dispatch(store.actions.selectPost(question.questionId, true));
     };
 
     return function () {

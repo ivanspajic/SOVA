@@ -80,7 +80,7 @@
             </div>
             <div class="col-10 m-md-3 py-2 answer-count">
                 <div class="row">
-                    <div data-bind="text: answers.$values[0].question.answers.$values.length - 1"></div>
+                    <div data-bind="text: !!answers.$values[0] ? answers.$values[0].question.answers.$values.length - 1 : 0"></div>
                     <span>&nbsp;Answer(s)</span>
                 </div>
             </div>
