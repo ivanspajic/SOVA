@@ -1,4 +1,5 @@
-﻿<div class="container px-4">
+﻿<div class="container px-5">
+    <h3 class="my-4">Search results for '<span data-bind="text: searchedTerm"></span>'</h3>
     <div data-bind="foreach: results">
         <div class="row border-bottom" style="margin-top: 15px;">
             <div class="col col-sm-10 pl-3 ml-sm-2">
@@ -13,7 +14,7 @@
     </div>
 
     <div data-bind="if:(results() && results().length === 0 )" style="margin-top: 15px" class="d-flex justify-content-center">
-        <p>No results found.</p>
+        <img src="../../../assets/images/No-results.gif" width="600" />
     </div>
 
     <div style="margin-top: 15px" class="d-flex justify-content-center">
