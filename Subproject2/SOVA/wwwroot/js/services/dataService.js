@@ -98,8 +98,8 @@
         }
     }
 
-    var saveAnnotation = async (annotationText, questionId, callback) => {
-        var response = await fetch(`api/annotations/${questionId}`, {
+    var saveAnnotation = async (annotationText, callback) => {
+        var response = await fetch(`api/annotations/${selectedQuestionId()}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

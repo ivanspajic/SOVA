@@ -51,7 +51,6 @@
         var saveAnnotation = () => {
             annotationText(textAreaValue());
             ds.saveAnnotation(annotationText(),
-                selectedQuestionId(),
                 (data) => {
                     response(data);
                 });
