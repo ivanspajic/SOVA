@@ -25,12 +25,6 @@
         callback(data);
     }
 
-    var moreQuestions = async (callback) => {
-        var response = await fetch("api/questions?page=1&pageSize=10");
-        var data = await response.json();
-        callback(data);
-    }
-
     var getQuestionsByTag = async (callback) => {
         var response = await fetch(`api/questions/tag/${selectedTag()}`);
         var data = await response.json();
@@ -221,7 +215,6 @@
         authenticationToken,
         createUser,
         search,
-        moreQuestions,
         saveAnnotation,
         updateAnnotation,
         deleteAnnotation,
