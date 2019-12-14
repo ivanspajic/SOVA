@@ -23,7 +23,7 @@ namespace SOVA.Controllers
             _mapper = mapper;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("bookmarks", Name = nameof(GetMarkedPostsForUser))]
         public ActionResult GetMarkedPostsForUser([FromQuery] PagingAttributes pagingAttributes)
         {

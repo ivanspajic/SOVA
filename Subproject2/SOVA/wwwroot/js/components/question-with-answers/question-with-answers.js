@@ -9,6 +9,8 @@
         var isBookmarked = ko.observable(false);
         var errorMessage = ko.observable();
         var successMessage = ko.observable();
+        var deletionMessage = ko.observable();
+        var loginPrompt = ko.observable();
 
         store.subscribe(function () {
             selectedQuestionId(store.getState().selectedQuestionId);
@@ -32,15 +34,17 @@
             } else if (data.message.toLowerCase().includes("already bookmarked")) {
                 isBookmarked(true);
             }
-        })
+        });
 
+        
         ds.getAnnotation((data) => {
             if (data.message && data.message.toLowerCase().includes("not found")) {
                 annotationText(null);
             } else {
-                annotationText(data);
+                annotationText(data.annotationString);
             }
         });
+        
 
         var cancelAnnotation = () => {
             showAnnotations(false);
@@ -49,10 +53,32 @@
         var saveAnnotation = () => {
             annotationText(textAreaValue());
             ds.saveAnnotation(annotationText(),
-                selectedQuestionId(),
                 (data) => {
+                    if (data.message && data.message.toLowerCase().includes("not authorized")) {
+                        loginPrompt("Please log into save this annotation.");
+                    }
+                    else {
+                        loginPrompt(null);
+                    }
                     response(data);
                 });
+            showAnnotations(false);
+        }
+
+        var updateAnnotation = () => {
+            annotationText(textAreaValue());
+            if (textAreaValue()) {
+                ds.updateAnnotation(annotationText(),
+                    (data) => {
+                        response(data);
+                    });
+            }
+            else {
+                ds.deleteAnnotation((data) => {
+                    response(data);
+                    deletionMessage(data);
+                });
+            }
             showAnnotations(false);
         }
 
@@ -104,6 +130,7 @@
             showAnnotations,
             toggleAnnotationField,
             cancelAnnotation,
+            updateAnnotation,
             annotationText,
             saveAnnotation,
             response,
@@ -111,7 +138,9 @@
             isBookmarked,
             toggleBookmark,
             errorMessage,
-            successMessage
+            successMessage,
+            deletionMessage,
+            loginPrompt
         };
     };
 });

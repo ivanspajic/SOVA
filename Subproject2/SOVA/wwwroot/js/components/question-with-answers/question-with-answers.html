@@ -50,16 +50,34 @@
                 </div>
             </div>
 
-            <div data-bind="ifnot:$parent.annotationText">
-                <span data-bind="click: $parent.toggleAnnotationbox">Add an annotation </span>
-                <div data-bind="if:$parent.showAnnotations">
+            <div data-bind="ifnot:$parent.annotationText()">
+                <button type="button" class="btn btn-outline-dark" data-bind="click: $parent.toggleAnnotationField">
+                    Add an annotation
+                </button>
+                <div class="mt-2" data-bind="if:$parent.showAnnotations()">
                     <textarea data-bind=" textInput:$parent.textAreaValue"> </textarea>
-                    <button type="button" class="btn btn-primary" data-bind="click: $parent.saveAnnotation"> save </button>
+                    <button type="button" class="btn btn-outline-primary" data-bind="click: $parent.saveAnnotation"> save </button>
+                    <button type="button" class="btn btn-outline-danger" data-bind="click: $parent.cancelAnnotation"> cancel </button>
+                </div>
+                <div data-bind="if:!$parent.loginPrompt() && $parent.deletionMessage()">
+                    <span style="color: crimson" data-bind="text: $parent.deletionMessage()"></span>
+                </div>
+            </div>
+
+            <div data-bind="if:$parent.annotationText()">
+                <span data-bind="text: $parent.annotationText()"></span>
+                <button type="button" class="btn btn-outline-dark ml-2" data-bind="click: $parent.toggleAnnotationField">
+                    Edit annotation
+                </button>
+                <div class="mt-2" data-bind="if:$parent.showAnnotations()">
+                    <textarea data-bind=" textInput:$parent.textAreaValue"> </textarea>
+                    <button type="button" class="btn btn-outline-primary" data-bind="click: $parent.updateAnnotation"> save </button>
                     <button type="button" class="btn btn-outline-danger" data-bind="click: $parent.cancelAnnotation"> cancel </button>
                 </div>
             </div>
-            <div data-bind="if:$parent.annotationText">
-                <span data-bind="text: $parent.annotationText"></span>
+
+            <div data-bind="if:$parent.loginPrompt()">
+                <span style="color: crimson">Login to save your annotation.</span>
             </div>
 
             <div data-bind="if: comments.$values.length > 0">
@@ -80,7 +98,7 @@
             </div>
             <div class="col-10 m-md-3 py-2 answer-count">
                 <div class="row">
-                    <div data-bind="text: answers.$values[0].question.answers.$values.length - 1"></div>
+                    <div data-bind="text: !!answers.$values[0] ? answers.$values[0].question.answers.$values.length - 1 : 0"></div>
                     <span>&nbsp;Answer(s)</span>
                 </div>
             </div>

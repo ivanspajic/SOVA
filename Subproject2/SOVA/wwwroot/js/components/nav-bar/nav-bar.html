@@ -4,7 +4,13 @@
     </button>
 
     <div class="collapse navbar-collapse row" id="navbarSupportedContent">
-        <form class="form-inline my-1 col-6 offset-3" data-bind="if: activeComponent && !(activeComponent() === 'login-page' || activeComponent() ===  'signup-page')">
+        <div style="width: 75px">
+            <div class="pl-4" style="display: flex; align-items: center; user-select: none; cursor: pointer" data-bind="if: activeComponent && !(activeComponent() === 'landing-page'), click: goToHome">
+                <img src="../../../assets/images/home.png" width="30" />
+                <span class="pl-2">Home</span>
+            </div>
+        </div>
+        <form class="form-inline my-1 col-6 offset-2" data-bind="if: activeComponent && !(activeComponent() === 'login-page' || activeComponent() ===  'signup-page')">
             <input class="form-control mr-sm-2" type="search" id="searchterm" placeholder="Search" aria-label="Search" style="width: 80%" data-bind="textInput: queryTerm">
             <button class="btn btn-outline-success my-1 my-sm-0" type="submit" data-bind="click: search">Search</button>
         </form>
