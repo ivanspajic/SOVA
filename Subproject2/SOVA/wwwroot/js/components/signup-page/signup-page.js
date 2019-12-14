@@ -1,7 +1,5 @@
 ﻿define(['knockout', 'dataService', 'store'], function (ko, ds, store) {
     return function () {
-
-        var activeComponent = ko.observable("signup-page");
         var errorMessage = ko.observable();
         var username = ko.observable();
         var password = ko.observable();
@@ -19,7 +17,6 @@
             });
         }
         return {
-            activeComponent,
             createUser,
             errorMessage,
             username,

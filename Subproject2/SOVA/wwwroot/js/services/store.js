@@ -22,18 +22,25 @@
     };
 
     var reducer = function (state, action) {
+        localStorage.setItem("activeComponent", action.activeComponent)
         switch (action.type) {
             case landingPage:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, username: action.username });
             case tagFilter:
+                localStorage.setItem("selectedTag", action.selectedTag);
                 return Object.assign({}, state, { activeComponent: action.activeComponent, selectedTag: action.selectedTag });
             case answerPage:
+                localStorage.setItem("selectedPostId", action.selectedPostId);
                 return Object.assign({}, state, { selectedPostId: action.selectedPostId, activeComponent: action.activeComponent });
             case selectQuestion:
+                localStorage.setItem("selectedQuestionId", action.selectedQuestionId);
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent });
             case login:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, optionalMessage: action.optionalMessage });
             case selectPost:
+                localStorage.setItem("selectedQuestionId", action.selectedQuestionId);
+                localStorage.setItem("selectedPostId", action.selectedPostId);
+                localStorage.setItem("isQuestion", action.isQuestion);
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, selectedPostId: action.selectedPostId, isQuestion: action.isQuestion, activeComponent: action.activeComponent });
             case signupUser:
                 return Object.assign({}, state, { activeComponent: action.activeComponent });

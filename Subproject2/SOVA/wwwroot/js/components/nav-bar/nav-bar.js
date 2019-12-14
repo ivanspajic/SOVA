@@ -1,12 +1,15 @@
 ﻿define(["knockout", "store", "dataService"], function (ko, store, ds) {
     return function () {
-        var activeComponent = ko.observable(store.getState().activeComponent);
+        var activeComponentInLocalStorage = localStorage.getItem("activeComponent");
+
+        var activeComponent = !!activeComponentInLocalStorage ? ko.observable(activeComponentInLocalStorage) : ko.observable(store.getState().activeComponent);
 
         var currentUser = ko.observable(localStorage.getItem("username"));
         var authenticationToken = ko.observable(store.getState().token);
         var queryTerm = ko.observable();
 
         var search = function () {
+            localStorage.setItem("searchTerm", queryTerm());
             store.dispatch(store.actions.searching(queryTerm()));
         };
 

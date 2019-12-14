@@ -55,6 +55,21 @@ namespace SOVA.Controllers
             return Ok(new { message = $"Successfully bookmarked. Submission with id {submissionId} is now bookmarked." });
         }
 
+        [Authorize]
+        [HttpGet("{submissionId}/checkIfBookmarked")]
+        public ActionResult checkBookmark(int submissionId)
+        {
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            if (_markingRepository.IsMarked(submissionId, userId))
+            {
+                return Ok(new { message = "Already bookmarked." });
+            }
+            else
+            {
+                return Ok(new { message = "Not bookmarked." });
+            }
+        }
+
         ///////////////////
         //
         // Helpers

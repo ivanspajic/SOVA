@@ -1,6 +1,5 @@
 ﻿define(['knockout', 'dataService', 'store'], function (ko, ds, store) {
     return function () {
-        var activeComponent = ko.observable("question-with-answers");
         var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
         var showAnnotations = ko.observable(false);
         var textAreaValue = ko.observable();
@@ -26,6 +25,14 @@
         ds.getQuestionByIdWithAnswers((data) => {
             questionByIdWithAnswers(data);
         });
+
+        ds.checkIfBookmarked((data) => {
+            if (data.message.toLowerCase().includes("not bookmarked")) {
+                isBookmarked(false);
+            } else if (data.message.toLowerCase().includes("already bookmarked")) {
+                isBookmarked(true);
+            }
+        })
 
         ds.getAnnotation((data) => {
             if (data.message && data.message.toLowerCase().includes("not found")) {
@@ -92,7 +99,6 @@
 
         return {
             selectedQuestionId,
-            activeComponent,
             questionByIdWithAnswers,
             selectQuestionsByTag,
             showAnnotations,
