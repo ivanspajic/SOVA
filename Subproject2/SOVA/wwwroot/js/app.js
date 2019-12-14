@@ -1,5 +1,5 @@
 ﻿define(["knockout", "store"], function (ko, store) {
-    var activeComponent = ko.observable("landing-page");
+    var activeComponent = !!localStorage.getItem("activeComponent") ? ko.observable(localStorage.getItem("activeComponent")) : ko.observable("landing-page");
     var activeParams = ko.observable({});
 
     var changeContent = function (questionId) {
@@ -10,10 +10,16 @@
         activeComponent(store.getState().activeComponent);
     });
 
+    goToLandingPage = () => {
+        localStorage.setItem("activeComponent", "landing-page");
+        store.dispatch(store.actions.landingPage());
+    }
+
 
     return {
         activeComponent,
         activeParams,
         changeContent,
+        goToLandingPage
     };
 });

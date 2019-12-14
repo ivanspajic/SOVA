@@ -1,5 +1,4 @@
 ﻿define(['knockout', 'dataService', 'store'], function (ko, ds, store) {
-    var activeComponent = ko.observable("tag-filter");
     var questionsByTag = ko.observable();
     var selectedTag = ko.observable(store.getState().selectedTag);
     var prevPage = ko.observable();
@@ -42,7 +41,6 @@
 
     return function () {
         return {
-            activeComponent,
             selectQuestion,
             selectedTag,
             questionsByTag,

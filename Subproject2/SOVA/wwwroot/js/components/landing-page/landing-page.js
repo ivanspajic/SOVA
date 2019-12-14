@@ -1,5 +1,4 @@
 ﻿define(['knockout', 'dataService', 'store'], function (ko, ds, store) {
-    var activeComponent = ko.observable("landing-page");
     var questions = ko.observableArray([]);
     var sessionStorage = ko.observable(localStorage.getItem("username"));
 
@@ -21,7 +20,6 @@
     }
     return function () {
         return {
-            activeComponent,
             questions,
             selectQuestion,
             selectQuestionsByTag,

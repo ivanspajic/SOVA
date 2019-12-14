@@ -1,5 +1,4 @@
 ﻿define(['knockout', 'dataService', 'store'], function (ko, ds, store) {
-    var activeComponent = ko.observable("individual-answer");
     var selectedAnswerId = ko.observable(store.getState().selectedPostId);
     var answerById = ko.observable();
 
@@ -15,7 +14,6 @@
         return {
             selectedAnswerId,
             answerById,
-            activeComponent
         };
     };
 });
