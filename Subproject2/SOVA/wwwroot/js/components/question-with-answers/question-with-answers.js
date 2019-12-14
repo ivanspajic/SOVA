@@ -26,6 +26,14 @@
             questionByIdWithAnswers(data);
         });
 
+        ds.checkIfBookmarked((data) => {
+            if (data.message.toLowerCase().includes("not bookmarked")) {
+                isBookmarked(false);
+            } else if (data.message.toLowerCase().includes("already bookmarked")) {
+                isBookmarked(true);
+            }
+        })
+
         ds.getAnnotation((data) => {
             if (data.message && data.message.toLowerCase().includes("not found")) {
                 annotationText(null);

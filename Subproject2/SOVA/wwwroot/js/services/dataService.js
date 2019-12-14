@@ -3,11 +3,12 @@
     var selectedQuestionIdInLocalStorage = localStorage.getItem("selectedQuestionId");
     var searchTermInLocalStorage = localStorage.getItem("searchTerm");
     var selectedTagInLocalStorage = localStorage.getItem("selectedTag");
+    var authenticationTokenInLocalStorage = localStorage.getItem("token");
 
     var selectedQuestionId = !!selectedQuestionIdInLocalStorage ? ko.observable(selectedQuestionIdInLocalStorage) : ko.observable(store.getState().selectedQuestionId);
     var selectedPostId = ko.observable(store.getState().selectedPostId);
     var selectedTag = !!selectedTagInLocalStorage ? ko.observable(selectedTagInLocalStorage) : ko.observable(store.getState().selectedTag);
-    var authenticationToken = ko.observable();
+    var authenticationToken = !!authenticationTokenInLocalStorage ? ko.observable(`Bearer ${localStorage.getItem('token')}`) : ko.observable();
     var searchTerm = !!searchTermInLocalStorage ? ko.observable(searchTermInLocalStorage) : ko.observable();
 
     store.subscribe(function () {
@@ -122,10 +123,25 @@
         if (!localStorage.getItem('token')) {
             callback({ message: "Not authorized" });
         } else {
-
             var response = await fetch(`api/${selectedQuestionId()}/bookmarks`,
                 {
                     method: "PUT",
+                    headers: {
+                        "Authorization": `${authenticationToken()}`
+                    }
+                });
+            var data = await response.json();
+            callback(data);
+        }
+    }
+
+    var checkIfBookmarked = async (callback) => {
+        if (!localStorage.getItem('token')) {
+            callback({ message: "Not authorized" });
+        } else {
+            var response = await fetch(`api/${selectedQuestionId()}/checkIfBookmarked`,
+                {
+                    method: "GET",
                     headers: {
                         "Authorization": `${authenticationToken()}`
                     }
@@ -150,6 +166,7 @@
         moreQuestions,
         saveAnnotation,
         getAnnotation,
-        toggleBookmarkStatus
+        toggleBookmarkStatus,
+        checkIfBookmarked
     };
 });
