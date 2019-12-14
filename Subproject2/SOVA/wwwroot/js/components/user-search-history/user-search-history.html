@@ -1,4 +1,6 @@
-﻿<span data-bind="text: username"></span>'s Search History
+﻿<div class="container px-4">
+    <span data-bind="text: username"></span>'s Search History
+</div>
 <div class="container px-4" data-bind="foreach: userSearches">
-
+    <div data-bind="text: $data"></div>
 </div>

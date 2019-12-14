@@ -5,7 +5,11 @@
         var userSearches = ko.observable([]);
         var updateUserSearches = function () {
             ds.getUserSearches(function (data) {
-                userSearches(data);
+                var temp = [];
+                for (var i = 0; i < data.items.$values.length; i++) {
+                    temp.push(data.items.$values[i].history.searchTerm);
+                }
+                userSearches(temp);
             });
         }
         updateUserSearches();
