@@ -126,7 +126,7 @@
         var response = await fetch(`api/annotations/${selectedQuestionId()}`, {
             method: "DELETE"
         });
-        var data = "deleted object";
+        var data = "Annotation deleted.";
         callback(data);
     }
 
