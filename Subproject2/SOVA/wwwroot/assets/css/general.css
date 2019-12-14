@@ -185,6 +185,14 @@ However, delay the fade out process for 2.5 seconds */
     .answer-count {
         font-size: 1.0rem
     }
+
+    .search-filter-header {
+        font-size: 20px;
+    }
+
+    .general-logo {
+        width: 30px;
+    }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
