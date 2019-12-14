@@ -1,7 +1,8 @@
-﻿define([], function () {
+﻿define(["knockout"], function (ko) {
     const landingPage = "LANDING_PAGE";
     const selectQuestion = "SELECT_QUESTION";
     const login = "LOGIN";
+    const tagFilter = "TAG_FILTER";
     const signupUser = "SIGN_UP";
     const authentication = "AUTHENTICATION";
     const searching = "SEARCHING";
@@ -21,16 +22,25 @@
     };
 
     var reducer = function (state, action) {
+        localStorage.setItem("activeComponent", action.activeComponent)
         switch (action.type) {
             case landingPage:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, username: action.username });
+            case tagFilter:
+                localStorage.setItem("selectedTag", action.selectedTag);
+                return Object.assign({}, state, { activeComponent: action.activeComponent, selectedTag: action.selectedTag });
             case answerPage:
+                localStorage.setItem("selectedPostId", action.selectedPostId);
                 return Object.assign({}, state, { selectedPostId: action.selectedPostId, activeComponent: action.activeComponent });
             case selectQuestion:
+                localStorage.setItem("selectedQuestionId", action.selectedQuestionId);
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, activeComponent: action.activeComponent });
             case login:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, optionalMessage: action.optionalMessage });
             case selectPost:
+                localStorage.setItem("selectedQuestionId", action.selectedQuestionId);
+                localStorage.setItem("selectedPostId", action.selectedPostId);
+                localStorage.setItem("isQuestion", action.isQuestion);
                 return Object.assign({}, state, { selectedQuestionId: action.selectedQuestionId, selectedPostId: action.selectedPostId, isQuestion: action.isQuestion, activeComponent: action.activeComponent });
             case signupUser:
                 return Object.assign({}, state, { activeComponent: action.activeComponent });
@@ -69,7 +79,14 @@
             return {
                 type: selectQuestion,
                 selectedQuestionId: questionId,
-                activeComponent: "question-with-answers"
+                activeComponent: "question-with-answers",
+            };
+        },
+        tagFilter: function (tag) {
+            return {
+                type: tagFilter,
+                selectedTag: tag,
+                activeComponent: "tag-filter"
             };
         },
         login: function (message) {
@@ -120,14 +137,13 @@
                 activeComponent: "landing-page"
             }
         },
-        userSearchHistory: function (token, username) {
+        userSearchHistory: function (username) {
             return {
                 type: userSearchHistory,
-                token: token,
                 username: username,
                 activeComponent: "user-search-history"
             }
-        }
+        },
     };
 
     return {

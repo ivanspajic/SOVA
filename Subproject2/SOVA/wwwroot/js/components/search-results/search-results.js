@@ -6,9 +6,14 @@
         var height = params.height || 250;
         var words = [];
 
+        var prevPage = ko.observable();
+        var nextPage = ko.observable();
+
         store.subscribe(() => {
             ds.search((data) => {
                 results(data.items.$values);
+                nextPage(data.next);
+                prevPage(data.prev);
             }),
             ds.getWord2Words((data) => {
                 words = data.items.$values;
@@ -23,7 +28,26 @@
 
         ds.search((data) => {
             results(data.items.$values);
+            nextPage(data.next);
+            prevPage(data.prev);
         });
+
+        var searchNext = function () {
+            ds.getOtherPages(nextPage, (data) => {
+                results(data.items.$values);
+                nextPage(data.next);
+                prevPage(data.prev);
+            });
+        };
+
+        var searchPrev = function () {
+            ds.getOtherPages(prevPage, (data) => {
+                results(data.items.$values);
+                nextPage(data.next);
+                prevPage(data.prev);
+            });
+        };
+
         ds.getWord2Words((data) => {
             words = data.items.$values;
             $('#cloud').jQCloud(words,
@@ -35,11 +59,15 @@
 
         var selectPost = (data, id, isQuestion) => {
             store.dispatch(store.actions.selectPost(id, isQuestion.isQuestion));
-        }
+        };
 
         return function () {
             return {
                 selectPost,
+                nextPage,
+                prevPage,
+                searchNext,
+                searchPrev,
                 results
             };
         };

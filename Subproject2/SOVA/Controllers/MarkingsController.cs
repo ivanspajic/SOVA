@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Data_Layer_Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SOVA.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SOVA.Controllers
 {
@@ -30,12 +31,12 @@ namespace SOVA.Controllers
             var posts = _markingRepository.GetMarkedSubmissions(userId, pagingAttributes);
             if (posts == null)
             {
-                return NotFound("No bookmarks found");
+                return NotFound();
             }
             return Ok(CreateResult(posts, userId, pagingAttributes));
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPut("{submissionId}/bookmarks")]
         public ActionResult UpdateBookmark(int submissionId)
         {
@@ -44,14 +45,29 @@ namespace SOVA.Controllers
             {
                 if (_markingRepository.RemoveBookmark(submissionId, userId))
                 {
-                    return Ok($"Submission with id {submissionId} is now removed from your bookmarks.");
+                    return Ok(new { message = $"Successfully removed bookmark. Submission with id {submissionId} is now removed from your bookmarks." });
                 }
 
-                return BadRequest("Error while removing bookmark");
+                return BadRequest(new { message = "Failed. Error while removing bookmark." });
             }
 
             _markingRepository.AddBookmark(submissionId, userId);
-            return Ok($"Submission with id {submissionId} is now bookmarked.");
+            return Ok(new { message = $"Successfully bookmarked. Submission with id {submissionId} is now bookmarked." });
+        }
+
+        [Authorize]
+        [HttpGet("{submissionId}/checkIfBookmarked")]
+        public ActionResult checkBookmark(int submissionId)
+        {
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            if (_markingRepository.IsMarked(submissionId, userId))
+            {
+                return Ok(new { message = "Already bookmarked." });
+            }
+            else
+            {
+                return Ok(new { message = "Not bookmarked." });
+            }
         }
 
         ///////////////////

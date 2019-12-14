@@ -7,9 +7,19 @@
             </div>
         </div>
     </div>
-    <div style="margin-top: 15px">
-        <div id="cloud" style="border: 2px solid #86cdef"></div>
+    <div data-bind="if:(prevPage() !== null|| nextPage() !== null)" class="mt-3 d-flex justify-content-center">
+        <button type="button" class="btn btn-outline-primary" data-bind="click:searchPrev, enable:prevPage">Previous</button>
+        <button type="button" class="btn btn-outline-primary ml-2" data-bind="click:searchNext, enable:nextPage">Next</button>
+    </div>
+
+    <div data-bind="if:(results() && results().length === 0 )" style="margin-top: 15px" class="d-flex justify-content-center">
+        <p>No results found.</p>
+    </div>
+
+    <div style="margin-top: 15px" class="d-flex justify-content-center">
+        <div id="cloud"></div>
     </div>
 </div>
+
 
 

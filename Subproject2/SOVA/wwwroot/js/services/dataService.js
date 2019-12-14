@@ -1,15 +1,22 @@
 ﻿define(['knockout', 'store'], function (ko, store) {
 
-    var selectedQuestionId = ko.observable(store.getState().selectedQuestionId);
+    var selectedQuestionIdInLocalStorage = localStorage.getItem("selectedQuestionId");
+    var searchTermInLocalStorage = localStorage.getItem("searchTerm");
+    var selectedTagInLocalStorage = localStorage.getItem("selectedTag");
+    var authenticationTokenInLocalStorage = localStorage.getItem("token");
+
+    var selectedQuestionId = !!selectedQuestionIdInLocalStorage ? ko.observable(selectedQuestionIdInLocalStorage) : ko.observable(store.getState().selectedQuestionId);
     var selectedPostId = ko.observable(store.getState().selectedPostId);
-    var authenticationToken = ko.observable();
-    var searchTerm = ko.observable();
+    var selectedTag = !!selectedTagInLocalStorage ? ko.observable(selectedTagInLocalStorage) : ko.observable(store.getState().selectedTag);
+    var authenticationToken = !!authenticationTokenInLocalStorage ? ko.observable(`Bearer ${localStorage.getItem('token')}`) : ko.observable();
+    var searchTerm = !!searchTermInLocalStorage ? ko.observable(searchTermInLocalStorage) : ko.observable();
 
     store.subscribe(function () {
-        authenticationToken(store.getState().token);
+        authenticationToken(`Bearer ${localStorage.getItem('token')}`);
         selectedQuestionId(store.getState().selectedQuestionId);
         selectedPostId(store.getState().selectedPostId);
         searchTerm(store.getState().searchTerm);
+        selectedTag(store.getState().selectedTag);
     });
 
     var getQuestions = async (callback) => {
@@ -20,6 +27,12 @@
 
     var moreQuestions = async (callback) => {
         var response = await fetch("api/questions?page=1&pageSize=10");
+        var data = await response.json();
+        callback(data);
+    }
+
+    var getQuestionsByTag = async (callback) => {
+        var response = await fetch(`api/questions/tag/${selectedTag()}`);
         var data = await response.json();
         callback(data);
     }
@@ -41,7 +54,7 @@
     }
 
     var getWord2Words = async (callback) => {
-        var response = await fetch(`/api/questions/wordcloud/${searchTerm()}`);
+        var response = await fetch(`api/questions/wordcloud/${searchTerm()}`);
         var data = await response.json();
         callback(data);
     }
@@ -71,14 +84,78 @@
     }
 
     var search = async (callback) => {
-        var response = await fetch(`/api/questions/query/${searchTerm()}`);
+        var response = await fetch(`api/questions/query/${searchTerm()}`);
         var data = await response.json();
         callback(data);
+    }
+
+    var getOtherPages = async (link, callback) => {
+        if (link()) {
+            var newLink = link().replace("https://localhost:5001/", "");
+            var response = await fetch(newLink);
+            var data = await response.json();
+            callback(data);
+        }
+    }
+
+    var saveAnnotation = async (annotationText, questionId, callback) => {
+        var response = await fetch(`api/annotations/${questionId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ AnnotationString: annotationText })
+        });
+        var data = await response.json();
+        callback(data);
+    }
+
+    var getAnnotation = async (callback) => {
+        var response = await fetch(`api/annotations/${selectedQuestionId()}`);
+        var data = await response.json();
+        if (data.status === 404) {
+            data.message = "not found";
+        }
+        callback(data);
+    }
+
+    var toggleBookmarkStatus = async (callback) => {
+        if (!localStorage.getItem('token')) {
+            callback({ message: "Not authorized" });
+        } else {
+            var response = await fetch(`api/${selectedQuestionId()}/bookmarks`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `${authenticationToken()}`
+                    }
+                });
+            var data = await response.json();
+            callback(data);
+        }
+    }
+
+    var checkIfBookmarked = async (callback) => {
+        if (!localStorage.getItem('token')) {
+            callback({ message: "Not authorized" });
+        } else {
+            var response = await fetch(`api/${selectedQuestionId()}/checkIfBookmarked`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `${authenticationToken()}`
+                    }
+                });
+            var data = await response.json();
+            callback(data);
+        }
     }
 
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
+        getQuestionsByTag,
+        getOtherPages,
         getAnswerById,
         getWord2Words,
         selectedQuestionId,
@@ -86,6 +163,10 @@
         authenticationToken,
         createUser,
         search,
-        moreQuestions
+        moreQuestions,
+        saveAnnotation,
+        getAnnotation,
+        toggleBookmarkStatus,
+        checkIfBookmarked
     };
 });

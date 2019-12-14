@@ -1,0 +1,17 @@
+﻿<div class="container px-4">
+    <div data-bind="foreach: questionsByTag">
+        <div class="row border-bottom" style="margin-top: 15px;">
+            <div class="col col-sm-10 pl-3 ml-sm-2">
+                <a class="row" data-bind="text: question.title, click: $parent.selectQuestion.bind($data, questionId)" style="cursor: pointer">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div data-bind="if:(prevPage() !== null|| nextPage() !== null)" class="mt-3 d-flex justify-content-center">
+        <button type="button" class="btn btn-outline-primary" data-bind="click:getPrev, enable:prevPage">Previous</button>
+        <button type="button" class="btn btn-outline-primary ml-2" data-bind="click:getNext, enable:nextPage">Next</button>
+    </div>
+</div>
+
+
+

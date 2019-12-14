@@ -13,11 +13,10 @@
 </head>
 <body>
     <div class="header-border">
-        <a href="https://localhost:5001/">
-            <img src="assets/images/stack-overflow-raw4.png"
-                 class="header-image"
-                 alt="SOVA by raw4" />
-        </a>
+        <img src="assets/images/stack-overflow-raw4.png"
+             class="header-image"
+             alt="SOVA by raw4"
+             data-bind="click: goToLandingPage" />
     </div>
     <nav-bar></nav-bar>
     <div data-bind="component: {name: activeComponent, params: activeParams}"></div>

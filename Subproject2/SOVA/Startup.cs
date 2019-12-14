@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Text;
 using AutoMapper;
 using Data_Layer;
 using Data_Layer.Database_Context;
@@ -8,13 +5,13 @@ using Data_Layer_Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Mvc;
-using Npgsql;
+using System;
+using System.IO;
+using System.Text;
 
 namespace SOVA
 {

@@ -155,7 +155,7 @@ namespace SOVA.Controllers
 
         private object CreateTagsResult(IEnumerable<QuestionsTag> questions, string str, PagingAttributes attr)
         {
-            var totalItems = _questionRepository.NoOfResults(str, null);
+            var totalItems = _questionRepository.NoOfResultsForTag(str, null);
             var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
 
             var prev = attr.Page > 0

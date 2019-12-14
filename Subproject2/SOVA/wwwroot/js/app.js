@@ -1,16 +1,25 @@
 ﻿define(["knockout", "store"], function (ko, store) {
-    var activeComponent = ko.observable("landing-page");
+    var activeComponent = !!localStorage.getItem("activeComponent") ? ko.observable(localStorage.getItem("activeComponent")) : ko.observable("landing-page");
     var activeParams = ko.observable({});
 
-    var changeContent = function (menu, term, questionId) {
+    var changeContent = function (questionId) {
         store.dispatch(store.actions.selectQuestion(questionId));
-        store.dispatch(store.actions.selectMenu(menu));
-        store.dispatch(store.actions.selectResult(term));
     };
 
     store.subscribe(() => {
         activeComponent(store.getState().activeComponent);
     });
 
-    return { activeComponent, activeParams, changeContent};
+    goToLandingPage = () => {
+        localStorage.setItem("activeComponent", "landing-page");
+        store.dispatch(store.actions.landingPage());
+    }
+
+
+    return {
+        activeComponent,
+        activeParams,
+        changeContent,
+        goToLandingPage
+    };
 });

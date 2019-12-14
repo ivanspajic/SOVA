@@ -4,11 +4,10 @@
             <div class="border-bottom border-dark mb-2" style="width: 100%">
                 <div class="mb-2">
                     <h2 class="question-title" data-bind="text: title"></h2>
-
                     <div data-bind="with: answers.$values[0]">
                         <div data-bind="if: question">
                             <div class="row pl-3" data-bind="foreach: question.questionsTags.$values">
-                                <div class="border rounded-lg bg-light tags" data-bind="text: !!tag.tagString ? tag.tagString : 'regex'"></div>
+                                <div style="cursor:pointer" class="border rounded-lg bg-light tags" data-bind="text: !!tag.tagString ? tag.tagString : 'regex', click: $component.selectQuestionsByTag.bind($data, tag)"></div>
                             </div>
                         </div>
                     </div>
@@ -26,6 +25,12 @@
                         <h3 data-bind="text: submission.score"></h3>
                     </div>
                     <span>votes</span>
+                    <div class="d-flex justify-content-center" data-bind="if: $parent.isBookmarked() === false">
+                        <span style="font-size: 30px; cursor: pointer; user-select: none;" data-bind="click: $parent.toggleBookmark">☆</span>
+                    </div>
+                    <div class="d-flex justify-content-center" data-bind="if: $parent.isBookmarked() === true">
+                        <span style="font-size: 24px; cursor: pointer; margin-top: 4px; user-select: none;" data-bind="if: $parent.isBookmarked() === true, click: $parent.toggleBookmark">⭐</span>
+                    </div>
                 </div>
 
                 <div class="col-md-10 col-sm-12">
@@ -43,6 +48,18 @@
                         <a data-bind="text: submission.soMember.displayName"> </a>
                     </div>
                 </div>
+            </div>
+
+            <div data-bind="ifnot:$parent.annotationText">
+                <span data-bind="click: $parent.toggleAnnotationbox">Add an annotation </span>
+                <div data-bind="if:$parent.showAnnotations">
+                    <textarea data-bind=" textInput:$parent.textAreaValue"> </textarea>
+                    <button type="button" class="btn btn-primary" data-bind="click: $parent.saveAnnotation"> save </button>
+                    <button type="button" class="btn btn-outline-danger" data-bind="click: $parent.cancelAnnotation"> cancel </button>
+                </div>
+            </div>
+            <div data-bind="if:$parent.annotationText">
+                <span data-bind="text: $parent.annotationText"></span>
             </div>
 
             <div data-bind="if: comments.$values.length > 0">
@@ -128,5 +145,13 @@
             </div>
             <!-- /ko -->
         </div>
+    </div>
+</div>
+<div>
+    <div data-bind="if: errorMessage">
+        <span id="snackBar" data-bind="text: errorMessage"></span>
+    </div>
+    <div data-bind="if: successMessage">
+        <span id="snackBar" data-bind="text: successMessage"></span>
     </div>
 </div>
