@@ -151,6 +151,20 @@
         }
     }
 
+    var getUserSearches = async (callback) => {
+        var response = await fetch("api/history", {
+            method: "GET",
+            headers: {
+                "Authorization": authenticationToken()
+            }
+        });
+        var data = [];
+        if (response.status !== 204) {
+            data = await response.json();
+        }
+        callback(data);
+    }
+
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
@@ -167,6 +181,7 @@
         saveAnnotation,
         getAnnotation,
         toggleBookmarkStatus,
-        checkIfBookmarked
+        checkIfBookmarked,
+        getUserSearches
     };
 });
