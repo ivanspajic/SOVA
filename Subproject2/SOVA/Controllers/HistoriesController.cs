@@ -30,7 +30,7 @@ namespace SOVA.Controllers
             var history = _userHistoryRepository.GetUserHistoryByUserId(userId, pagingAttributes);
             if (history == null)
             {
-                return NotFound();
+                return NoContent();
             }
             return Ok(CreateResult(history, userId, pagingAttributes));
         }
