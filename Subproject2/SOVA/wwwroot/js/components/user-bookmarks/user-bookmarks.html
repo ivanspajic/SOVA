@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div data-bind="if:(prevPage() !== null|| nextPage() !== null)" class="my-3 d-flex justify-content-center">
+    <div data-bind="if:(prevPage() !== null || nextPage() !== null)" class="my-3 d-flex justify-content-center">
         <button type="button" class="btn btn-outline-primary" data-bind="click:getPrev, enable:prevPage">Previous</button>
         <button type="button" class="btn btn-outline-primary ml-2" data-bind="click:getNext, enable:nextPage">Next</button>
     </div>
