@@ -36,7 +36,7 @@
                 textAreaValue(annotationText());
             }
             if (!isUserLoggedIn()) {
-                errorMessage("⛔ Please log to add your annotation.");
+                errorMessage("⛔ Please log in to add your annotation.");
                 setTimeout(function () {
                     errorMessage("");
                 }, 3500);
