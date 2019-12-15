@@ -86,7 +86,6 @@ require(["knockout"], function (ko) {
     });
 });
 
-require(["knockout", "app", "store", "history"], function (ko, app, store, history) {
-    store.subscribe(() => console.log(store.getState()));
+require(["knockout", "app", "store"], function (ko, app, store) {
     ko.applyBindings(app);
 });

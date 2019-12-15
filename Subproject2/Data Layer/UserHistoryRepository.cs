@@ -16,19 +16,14 @@ namespace Data_Layer
             _databaseContext = databaseContext;
         }
 
-        public IEnumerable<UserHistory> GetUserHistoryByUserId(int userId, PagingAttributes pagingAttributes)
+        public IEnumerable<UserHistory> GetUserHistoryByUserId(int userId)
         {
             if (userId <= 0) // User Id is auto generated and is always positive.
             {
                 return null;
             }
-
-            if (pagingAttributes.Page < 0 || pagingAttributes.PageSize < 0)
-            {
-                return null;
-            }
-            var userHistroy = _databaseContext.UserHistory.Include(u => u.History).Where(u => u.UserId == userId).Skip(pagingAttributes.Page * pagingAttributes.PageSize)
-                .Take(pagingAttributes.PageSize)
+            var userHistroy = _databaseContext.UserHistory.Include(u => u.History)
+                .Where(u => u.UserId == userId)
                 .ToList();
             if (userHistroy.Count == 0)
             {

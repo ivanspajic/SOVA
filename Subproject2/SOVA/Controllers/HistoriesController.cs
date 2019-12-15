@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using Data_Layer_Abstractions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SOVA.Models;
-using System;
 using System.Collections.Generic;
 
 namespace SOVA.Controllers
@@ -22,17 +20,17 @@ namespace SOVA.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet(Name = nameof(GetUserHistoryByUserId))]
-        public IActionResult GetUserHistoryByUserId([FromQuery] PagingAttributes pagingAttributes)
+        public IActionResult GetUserHistoryByUserId()
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 39;
-            var history = _userHistoryRepository.GetUserHistoryByUserId(userId, pagingAttributes);
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            var history = _userHistoryRepository.GetUserHistoryByUserId(userId);
             if (history == null)
             {
                 return NoContent();
             }
-            return Ok(CreateResult(history, userId, pagingAttributes));
+            return Ok(CreateResult(history, userId));
         }
         ///////////////////
         //
@@ -49,24 +47,12 @@ namespace SOVA.Controllers
             return dto;
         }
 
-        private object CreateResult(IEnumerable<UserHistory> userHistories, int userId, PagingAttributes attr)
+        private object CreateResult(IEnumerable<UserHistory> userHistories, int userId)
         {
             var totalItems = _userHistoryRepository.NoOfUserHistory(userId);
-            var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
-
-            var prev = attr.Page > 0
-                ? CreatePagingLink(attr.Page - 1, attr.PageSize)
-                : null;
-            var next = attr.Page < numberOfPages - 1
-                    ? CreatePagingLink(attr.Page + 1, attr.PageSize)
-                    : null;
-
             return new
             {
                 totalItems,
-                numberOfPages,
-                prev,
-                next,
                 items = userHistories
             };
         }

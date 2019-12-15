@@ -89,7 +89,6 @@
             }
         },
         selectQuestion: function (questionId) {
-            console.log(questionId);
             return {
                 type: selectQuestion,
                 selectedQuestionId: questionId,

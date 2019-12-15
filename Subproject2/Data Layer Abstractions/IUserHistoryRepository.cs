@@ -5,7 +5,7 @@ namespace Data_Layer_Abstractions
 {
     public interface IUserHistoryRepository
     {
-        IEnumerable<UserHistory> GetUserHistoryByUserId(int userId, PagingAttributes pagingAttributes);
+        IEnumerable<UserHistory> GetUserHistoryByUserId(int userId);
         int NoOfUserHistory(int userId);
     }
 }

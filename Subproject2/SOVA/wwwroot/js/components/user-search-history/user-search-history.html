@@ -2,17 +2,27 @@
     <div class="border-bottom ">
         <h3 class="pt-3 general-header" style="display: flex; align-items: center;">
             <img src="../../../assets/images/search.png" width="30" class="mr-2 general-logo" />
-            Your search history posts.
+            Your search history.
         </h3>
     </div>
-    <div data-bind="foreach: userSearches">
-        <div class="row border-bottom pl-2 pb-2" style="margin-top: 15px;">
-            <div class="col col-sm-10">
-                <div data-bind="text: $data"></div>  
+    <div class="ml-md-4 mt-4" data-bind="if:userSearchesReversed()">
+        <div class="row border-bottom pb-2" style="margin-top: 15px;">
+            <div class="col col-sm-10" style="font-size: 18px">
+                <strong class="search-topics">Search Term</strong>
+                <strong class="float-right mr-5 pr-5 search-topics">Date</strong>
             </div>
         </div>
     </div>
-    <div data-bind="if: userSearches().length === 0">
+    <div class="ml-md-4" data-bind="foreach: userSearchesReversed">
+        <div class="row border-bottom pl-md-2 pb-2" style="margin-top: 15px;">
+            <div class="col col-sm-10">
+                <span class="search-list" data-bind="text: history.searchTerm"></span>
+                <span class="float-right search-list" data-bind="text: moment(history.searchDate).format('LLLL')"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5" data-bind="if: !userSearches() || userSearches().length === 0">
         You don't have any search history yet.
     </div>
 </div>
