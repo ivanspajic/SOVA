@@ -101,9 +101,23 @@
     var getOtherPages = async (link, callback) => {
         if (link()) {
             var newLink = link().replace("https://localhost:5001/", "");
-            var response = await fetch(newLink);
-            var data = await response.json();
-            callback(data);
+
+            if (!localStorage.getItem('token')) {
+                var response = await fetch(newLink);
+                var data = await response.json();
+                callback(data);
+            }
+            else {
+                var response = await fetch(newLink, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `${authenticationToken()}`
+                    }
+                });
+                var data = await response.json();
+                callback(data);
+            }
         }
     }
 
