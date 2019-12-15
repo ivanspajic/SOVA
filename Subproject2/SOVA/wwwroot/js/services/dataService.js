@@ -261,6 +261,20 @@
         callback(data);
     }
 
+    var getUserBookmarks = async (callback) => {
+        var response = await fetch("api/bookmarks", {
+            method: "GET",
+            headers: {
+                "Authorization": authenticationToken()
+            }
+        });
+        var data = [];
+        if (response.status !== 204) {
+            data = await response.json();
+        }
+        callback(data);
+    }
+
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
@@ -280,6 +294,7 @@
         toggleBookmarkStatus,
         checkIfBookmarked,
         getUserSearches,
+        getUserBookmarks,
         getAllAnnotationsForUser
     };
 });
