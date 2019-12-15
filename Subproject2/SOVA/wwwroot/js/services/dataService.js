@@ -78,21 +78,23 @@
     }
 
     var search = async (callback) => {
-        if (!localStorage.getItem('token')) {
-            var response = await fetch(`api/questions/query/no-user/${searchTerm()}`);
-            var data = await response.json();
-            callback(data);
-        }
-        else {
-            var response = await fetch(`api/questions/query/${searchTerm()}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `${authenticationToken()}`
-                }
-            });
-            var data = await response.json();
-            callback(data);
+        if (searchTerm()) {
+            if (!localStorage.getItem('token')) {
+                var response = await fetch(`api/questions/query/no-user/${searchTerm()}`);
+                var data = await response.json();
+                callback(data);
+            }
+            else {
+                var response = await fetch(`api/questions/query/${searchTerm()}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `${authenticationToken()}`
+                    }
+                });
+                var data = await response.json();
+                callback(data);
+            }
         }
     }
 
