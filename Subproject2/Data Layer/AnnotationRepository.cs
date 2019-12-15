@@ -1,8 +1,10 @@
-﻿using System;
-using Data_Layer.Database_Context;
+﻿using Data_Layer.Database_Context;
 using Data_Layer_Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Data_Layer
 {
@@ -71,6 +73,20 @@ namespace Data_Layer
                 return true;
             }
             return false;
+        }
+
+        public List<Annotation> GetUserAnnotations(int userId, PagingAttributes pagingAttributes)
+        {
+            return _databaseContext.Annotations.Include(a => a.Question)
+                .Where(a => a.UserId == userId)
+                .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
+                .Take(pagingAttributes.PageSize)
+                .ToList();
+        }
+        public int NoOfAnnotations(int userId)
+        {
+            return _databaseContext.Annotations
+                .Count(m => m.UserId == userId);
         }
     }
 }
