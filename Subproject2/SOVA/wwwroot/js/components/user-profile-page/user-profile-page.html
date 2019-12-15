@@ -1,3 +1,20 @@
-﻿<button data-bind="click: userSearchHistory">View your search history</button>
-<button data-bind="click: userBookmarks">View your bookmarked posts</button>
-<button data-bind="click: userAnnotations">View your annotations on posts</button>
+﻿<div class="text-center mt-4">
+    <h1 class="display-4">
+        Hello, <span data-bind="text: currentUser"></span>.
+    </h1>
+    <p class="lead">This is your personal space. You can view your search history, annotation and bookmarks.</p>
+</div>
+<div class="container d-flex flex-column my-3">
+    <div style="display: flex; align-items: center;">
+        <img src="../../../assets/images/search.png" width="25" class="mr-2 general-logo" />
+        <blockquote class="blockquote mt-2" data-bind="click: userSearchHistory">View your search history</blockquote>
+    </div>
+    <div style="display: flex; align-items: center;">
+        <img src="../../../assets/images/bookmark-icon.png" width="25" class="mr-2 general-logo" />
+        <blockquote class="blockquote mt-2" data-bind="click: userBookmarks">View your bookmarked posts</blockquote>
+    </div>
+    <div style="display: flex; align-items: center;">
+        <img src="../../../assets/images/annotations-icon.png" width="25" class="mr-2 general-logo" />
+        <blockquote class="blockquote mt-2" data-bind="click: userAnnotations">View your annotations on posts</blockquote>
+    </div>
+</div>
