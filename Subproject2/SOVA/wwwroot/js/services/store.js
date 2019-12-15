@@ -9,6 +9,7 @@
     const userSearchHistory = "USER_SEARCH_HISTORY";
     const selectPost = "SELECT_POST";
     const answerPage = "ANSWER_PAGE";
+    const userProfilePage = "USER_PROFILE_PAGE";
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
@@ -51,6 +52,9 @@
             case userSearchHistory:
                 localStorage.setItem("username", action.username);
                 return Object.assign({}, state, { username: action.username, activeComponent: action.activeComponent });
+            case userProfilePage:
+                //localStorage.setItem("username", action.username);
+                return Object.assign({}, state, { activeComponent: action.activeComponent });
             default:
                 return state;
         }
@@ -145,6 +149,12 @@
                 activeComponent: "user-search-history"
             }
         },
+        userProfilePage: function () {
+            return {
+                type: userProfilePage,
+                activeComponent: "user-profile-page"
+            }
+        }
     };
 
     return {

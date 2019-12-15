@@ -10,9 +10,14 @@
             var userSearchHistoryAction = store.actions.userSearchHistory(currentUser());
             store.dispatch(userSearchHistoryAction);
         }
+
+        var userProfilePage = function () {
+            store.dispatch(store.actions.userProfilePage);
+        }
         return {
             currentUser,
-            userSearchHistory
+            userSearchHistory,
+            userProfilePage
         };
     };
 });
