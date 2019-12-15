@@ -6,6 +6,8 @@
 
         ds.getAllAnnotationsForUser((data) => {
             allAnnotations(data.items.$values);
+            nextPage(data.next);
+            prevPage(data.prev);
         });
 
         var selectQuestion = (data, question) => {
@@ -14,7 +16,7 @@
 
         var getNext = function () {
             ds.getOtherPages(nextPage, (data) => {
-                userBookmarks(data.items.$values);
+                allAnnotations(data.items.$values);
                 nextPage(data.next);
                 prevPage(data.prev);
             });
@@ -22,7 +24,7 @@
 
         var getPrev = function () {
             ds.getOtherPages(prevPage, (data) => {
-                userBookmarks(data.items.$values);
+                allAnnotations(data.items.$values);
                 nextPage(data.next);
                 prevPage(data.prev);
             });
