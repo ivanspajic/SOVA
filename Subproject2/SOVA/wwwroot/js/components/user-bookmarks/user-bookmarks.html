@@ -1,17 +1,27 @@
-﻿<h1>Bookmarked Posts</h1>
-<div class="container px-md-4">
-    <div class="row border-bottom" style="margin-top: 15px;">
-        <div class="pl-4" data-bind="foreach: userBookmarks">            
-            <div class="row border-bottom pl-2 pb-2" style="margin-top: 15px;">
-                <div class="col col-sm-10">
-                    <a class="row questions" data-bind="text: title, click: $parent.selectQuestion.bind($data, submission)" style="cursor: pointer">
-                    </a>
-                </div>
-            </div>            
+﻿<div class="container px-md-4">
+    <div class="border-bottom ">
+        <h3 class="pt-3 general-header" style="display: flex; align-items: center;">
+            <img src="../../../assets/images/bookmark-icon.png" width="30" class="mr-2 general-logo" />
+            Your bookmarked posts.
+        </h3>
+        <p class="general-sub-header">You can remove the bookmarks on the post's page.</p>
+    </div>
+
+    <div class="pl-4" data-bind="foreach: userBookmarks">
+        <div class="row border-bottom pl-2 pb-3" style="margin-top: 15px;">
+            <div class="col col-sm-10">
+                <a class="row questions pb-2" data-bind="text: title, click: $parent.selectQuestion.bind($data, submission)" style="cursor: pointer">
+                </a>
+            </div>
         </div>
     </div>
-    <div data-bind="if:(prevPage() !== null|| nextPage() !== null)" class="my-4 d-flex justify-content-center">
+
+    <div data-bind="if:(prevPage() !== null|| nextPage() !== null)" class="mt-3 d-flex justify-content-center">
         <button type="button" class="btn btn-outline-primary" data-bind="click:getPrev, enable:prevPage">Previous</button>
         <button type="button" class="btn btn-outline-primary ml-2" data-bind="click:getNext, enable:nextPage">Next</button>
+    </div>
+
+    <div data-bind="if: userBookmarks() && userBookmarks().length === 0">
+        You don't have any bookmarked posts yet.
     </div>
 </div>
