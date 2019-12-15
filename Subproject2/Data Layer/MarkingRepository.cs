@@ -65,11 +65,14 @@ namespace Data_Layer
                 .Count(m => m.UserId == userId);
         }
 
-        public IEnumerable<Submission> GetMarkedSubmissions(int userId, PagingAttributes pagingAttributes)
+        public IEnumerable<Question> GetMarkedSubmissions(int userId, PagingAttributes pagingAttributes)
         {
             return _databaseContext.Markings
+                .Include(m => m.Question)
+                .Include(m => m.Question.Submission)
+                .Include(m => m.Question.Submission.SoMember)
                 .Where(m => m.UserId == userId)
-                .Select(m => m.Submission)
+                .Select(m => m.Question)
                 .Skip(pagingAttributes.Page * pagingAttributes.PageSize)
                 .Take(pagingAttributes.PageSize)
                 .ToList();
