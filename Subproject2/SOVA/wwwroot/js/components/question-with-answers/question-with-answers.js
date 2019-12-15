@@ -9,15 +9,41 @@
         var isBookmarked = ko.observable(false);
         var errorMessage = ko.observable();
         var successMessage = ko.observable();
-        var deletionMessage = ko.observable();
-        var loginPrompt = ko.observable();
+        var isUserLoggedIn = ko.observable(!!localStorage.getItem("username"));
 
         store.subscribe(function () {
             selectedQuestionId(store.getState().selectedQuestionId);
         });
 
+        var showSnackBar = () => {
+            // Get the snackBar DIV
+            var snackBar = document.getElementById("snackBar");
+
+            if (!!errorMessage()) {
+                // Add the "showError" class to DIV if error
+                snackBar.className = "showError";
+            };
+
+            if (!!successMessage()) {
+                // Add the "showSuccess" class to DIV if success
+                snackBar.className = "showSuccess";
+            };
+
+        }
+
         var toggleAnnotationField = () => {
-            showAnnotations(!showAnnotations());
+            if (!textAreaValue() || annotationText()) {
+                textAreaValue(annotationText());
+            }
+            if (!isUserLoggedIn()) {
+                errorMessage("⛔ Please log to add your annotation.");
+                setTimeout(function () {
+                    errorMessage("");
+                }, 3500);
+            } else {
+                showAnnotations(!showAnnotations());
+            }
+            showSnackBar();
         };
 
         var selectQuestionsByTag = (data, tag) => {
@@ -36,7 +62,7 @@
             }
         });
 
-        
+
         ds.getAnnotation((data) => {
             if (data.message && data.message.toLowerCase().includes("not found")) {
                 annotationText(null);
@@ -44,7 +70,7 @@
                 annotationText(data.annotationString);
             }
         });
-        
+
 
         var cancelAnnotation = () => {
             showAnnotations(false);
@@ -52,56 +78,74 @@
 
         var saveAnnotation = () => {
             annotationText(textAreaValue());
-            ds.saveAnnotation(annotationText(),
-                (data) => {
-                    if (data.message && data.message.toLowerCase().includes("not authorized")) {
-                        loginPrompt("Please log into save this annotation.");
-                    }
-                    else {
-                        loginPrompt(null);
-                    }
-                    response(data);
-                });
+            if (textAreaValue()) {
+                ds.saveAnnotation(annotationText(),
+                    (data) => {
+                        if (data.message && data.message.toLowerCase().includes("not authorized")) {
+                            errorMessage("⛔ Please log to add your annotation.");
+                            setTimeout(function () {
+                                errorMessage("");
+                            }, 3500);
+                        }
+                        response(data);
+                    });
+                successMessage("📝 Annotation saved successfully.");
+                setTimeout(function () {
+                    successMessage("");
+                }, 3500);
+            } else {
+                toggleAnnotationField();
+            }
             showAnnotations(false);
+            showSnackBar();
         }
 
         var updateAnnotation = () => {
+            if (!textAreaValue()) {
+                textAreaValue(annotationText());
+            }
             annotationText(textAreaValue());
             if (textAreaValue()) {
                 ds.updateAnnotation(annotationText(),
                     (data) => {
                         response(data);
                     });
-            }
-            else {
+                successMessage("👍 Annotation updated successfully.");
+                setTimeout(function () {
+                    successMessage("");
+                }, 3500);
+            } else {
                 ds.deleteAnnotation((data) => {
                     response(data);
-                    deletionMessage(data);
                 });
+                successMessage("🙈 Annotation deleted successfully.");
+                setTimeout(function () {
+                    successMessage("");
+                }, 3500);
             }
             showAnnotations(false);
+            showSnackBar();
         }
 
-        var showSnackBar = () => {
-            // Get the snackBar DIV
-            var snackBar = document.getElementById("snackBar");
-
-            if (!!errorMessage()) {
-                // Add the "showError" class to DIV if error
-                snackBar.className = "showError";
-            };
-
-            if (!!successMessage()) {
-                // Add the "showSuccess" class to DIV if success
-                snackBar.className = "showSuccess";
-            };
-
+        var deleteAnnotation = () => {
+            annotationText(textAreaValue());
+            ds.deleteAnnotation((data) => {
+                response(data);
+            });
+            successMessage("🏷 Annotation deleted successfully.");
+            setTimeout(function () {
+                successMessage("");
+            }, 3500);
+            textAreaValue("");
+            annotationText("");
+            showAnnotations(false);
+            showSnackBar();
         }
 
         var toggleBookmark = () => {
             ds.toggleBookmarkStatus((data) => {
                 if (data.message.toLowerCase().includes("not authorized")) {
-                    errorMessage("🙊 Please log in or sign up to bookmark this post.");
+                    errorMessage("⛔ Please log in to bookmark this post.");
                     setTimeout(function () {
                         errorMessage("");
                     }, 3500);
@@ -113,7 +157,7 @@
                             successMessage("");
                         }, 3500);
                     } else {
-                        successMessage("🙈 Bookmark removed.");
+                        successMessage("📑 Bookmark removed.");
                         setTimeout(function () {
                             successMessage("");
                         }, 3500);
@@ -139,8 +183,8 @@
             toggleBookmark,
             errorMessage,
             successMessage,
-            deletionMessage,
-            loginPrompt
+            isUserLoggedIn,
+            deleteAnnotation
         };
     };
 });
