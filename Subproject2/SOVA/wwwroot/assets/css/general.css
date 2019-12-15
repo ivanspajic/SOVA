@@ -103,6 +103,10 @@ However, delay the fade out process for 2.5 seconds */
     animation: fadein 0.5s, fadeout 0.5s 3.2s;
 }
 
+pre {
+    background-color: lightgray;
+}
+
 /* Animations to fade the snackbar in and out */
 @-webkit-keyframes fadein {
     from {
