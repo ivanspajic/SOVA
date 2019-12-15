@@ -20,7 +20,8 @@
         return {
             userSearchHistory,
             userAnnotations,
-            userBookmarks
+            userBookmarks,
+            currentUser
         }
     }
 });

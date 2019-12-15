@@ -10,11 +10,16 @@
     <div class="pl-4" data-bind="foreach: allAnnotations">
         <div class="row border-bottom pl-2 pb-3" style="margin-top: 15px;">
             <div class="col col-sm-10">
-                <a class="row questions pb-2" data-bind="text: question.title, click: $parent.selectPost.bind($data, question.question)" style="cursor: pointer">
+                <a class="row questions pb-2" data-bind="text: question.title, click: $parent.selectQuestion.bind($data, question.question)" style="cursor: pointer">
                 </a>
                 Annotation: <span class="p-1 mb-2 bg-warning text-dark" data-bind="text: annotationString"></span>
             </div>
         </div>
+    </div>
+
+    <div data-bind="if:(prevPage() !== null|| nextPage() !== null)" class="mt-3 d-flex justify-content-center">
+        <button type="button" class="btn btn-outline-primary" data-bind="click:getPrev, enable:prevPage">Previous</button>
+        <button type="button" class="btn btn-outline-primary ml-2" data-bind="click:getNext, enable:nextPage">Next</button>
     </div>
 
     <div data-bind="if: allAnnotations() && allAnnotations().length === 0">
