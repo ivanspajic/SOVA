@@ -166,14 +166,14 @@
         },
         userAnnotations: function (username) {
             return {
-                type: userProfilePage,
+                type: userAnnotations,
                 username: username,
                 activeComponent: "user-annotations"
             }
         },
         userBookmarks: function (username) {
             return {
-                type: userProfilePage,
+                type: userBookmarks,
                 username: username,
                 activeComponent: "user-bookmarks"
             }

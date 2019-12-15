@@ -98,7 +98,7 @@ namespace Data_Layer.Database_Context
             modelBuilder.Entity<Comment>().HasKey(c => c.Id);
             modelBuilder.Entity<User>().HasKey(u => u.Id);
 
-            modelBuilder.Entity<Annotation>().HasOne(a => a.Submission).WithMany().HasForeignKey(a => a.SubmissionId);
+            modelBuilder.Entity<Annotation>().HasOne(a => a.Question).WithMany().HasForeignKey(a => a.SubmissionId);
             modelBuilder.Entity<Marking>().HasOne(m => m.Submission).WithMany().HasForeignKey(m => m.SubmissionId);
             modelBuilder.Entity<Question>().HasOne(q => q.Submission).WithMany().HasForeignKey(q => q.SubmissionId);
             modelBuilder.Entity<Answer>().HasOne(a => a.Question).WithMany(a => a.Answers).HasForeignKey(a => a.ParentId);

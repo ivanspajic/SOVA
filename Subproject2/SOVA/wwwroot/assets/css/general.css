@@ -62,9 +62,13 @@ a:hover {
     font-size: 13px;
 }
 
+.general-sub-header {
+    font-size: 1.2rem;
+    margin-left: 40px;
+    color: #6c757d !important;
+}
 /* ***********SNACKBAR CLASSES START*********** */
 /* Ref: https://codepen.io/pratikjain/pen/xWEERw */
-
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackBar {
     visibility: hidden; /* Hidden by default. Visible on click */
@@ -186,12 +190,17 @@ However, delay the fade out process for 2.5 seconds */
         font-size: 1.0rem
     }
 
-    .search-filter-header {
+    .general-header {
         font-size: 20px;
     }
 
     .general-logo {
         width: 30px;
+    }
+
+    .general-sub-header {
+        font-size: 1rem;
+        margin-left: 40px;
     }
 }
 

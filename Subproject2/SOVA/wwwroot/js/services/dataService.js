@@ -194,6 +194,27 @@
         }
     }
 
+    var getAllAnnotationsForUser = async (callback) => {
+        if (!localStorage.getItem('token')) {
+            callback({ message: "Not authorized" });
+        }
+        else {
+            var response = await fetch(`api/annotations`, {
+                headers: {
+                    "Authorization": `${authenticationToken()}`
+                }
+            });
+            var data = await response;
+            if (data.status === 204) {
+                data.message = "not found";
+            }
+            else {
+                data = await response.json();
+            }
+            callback(data);
+        }
+    }
+
     var toggleBookmarkStatus = async (callback) => {
         if (!localStorage.getItem('token')) {
             callback({ message: "Not authorized" });
@@ -258,6 +279,7 @@
         getAnnotation,
         toggleBookmarkStatus,
         checkIfBookmarked,
-        getUserSearches
+        getUserSearches,
+        getAllAnnotationsForUser
     };
 });
