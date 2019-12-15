@@ -51,33 +51,35 @@
             </div>
 
             <div data-bind="ifnot:$parent.annotationText()">
-                <button type="button" class="btn btn-outline-dark" data-bind="click: $parent.toggleAnnotationField">
-                    Add an annotation
-                </button>
-                <div class="mt-2" data-bind="if:$parent.showAnnotations()">
-                    <textarea data-bind=" textInput:$parent.textAreaValue"> </textarea>
-                    <button type="button" class="btn btn-outline-primary" data-bind="click: $parent.saveAnnotation"> save </button>
-                    <button type="button" class="btn btn-outline-danger" data-bind="click: $parent.cancelAnnotation"> cancel </button>
+                <div data-bind="if: !$parent.showAnnotations()">
+                    <button type="button" class="btn btn-primary btn-sm" data-bind="click: $parent.toggleAnnotationField">
+                        Add an annotation
+                    </button>
                 </div>
-                <div data-bind="if:!$parent.loginPrompt() && $parent.deletionMessage()">
-                    <span style="color: crimson" data-bind="text: $parent.deletionMessage()"></span>
+                <div class="mt-2" data-bind="if:$parent.showAnnotations()" style="width: 50%">
+                    <textarea data-bind=" textInput:$parent.textAreaValue" style="width: 100%"> </textarea>
+                    <div style="text-align: right;">
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-bind="click: $component.saveAnnotation"> save </button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-bind="click: $component.cancelAnnotation"> cancel </button>
+                    </div>
                 </div>
             </div>
 
             <div data-bind="if:$parent.annotationText()">
                 <span data-bind="text: $parent.annotationText()"></span>
-                <button type="button" class="btn btn-outline-dark ml-2" data-bind="click: $parent.toggleAnnotationField">
-                    Edit annotation
-                </button>
-                <div class="mt-2" data-bind="if:$parent.showAnnotations()">
-                    <textarea data-bind=" textInput:$parent.textAreaValue"> </textarea>
-                    <button type="button" class="btn btn-outline-primary" data-bind="click: $parent.updateAnnotation"> save </button>
-                    <button type="button" class="btn btn-outline-danger" data-bind="click: $parent.cancelAnnotation"> cancel </button>
+                <span class="ml-2" data-bind="click: $parent.toggleAnnotationField" style="color:#007BFF; font-size:14px; cursor: pointer; user-select: none;">
+                    edit
+                </span>
+                <span class="ml-2" data-bind="click: $parent.deleteAnnotation" style="color:red; font-size:14px; cursor: pointer; user-select: none;">
+                    delete
+                </span>
+                <div class="mt-2" data-bind="if:$parent.showAnnotations()" style="width: 50%">
+                    <textarea data-bind="textInput: $component.textAreaValue" style="width: 100%"> </textarea>
+                    <div style="text-align: right;">
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-bind="click: $component.updateAnnotation"> save </button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-bind="click: $component.cancelAnnotation"> cancel </button>
+                    </div>
                 </div>
-            </div>
-
-            <div data-bind="if:$parent.loginPrompt()">
-                <span style="color: crimson">Login to save your annotation.</span>
             </div>
 
             <div data-bind="if: comments.$values.length > 0">
