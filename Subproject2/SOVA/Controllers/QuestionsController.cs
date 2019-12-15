@@ -59,7 +59,7 @@ namespace SOVA.Controllers
         {
             var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
             var searchResults = _questionRepository.SearchQuestions(queryString, userId, pagingAttributes);
-            return Ok(CreateSearchResult(searchResults, queryString, userId, pagingAttributes));
+            return Ok(CreateSearchResult(searchResults, queryString, userId, nameof(SearchQuestion), pagingAttributes));
         }
 
         [HttpGet("query/no-user/{queryString}", Name = nameof(SearchQuestionNoUser))]
@@ -67,7 +67,7 @@ namespace SOVA.Controllers
         {
             var userId = 1;
             var searchResults = _questionRepository.SearchQuestions(queryString, userId, pagingAttributes);
-            return Ok(CreateSearchResult(searchResults, queryString, userId, pagingAttributes));
+            return Ok(CreateSearchResult(searchResults, queryString, userId, nameof(SearchQuestionNoUser), pagingAttributes));
         }
 
         [HttpGet("wordcloud/{queryString}", Name = nameof(GetCloudElements))]
@@ -133,16 +133,16 @@ namespace SOVA.Controllers
             };
         }
 
-        private object CreateSearchResult(IEnumerable<SearchResult> questions, string str, int userId, PagingAttributes attr)
+        private object CreateSearchResult(IEnumerable<SearchResult> questions, string str, int userId, string name, PagingAttributes attr)
         {
             var totalItems = _questionRepository.NoOfResults(str, userId);
             var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
 
             var prev = attr.Page > 0
-                ? CreatePagingLink(attr.Page - 1, attr.PageSize, nameof(SearchQuestion))
+                ? CreatePagingLink(attr.Page - 1, attr.PageSize, name)
                 : null;
             var next = attr.Page < numberOfPages - 1
-                ? CreatePagingLink(attr.Page + 1, attr.PageSize, nameof(SearchQuestion))
+                ? CreatePagingLink(attr.Page + 1, attr.PageSize, name)
                 : null;
 
             return new
