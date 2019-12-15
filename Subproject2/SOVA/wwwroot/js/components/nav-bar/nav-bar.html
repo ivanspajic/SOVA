@@ -20,8 +20,8 @@
         </ul>
         <ul class="navbar-nav d-none d-md-block d-lg-block d-xl-block">
             <li class="nav-item  mr-auto">
-                <a class="nav-link" data-bind="if: activeComponent && !(activeComponent() === 'landing-page'), click: goToHome">
-                    <img src="../../../assets/images/home.png" width="30" />
+                <a class="nav-link d-flex align-items-center" data-bind="if: activeComponent && !(activeComponent() === 'landing-page'), click: goToHome" style="cursor: pointer">
+                    <img src="../../../assets/images/home.png" width="30" /> <span class="ml-2" style="color: black; user-select: none;">Home</span>
                     <span class="sr-only">(current)</span>
                 </a>
             </li>

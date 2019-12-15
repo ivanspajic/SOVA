@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data_Layer_Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SOVA.Models;
@@ -20,11 +21,11 @@ namespace SOVA.Controllers
             _mapper = mapper;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet(Name = nameof(GetUserHistoryByUserId))]
         public IActionResult GetUserHistoryByUserId()
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            int.TryParse(HttpContext.User.Identity.Name, out var userId);
             var history = _userHistoryRepository.GetUserHistoryByUserId(userId);
             if (history == null)
             {
@@ -56,11 +57,5 @@ namespace SOVA.Controllers
                 items = userHistories
             };
         }
-
-        private string CreatePagingLink(int page, int pageSize)
-        {
-            return Url.Link(nameof(GetUserHistoryByUserId), new { page, pageSize });
-        }
-
     }
 }

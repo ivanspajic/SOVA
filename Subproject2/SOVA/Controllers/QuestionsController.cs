@@ -57,7 +57,7 @@ namespace SOVA.Controllers
         [HttpGet("query/{queryString}", Name = nameof(SearchQuestion))]
         public ActionResult SearchQuestion([FromQuery] PagingAttributes pagingAttributes, string queryString)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            int.TryParse(HttpContext.User.Identity.Name, out var userId);
             var searchResults = _questionRepository.SearchQuestions(queryString, userId, pagingAttributes);
             return Ok(CreateSearchResult(searchResults, queryString, userId, nameof(SearchQuestion), pagingAttributes));
         }

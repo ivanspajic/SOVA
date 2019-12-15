@@ -44,7 +44,7 @@ namespace SOVA.Controllers
         [HttpGet("currentUser", Name = nameof(GetCurrentUser))]
         public ActionResult GetCurrentUser()
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            int.TryParse(HttpContext.User.Identity.Name, out var userId);
             var userById = _userRepository.GetUserById(userId);
             return userById == null ? Ok("Not authorized.") : Ok(CreateUserDto(userById));
         }
