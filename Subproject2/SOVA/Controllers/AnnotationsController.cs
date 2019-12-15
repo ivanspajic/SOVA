@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SOVA.Models;
+using System;
+using System.Collections.Generic;
 
 namespace SOVA.Controllers
 {
@@ -31,6 +33,19 @@ namespace SOVA.Controllers
                 return NoContent();
             }
             return Ok(CreateAnnotationDto(ant));
+        }
+
+        //[Authorize]
+        [HttpGet(Name = nameof(GetAllAnnotationsForUser))]
+        public ActionResult GetAllAnnotationsForUser([FromQuery] PagingAttributes pagingAttributes)
+        {
+            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            var ant = _annotationRepository.GetUserAnnotations(userId, pagingAttributes);
+            if (ant == null)
+            {
+                return NoContent();
+            }
+            return Ok(CreateResult(ant, userId, pagingAttributes));
         }
 
         [Authorize]
@@ -89,6 +104,32 @@ namespace SOVA.Controllers
                     nameof(GetAnnotation),
                     new { submissionId = annotation.SubmissionId, userId = annotation.UserId });
             return dto;
+        }
+
+        private object CreateResult(List<Annotation> ant, int userId, PagingAttributes attr)
+        {
+            var totalItems = _annotationRepository.NoOfAnnotations(userId);
+            var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
+
+            var prev = attr.Page > 0
+                ? CreatePagingLink(attr.Page - 1, attr.PageSize, nameof(GetAllAnnotationsForUser))
+                : null;
+            var next = attr.Page < numberOfPages - 1
+                ? CreatePagingLink(attr.Page + 1, attr.PageSize, nameof(GetAllAnnotationsForUser))
+                : null;
+            return new
+            {
+                totalItems,
+                numberOfPages,
+                prev,
+                next,
+                items = ant
+            };
+        }
+
+        private string CreatePagingLink(int page, int pageSize, string str)
+        {
+            return Url.Link(str, new { page, pageSize });
         }
     }
 }

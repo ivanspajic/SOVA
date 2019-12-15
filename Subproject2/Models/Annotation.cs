@@ -5,7 +5,7 @@
         public int SubmissionId { get; set; }
         public int UserId { get; set; }
         public string AnnotationString { get; set; }
-        public Submission Submission { get; set; }
+        public Question Question { get; set; }
         public User User { get; set; }
     }
 }
