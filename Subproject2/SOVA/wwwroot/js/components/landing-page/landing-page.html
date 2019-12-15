@@ -25,8 +25,7 @@
         </div>
     </div>
 </div>
-<div class="offset-6 py-4">
-    <button type="button" class="  btn btn-light" data-bind="click:nextPage">
-        Next
-    </button>
+<div data-bind="if:(prevPage() !== null|| nextPage() !== null)" class="my-4 d-flex justify-content-center">
+    <button type="button" class="btn btn-outline-primary" data-bind="click:getPrev, enable:prevPage">Previous</button>
+    <button type="button" class="btn btn-outline-primary ml-2" data-bind="click:getNext, enable:nextPage">Next</button>
 </div>
