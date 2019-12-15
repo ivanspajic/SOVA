@@ -78,15 +78,24 @@
     }
 
     var search = async (callback) => {
-        var response = await fetch(`api/questions/query/${searchTerm()}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `${authenticationToken()}`
+        if (searchTerm()) {
+            if (!localStorage.getItem('token')) {
+                var response = await fetch(`api/questions/query/no-user/${searchTerm()}`);
+                var data = await response.json();
+                callback(data);
             }
-        });
-        var data = await response.json();
-        callback(data);
+            else {
+                var response = await fetch(`api/questions/query/${searchTerm()}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `${authenticationToken()}`
+                    }
+                });
+                var data = await response.json();
+                callback(data);
+            }
+        }
     }
 
     var getOtherPages = async (link, callback) => {

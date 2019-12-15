@@ -106,10 +106,15 @@ namespace Data_Layer
 
         public int NoOfResults(string queryString, int? userId)
         {
-            if (queryString == null || userId < 1)
+            if (queryString == null)
                 return 0;
-            return _databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", userId, queryString)
-                .Count();
+            var newStr = "\'";
+            newStr += queryString.Replace(" ", "\', \'");
+            newStr += "\'";
+
+            var query = $"SELECT * from best_match_weighted({userId}, {newStr})";
+
+            return _databaseContext.SearchResults.FromSqlRaw(query).Count();
         }
 
         public int NoOfResultsForTag(string tagString, int? userId)
