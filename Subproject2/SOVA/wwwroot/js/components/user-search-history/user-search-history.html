@@ -1,6 +1,18 @@
-﻿<div class="container px-4">
-    <span data-bind="text: username"></span>'s Search History
-</div>
-<div class="container px-4" data-bind="foreach: userSearches">
-    <div data-bind="text: $data"></div>
+﻿<div class="container px-md-4">
+    <div class="border-bottom ">
+        <h3 class="pt-3 general-header" style="display: flex; align-items: center;">
+            <img src="../../../assets/images/search.png" width="30" class="mr-2 general-logo" />
+            Your search history posts.
+        </h3>
+    </div>
+    <div data-bind="foreach: userSearches">
+        <div class="row border-bottom pl-2 pb-2" style="margin-top: 15px;">
+            <div class="col col-sm-10">
+                <div data-bind="text: $data"></div>  
+            </div>
+        </div>
+    </div>
+    <div data-bind="if: userSearches().length === 0">
+        You don't have any search history yet.
+    </div>
 </div>
