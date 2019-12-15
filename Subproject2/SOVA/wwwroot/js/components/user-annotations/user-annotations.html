@@ -1,10 +1,23 @@
-﻿<h1>Annotations</h1>
-<div class="pl-4" data-bind="foreach: allAnnotations">
-    <div class="row border-bottom pl-2 pb-2" style="margin-top: 15px;">
-        <div class="col col-sm-10">
-            <a class="row questions pb-2" data-bind="text: question.title, click: $parent.selectPost.bind($data, question.question)" style="cursor: pointer">
-            </a>
-            Your annotation: <span class="p-1 mb-2 bg-warning text-dark" data-bind="text: annotationString"></span>
+﻿<div class="container px-md-4">
+    <div class="border-bottom ">
+        <h3 class="pt-3 general-header" style="display: flex; align-items: center;">
+            <img src="../../../assets/images/annotations-icon.png" width="30" class="mr-2 general-logo" />
+            Your personal annotations.
+        </h3>
+        <p class="general-sub-header">You can edit or delete them on the post's page.</p>
+    </div>
+
+    <div class="pl-4" data-bind="foreach: allAnnotations">
+        <div class="row border-bottom pl-2 pb-3" style="margin-top: 15px;">
+            <div class="col col-sm-10">
+                <a class="row questions pb-2" data-bind="text: question.title, click: $parent.selectPost.bind($data, question.question)" style="cursor: pointer">
+                </a>
+                Annotation: <span class="p-1 mb-2 bg-warning text-dark" data-bind="text: annotationString"></span>
+            </div>
         </div>
+    </div>
+
+    <div data-bind="if: allAnnotations() && allAnnotations().length === 0">
+        You have not created any annotations yet.
     </div>
 </div>
