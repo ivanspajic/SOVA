@@ -84,9 +84,16 @@
     }
 
     var search = async (callback) => {
-        var response = await fetch(`api/questions/query/${searchTerm()}`);
-        var data = await response.json();
-        callback(data);
+        if (!localStorage.getItem('token')) {
+            var response = await fetch(`api/questions/query/no-user/${searchTerm()}`);
+            var data = await response.json();
+            callback(data);
+        }
+        else {
+            var response = await fetch(`api/questions/query/${searchTerm()}`);
+            var data = await response.json();
+            callback(data);
+        }
     }
 
     var getOtherPages = async (link, callback) => {

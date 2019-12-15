@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data_Layer_Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SOVA.Models;
@@ -51,11 +52,19 @@ namespace SOVA.Controllers
             return Ok(CreateAnswerResult(answers, questionId, pagingAttributes));
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("query/{queryString}", Name = nameof(SearchQuestion))]
         public ActionResult SearchQuestion([FromQuery] PagingAttributes pagingAttributes, string queryString)
         {
             var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            var searchResults = _questionRepository.SearchQuestions(queryString, userId, pagingAttributes);
+            return Ok(CreateSearchResult(searchResults, queryString, userId, pagingAttributes));
+        }
+
+        [HttpGet("query/no-user/{queryString}", Name = nameof(SearchQuestionNoUser))]
+        public ActionResult SearchQuestionNoUser([FromQuery] PagingAttributes pagingAttributes, string queryString)
+        {
+            var userId = 1;
             var searchResults = _questionRepository.SearchQuestions(queryString, userId, pagingAttributes);
             return Ok(CreateSearchResult(searchResults, queryString, userId, pagingAttributes));
         }
