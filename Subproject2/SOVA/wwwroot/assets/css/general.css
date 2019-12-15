@@ -104,7 +104,9 @@ However, delay the fade out process for 2.5 seconds */
 }
 
 pre {
-    background-color: lightgray;
+    padding: 10px;
+    background-color: #eff0f1;
+    border-radius: 5px;
 }
 
 /* Animations to fade the snackbar in and out */
