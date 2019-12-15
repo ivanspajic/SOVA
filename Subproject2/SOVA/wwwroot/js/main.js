@@ -59,14 +59,27 @@ require(["knockout"], function (ko) {
         viewModel: { require: "components/signup-page/signup-page" },
         template: { require: "text!components/signup-page/signup-page.html" }
     });
-    ko.components.register("user-search-history", {
-        viewModel: {
-            require: "components/user-search-history/user-search-history"
-        },
-        template: {
-            require: "text!components/user-search-history/user-search-history.html"
-        }
-    })
+    ko.components.register("user-search-history",
+        {
+            viewModel: {
+                require: "components/user-search-history/user-search-history"
+            },
+            template: {
+                require: "text!components/user-search-history/user-search-history.html"
+            }
+        });
+    ko.components.register("user-profile-page", {
+        viewModel: { require: "components/user-profile-page/user-profile-page" },
+        template: { require: "text!components/user-profile-page/user-profile-page.html" }
+    });
+    ko.components.register("user-annotations", {
+        viewModel: { require: "components/user-annotations/user-annotations" },
+        template: { require: "text!components/user-annotations/user-annotations.html" }
+    });
+    ko.components.register("user-bookmarks", {
+        viewModel: { require: "components/user-bookmarks/user-bookmarks" },
+        template: { require: "text!components/user-bookmarks/user-bookmarks.html" }
+    });
 });
 
 require(["knockout", "app", "store", "history"], function (ko, app, store, history) {

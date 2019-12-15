@@ -9,6 +9,9 @@
     const userSearchHistory = "USER_SEARCH_HISTORY";
     const selectPost = "SELECT_POST";
     const answerPage = "ANSWER_PAGE";
+    const userProfilePage = "USER_PROFILE_PAGE";
+    const userAnnotations = "USER_ANNOTATIONS";
+    const userBookmarks = "USER_BOOKMARKS";
     var subscribers = [];
     var currentState = {};
     var getState = () => currentState;
@@ -49,6 +52,15 @@
             case searching:
                 return Object.assign({}, state, { activeComponent: action.activeComponent, searchTerm: action.searchTerm });
             case userSearchHistory:
+                localStorage.setItem("username", action.username);
+                return Object.assign({}, state, { username: action.username, activeComponent: action.activeComponent });
+            case userProfilePage:
+                localStorage.setItem("username", action.username);
+                return Object.assign({}, state, { username: action.username, activeComponent: action.activeComponent });
+            case userAnnotations:
+                localStorage.setItem("username", action.username);
+                return Object.assign({}, state, { username: action.username, activeComponent: action.activeComponent });
+            case userBookmarks:
                 localStorage.setItem("username", action.username);
                 return Object.assign({}, state, { username: action.username, activeComponent: action.activeComponent });
             default:
@@ -145,6 +157,27 @@
                 activeComponent: "user-search-history"
             }
         },
+        userProfilePage: function (username) {
+            return {
+                type: userProfilePage,
+                username: username,
+                activeComponent: "user-profile-page"
+            }
+        },
+        userAnnotations: function (username) {
+            return {
+                type: userProfilePage,
+                username: username,
+                activeComponent: "user-annotations"
+            }
+        },
+        userBookmarks: function (username) {
+            return {
+                type: userProfilePage,
+                username: username,
+                activeComponent: "user-bookmarks"
+            }
+        }
     };
 
     return {

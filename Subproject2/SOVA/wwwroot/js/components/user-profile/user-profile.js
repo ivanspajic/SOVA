@@ -6,13 +6,13 @@
                 currentUser(store.getState().username);
             }
         });
-        var userSearchHistory = function () {
-            var userSearchHistoryAction = store.actions.userSearchHistory(currentUser());
-            store.dispatch(userSearchHistoryAction);
+
+        var userProfilePage = function () {
+            store.dispatch(store.actions.userProfilePage(currentUser()));
         }
         return {
             currentUser,
-            userSearchHistory
+            userProfilePage
         };
     };
 });
