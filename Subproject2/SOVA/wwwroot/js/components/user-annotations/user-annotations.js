@@ -5,7 +5,6 @@
         var nextPage = ko.observable();
 
         ds.getAllAnnotationsForUser((data) => {
-            console.log(data);
             allAnnotations(data.items.$values);
         });
 
