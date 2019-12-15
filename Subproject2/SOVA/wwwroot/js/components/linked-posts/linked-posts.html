@@ -1,0 +1,13 @@
+﻿<div data-bind="if: linkedPosts() && linkedPosts().length !== 0">
+    <div class="border" style="width: 300px;">
+        <h6 class="py-2 pl-2 border-bottom" style="margin-bottom: 0px">Linked questions</h6>
+        <div class="d-flex flex-column" data-bind="foreach: linkedPosts">
+            <div class="d-flex flex-row p-1">
+                <div class="text-center" style="min-width: 40px;">
+                    <span class="badge badge-success px-2 py-1" data-bind="text: linkedPost.submission.score" style="font-size: 12px;"></span>
+                </div>
+                <div class="questions px-2 py-1" data-bind="text: linkedPost.title, click: $parent.selectQuestion.bind($data, linkedPost)" style="font-size: 12px;"></div>
+            </div>
+        </div>
+    </div>
+</div>

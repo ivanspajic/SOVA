@@ -22,7 +22,7 @@
                 }
             });
         }
-        updateUserSearches();
+        updateUserSearches()
         store.subscribe(function () {
             if (store.getState().activeComponent === "user-search-history") {
                 updateUserSearches();

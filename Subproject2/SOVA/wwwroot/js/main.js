@@ -80,6 +80,10 @@ require(["knockout"], function (ko) {
         viewModel: { require: "components/user-bookmarks/user-bookmarks" },
         template: { require: "text!components/user-bookmarks/user-bookmarks.html" }
     });
+    ko.components.register("linked-posts", {
+        viewModel: { require: "components/linked-posts/linked-posts" },
+        template: { require: "text!components/linked-posts/linked-posts.html" }
+    });
 });
 
 require(["knockout", "app", "store", "history"], function (ko, app, store, history) {
