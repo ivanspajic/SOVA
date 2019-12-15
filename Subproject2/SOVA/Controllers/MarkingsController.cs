@@ -27,7 +27,7 @@ namespace SOVA.Controllers
         [HttpGet("bookmarks", Name = nameof(GetMarkedPostsForUser))]
         public ActionResult GetMarkedPostsForUser([FromQuery] PagingAttributes pagingAttributes)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            int.TryParse(HttpContext.User.Identity.Name, out var userId);
             var posts = _markingRepository.GetMarkedSubmissions(userId, pagingAttributes);
             if (posts == null)
             {
@@ -40,7 +40,7 @@ namespace SOVA.Controllers
         [HttpPut("{submissionId}/bookmarks")]
         public ActionResult UpdateBookmark(int submissionId)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            int.TryParse(HttpContext.User.Identity.Name, out var userId);
             if (_markingRepository.IsMarked(submissionId, userId))
             {
                 if (_markingRepository.RemoveBookmark(submissionId, userId))
@@ -59,7 +59,7 @@ namespace SOVA.Controllers
         [HttpGet("{submissionId}/checkIfBookmarked")]
         public ActionResult checkBookmark(int submissionId)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            int.TryParse(HttpContext.User.Identity.Name, out var userId);
             if (_markingRepository.IsMarked(submissionId, userId))
             {
                 return Ok(new { message = "Already bookmarked." });

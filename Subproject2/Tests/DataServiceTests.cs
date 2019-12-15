@@ -1,19 +1,13 @@
-using System.Collections.Generic;
-using System.Linq;
 using Data_Layer;
 using Data_Layer.Database_Context;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Tests
-    //testing
 {
-    // Missing Tests:
-    //
-    // - getting all bookmarks containing all respective posts (needs refactoring)
-    // - getting questions by search queries                   (needs refactoring)
-    // - tag repository (maybe for displaying all relevant questions when clicking on a tag?) (repository missing)
     public class DataServiceTests
     {
         private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
@@ -465,53 +459,35 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             UserHistoryRepository userHistoryRepository = new UserHistoryRepository(databaseContext);
 
-            PagingAttributes testAttributes = new PagingAttributes
-            {
-                Page = pageNumber,
-                PageSize = pageSize
-            };
-
             User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
             databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", testUser.Id, "testing");
 
             IEnumerable<UserHistory> expectedHistories = databaseContext.UserHistory
-                .Where(userHistory => userHistory.UserId == testUser.Id)
-                .Skip(testAttributes.Page * testAttributes.PageSize)
-                .Take(testAttributes.PageSize);
+                .Where(userHistory => userHistory.UserId == testUser.Id);
 
             // Act
-            IEnumerable<UserHistory> actualHistories = userHistoryRepository.GetUserHistoryByUserId(testUser.Id, testAttributes);
+            IEnumerable<UserHistory> actualHistories = userHistoryRepository.GetUserHistoryByUserId(testUser.Id);
 
             // Assert
             Assert.Equal(expectedHistories, actualHistories);
         }
 
         [Theory]
-        [InlineData(0, 1, 1)]
-        [InlineData(-1, 1, 1)]
-        [InlineData(1, 1, 0)]
-        [InlineData(1, 1, -2)]
-        [InlineData(1, -2, 1)]
-        [InlineData(-1, -1, -1)]
-        public void GetUserHistoryByUserId_InvalidArguments(int userId, int pageNumber, int pageSize)
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void GetUserHistoryByUserId_InvalidArguments(int userId)
         {
             // Arrange
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             UserHistoryRepository userHistoryRepository = new UserHistoryRepository(databaseContext);
-
-            PagingAttributes testAttributes = new PagingAttributes
-            {
-                Page = pageNumber - 1,
-                PageSize = pageSize
-            };
 
             User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
             databaseContext.SearchResults.FromSqlRaw("SELECT * from best_match_weighted({0}, {1})", testUser.Id, "testing");
 
             // Act
-            IEnumerable<UserHistory> histories = userHistoryRepository.GetUserHistoryByUserId(userId, testAttributes);
+            IEnumerable<UserHistory> histories = userHistoryRepository.GetUserHistoryByUserId(userId);
 
             // Assert
             Assert.Null(histories);
@@ -524,14 +500,12 @@ namespace Tests
             SOVAContext databaseContext = new SOVAContext(_connectionString);
             UserHistoryRepository userHistoryRepository = new UserHistoryRepository(databaseContext);
 
-            PagingAttributes testAttributes = new PagingAttributes();
-
             User testUser = EnsureTestUserExistsThroughContext_ReturnsTestUser();
 
             databaseContext.SearchResults.FromSqlRaw("SELECT * FROM best_match_weighted({0}, {1})", testUser.Id, "testing");
 
             // Act
-            IEnumerable<UserHistory> histories = userHistoryRepository.GetUserHistoryByUserId(testUser.Id, testAttributes);
+            IEnumerable<UserHistory> histories = userHistoryRepository.GetUserHistoryByUserId(testUser.Id);
 
             // Assert
             Assert.All(histories, (history) => Assert.NotNull(history.History));
@@ -871,8 +845,6 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData("", null)]
-        [InlineData(" ", null)]
         [InlineData(null, -1)]
         public void GetNumberOfQuestionSearchResults_InvalidArguments_InvalidUser(string query, int? userId)
         {

@@ -3,7 +3,8 @@
 
 ## RAWDATA Portfolio Project
 
-The project portfolio includes four subprojects that will relate to areas covered in four corresponding sections of the RAWDATA course. The task in the project portfolio is to create a Stack Overflow Viewer application (SOVA). The primary aim is to provide functionality for searching information in the data extracted from Stack Overflow. This involves keyword based search to access information, as well as some means of tracking of personal use, like search history, marking of found solutions, etc. 
+The project portfolio includes three subprojects that will relate to areas covered in four corresponding sections of the RAWDATA course. The task in the project portfolio is to create a Stack Overflow Viewer 
+Application (SOVA). The primary aim is to provide functionality for searching information in the data extracted from Stack Overflow. This involves keyword based search to access information, as well as some means of tracking of personal use, like search history, marking of found solutions, etc. 
 
 [Project Portfolio full description](RAWDATA-ProjectPortfolio.pdf)
 
@@ -20,7 +21,7 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 
 ![#008000](https://placehold.it/15/008000/000000?text=+) [Subproject 2 - RESTful web service](https://github.com/ivanspajic/SOVA/tree/master/Subproject2): Completed 18 Nov, 2019
 
-![#005AFF](https://placehold.it/15/005AFF/000000?text=+) Subproject 3 - Frontend with Knockout JS. Started.
+![#008000](https://placehold.it/15/008000/000000?text=+) [Subproject 3 - Frontend with Knockout.js](https://github.com/ivanspajic/SOVA/tree/master/Subproject2): Completed 16 Dec, 2019
 
 ----
 

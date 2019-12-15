@@ -26,7 +26,7 @@ namespace SOVA.Controllers
         [HttpGet("{submissionId}", Name = nameof(GetAnnotation))]
         public ActionResult GetAnnotation(int submissionId)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            int.TryParse(HttpContext.User.Identity.Name, out var userId);
             var ant = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
             if (ant == null)
             {
@@ -39,7 +39,7 @@ namespace SOVA.Controllers
         [HttpGet(Name = nameof(GetAllAnnotationsForUser))]
         public ActionResult GetAllAnnotationsForUser([FromQuery] PagingAttributes pagingAttributes)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            int.TryParse(HttpContext.User.Identity.Name, out var userId);
             var ant = _annotationRepository.GetUserAnnotations(userId, pagingAttributes);
             if (ant == null)
             {
@@ -52,7 +52,7 @@ namespace SOVA.Controllers
         [HttpPost("{submissionId}")]
         public ActionResult CreateAnnotation(AnnotationForCreation antDto, int submissionId)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            int.TryParse(HttpContext.User.Identity.Name, out var userId);
             var ant = _mapper.Map<Annotation>(antDto);
             ant.SubmissionId = submissionId;
             ant.UserId = userId;
@@ -67,7 +67,7 @@ namespace SOVA.Controllers
         [HttpPut("{submissionId}")]
         public ActionResult UpdateAnnotation(int submissionId, Annotation annotation)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            int.TryParse(HttpContext.User.Identity.Name, out var userId);
             var ant = _annotationRepository.GetBySubmissionAndUserIds(submissionId, userId);
             if (ant == null)
             {
@@ -83,7 +83,7 @@ namespace SOVA.Controllers
         [HttpDelete("{submissionId}")]
         public ActionResult DeleteAnnotation(int submissionId)
         {
-            var userId = int.TryParse(HttpContext.User.Identity.Name, out var id) ? id : 1;
+            int.TryParse(HttpContext.User.Identity.Name, out var userId);
             if (_annotationRepository.Delete(submissionId, userId))
             {
                 return Ok();
