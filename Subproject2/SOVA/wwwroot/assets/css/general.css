@@ -202,6 +202,22 @@ However, delay the fade out process for 2.5 seconds */
         font-size: 1rem;
         margin-left: 40px;
     }
+
+    .hello-user {
+        font-size: 2.5rem;
+    }
+
+    .hello-desc {
+        font-size: 1.1rem;
+    }
+
+    .profile-list {
+        font-size: 1.1rem;
+    }
+
+    .list-logo {
+        width: 22px;
+    }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
