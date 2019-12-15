@@ -31,7 +31,7 @@ namespace SOVA.Controllers
             var posts = _markingRepository.GetMarkedSubmissions(userId, pagingAttributes);
             if (posts == null)
             {
-                return NotFound();
+                return NoContent();
             }
             return Ok(CreateResult(posts, userId, pagingAttributes));
         }
@@ -76,7 +76,7 @@ namespace SOVA.Controllers
         //
         ///////////////////
 
-        private object CreateResult(IEnumerable<Submission> posts, int userId, PagingAttributes attr)
+        private object CreateResult(IEnumerable<Question> posts, int userId, PagingAttributes attr)
         {
             var totalItems = _markingRepository.NoOfMarkings(userId);
             var numberOfPages = Math.Ceiling((double)totalItems / attr.PageSize);
@@ -94,16 +94,16 @@ namespace SOVA.Controllers
                 numberOfPages,
                 prev,
                 next,
-                items = posts.Select(CreateSubmissionDto)
+                items = posts.Select(CreateQuestionDto)
             };
         }
 
-        private SubmissionDto CreateSubmissionDto(Submission sub)
+        private QuestionDto CreateQuestionDto(Question q)
         {
-            var dto = _mapper.Map<SubmissionDto>(sub);
+            var dto = _mapper.Map<QuestionDto>(q);
             dto.Link = Url.Link(
                     nameof(GetMarkedPostsForUser),
-                    new { submissionId = sub.Id });
+                    new { questionId = q.SubmissionId });
             return dto;
         }
 

@@ -9,6 +9,6 @@ namespace Data_Layer_Abstractions
         int NoOfMarkings(int userId);
         bool IsMarked(int submissionId, int userId);
         bool RemoveBookmark(int submissionId, int userId);
-        IEnumerable<Submission> GetMarkedSubmissions(int userId, PagingAttributes pagingAttributes);
+        IEnumerable<Question> GetMarkedSubmissions(int userId, PagingAttributes pagingAttributes);
     }
 }
