@@ -62,6 +62,14 @@ namespace SOVA.Controllers
             return Ok(CreateSearchResult(searchResults, queryString, userId, pagingAttributes));
         }
 
+        [HttpGet("query/no-user/{queryString}", Name = nameof(SearchQuestionNoUser))]
+        public ActionResult SearchQuestionNoUser([FromQuery] PagingAttributes pagingAttributes, string queryString)
+        {
+            var userId = 1;
+            var searchResults = _questionRepository.SearchQuestions(queryString, userId, pagingAttributes);
+            return Ok(CreateSearchResult(searchResults, queryString, userId, pagingAttributes));
+        }
+
         [HttpGet("wordcloud/{queryString}", Name = nameof(GetCloudElements))]
         public ActionResult GetCloudElements(string queryString)
         {
