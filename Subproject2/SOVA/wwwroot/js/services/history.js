@@ -5,6 +5,9 @@
     const signupPageComponent = "signup-page";
     const searchPageComponent = "search-results";
     const answerPageComponent = "individual-answer";
+    const userProfileComponent = "user-profile-page";
+    const userAnnotationsComponent = "user-annotations";
+    const userBookmarksComponent = "user-bookmarks";
     var popState = false;
     store.subscribe(function () {
         var state = store.getState();
@@ -42,6 +45,12 @@
                 return store.actions.searching(state.searchTerm);
             case answerPageComponent:
                 return store.actions.selectPost(state.selectedPostId, state.isQuestion);
+            case userProfileComponent:
+                return store.actions.userProfilePage(state.username);
+            case userAnnotationsComponent:
+                return store.actions.userAnnotations(state.username);
+            case userBookmarksComponent:
+                return store.actions.userBookmarks(state.username);
             default:
                 return null;
         }
