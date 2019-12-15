@@ -224,6 +224,14 @@ pre {
     .list-logo {
         width: 22px;
     }
+
+    .search-topics {
+        font-size: 16px;
+    }
+
+    .search-list {
+        font-size: 14px;
+    }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {

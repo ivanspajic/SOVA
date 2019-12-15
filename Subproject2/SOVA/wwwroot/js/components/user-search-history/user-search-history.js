@@ -7,15 +7,17 @@
 
         var updateUserSearches = function () {
             ds.getUserSearches(function (data) {
-                var temp = [];
+                var temp1 = [];
+                var temp2 = [];
                 if (data.items) {
                     for (var i = 0; i < data.items.$values.length; i++) {
                         var searchTermToPushToArray = data.items.$values[i].history.searchTerm;
-                        if (temp.indexOf(searchTermToPushToArray) === -1) {
-                            temp.push(data.items.$values[i].history.searchTerm);
+                        if (temp1.indexOf(searchTermToPushToArray) === -1) {
+                            temp1.push(data.items.$values[i].history.searchTerm);
+                            temp2.push(data.items.$values[i]);
                         }
                     }
-                    userSearches(temp);
+                    userSearches(temp2);
                     userSearchesReversed(userSearches().reverse());
                 }
             });
