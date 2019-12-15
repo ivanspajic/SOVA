@@ -1,1 +1,10 @@
 ﻿<h1>Annotations</h1>
+<div class="pl-4" data-bind="foreach: allAnnotations">
+    <div class="row border-bottom pl-2 pb-2" style="margin-top: 15px;">
+        <div class="col col-sm-10">
+            <a class="row questions pb-2" data-bind="text: question.title, click: $parent.selectPost.bind($data, question.question)" style="cursor: pointer">
+            </a>
+            Your annotation: <span class="p-1 mb-2 bg-warning text-dark" data-bind="text: annotationString"></span>
+        </div>
+    </div>
+</div>

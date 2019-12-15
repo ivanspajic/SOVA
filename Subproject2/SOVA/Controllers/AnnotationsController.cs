@@ -35,7 +35,7 @@ namespace SOVA.Controllers
             return Ok(CreateAnnotationDto(ant));
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet(Name = nameof(GetAllAnnotationsForUser))]
         public ActionResult GetAllAnnotationsForUser([FromQuery] PagingAttributes pagingAttributes)
         {
