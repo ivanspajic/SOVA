@@ -1,20 +1,38 @@
-﻿<nav class="navbar navbar-expand-lg navbar-light bg-light">
+﻿<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <div class="d-block d-sm-block d-md-none">
+        <form class="form-inline my-2 my-lg-0" data-bind="if: activeComponent && !(activeComponent() === 'login-page' || activeComponent() ===  'signup-page')">
+            <input class="form-control mr-2" style="width:80%" type="search" placeholder="Search" width="10" aria-label="Search" data-bind="textInput: queryTerm">
+            <img src="../../../assets/images/search for form.png" width="25" data-bind="click: search" />
+        </form>
+    </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse row" id="navbarSupportedContent">
-        <div style="width: 75px">
-            <div class="pl-4" style="display: flex; align-items: center; user-select: none; cursor: pointer" data-bind="if: activeComponent && !(activeComponent() === 'landing-page'), click: goToHome">
-                <img src="../../../assets/images/home.png" width="30" />
-                <span class="pl-2">Home</span>
-            </div>
-        </div>
-        <form class="form-inline my-1 col-6 offset-2" data-bind="if: activeComponent && !(activeComponent() === 'login-page' || activeComponent() ===  'signup-page')">
-            <input class="form-control mr-sm-2" type="search" id="searchterm" placeholder="Search" aria-label="Search" style="width: 80%" data-bind="textInput: queryTerm">
-            <button class="btn btn-outline-success my-1 my-sm-0" type="submit" data-bind="click: search">Search</button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav d-block d-sm-block d-md-none">
+            <li class="nav-item active">
+                <a class="nav-link" data-bind="if: activeComponent && !(activeComponent() === 'landing-page'), click: goToHome">
+                    <h6 class="text-right pr-1 pt-1">Home</h6>
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="navbar-nav d-none d-md-block d-lg-block d-xl-block">
+            <li class="nav-item  mr-auto">
+                <a class="nav-link" data-bind="if: activeComponent && !(activeComponent() === 'landing-page'), click: goToHome">
+                    <img src="../../../assets/images/home.png" width="30" />
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0 d-none d-md-block d-lg-block d-xl-block mx-auto" data-bind="if: activeComponent && !(activeComponent() === 'login-page' || activeComponent() ===  'signup-page')">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" style="width:400px" aria-label="Search" data-bind="textInput: queryTerm">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" data-bind="click: search">
+                Search
+            </button>
         </form>
-        <div class="ml-auto my-1 mr-5">
+        <div class="my-1 pr-3 float-right">
             <div class="row">
                 <user-profile></user-profile>
                 <div data-bind="if:!currentUser() && activeComponent() === 'signup-page'">
@@ -40,3 +58,5 @@
         </div>
     </div>
 </nav>
+
+

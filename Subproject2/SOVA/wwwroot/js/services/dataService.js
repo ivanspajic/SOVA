@@ -25,12 +25,6 @@
         callback(data);
     }
 
-    var moreQuestions = async (callback) => {
-        var response = await fetch("api/questions?page=1&pageSize=10");
-        var data = await response.json();
-        callback(data);
-    }
-
     var getQuestionsByTag = async (callback) => {
         var response = await fetch(`api/questions/tag/${selectedTag()}`);
         var data = await response.json();
@@ -84,6 +78,7 @@
     }
 
     var search = async (callback) => {
+<<<<<<< HEAD
         if (!localStorage.getItem('token')) {
             var response = await fetch(`api/questions/query/no-user/${searchTerm()}`);
             var data = await response.json();
@@ -94,6 +89,17 @@
             var data = await response.json();
             callback(data);
         }
+=======
+        var response = await fetch(`api/questions/query/${searchTerm()}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `${authenticationToken()}`
+            }
+        });
+        var data = await response.json();
+        callback(data);
+>>>>>>> a88ccc282c081a898b1ddbffc5ffbf2096bbea76
     }
 
     var getOtherPages = async (link, callback) => {
@@ -210,6 +216,20 @@
         }
     }
 
+    var getUserSearches = async (callback) => {
+        var response = await fetch("api/history", {
+            method: "GET",
+            headers: {
+                "Authorization": authenticationToken()
+            }
+        });
+        var data = [];
+        if (response.status !== 204) {
+            data = await response.json();
+        }
+        callback(data);
+    }
+
     return {
         getQuestions,
         getQuestionByIdWithAnswers,
@@ -222,12 +242,12 @@
         authenticationToken,
         createUser,
         search,
-        moreQuestions,
         saveAnnotation,
         updateAnnotation,
         deleteAnnotation,
         getAnnotation,
         toggleBookmarkStatus,
-        checkIfBookmarked
+        checkIfBookmarked,
+        getUserSearches
     };
 });

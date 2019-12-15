@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Data_Layer_Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SOVA.Models;
+using System;
+using System.Collections.Generic;
 
 namespace SOVA.Controllers
 {
@@ -21,7 +22,7 @@ namespace SOVA.Controllers
             _mapper = mapper;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet(Name = nameof(GetUserHistoryByUserId))]
         public IActionResult GetUserHistoryByUserId([FromQuery] PagingAttributes pagingAttributes)
         {
@@ -29,7 +30,7 @@ namespace SOVA.Controllers
             var history = _userHistoryRepository.GetUserHistoryByUserId(userId, pagingAttributes);
             if (history == null)
             {
-                return NotFound();
+                return NoContent();
             }
             return Ok(CreateResult(history, userId, pagingAttributes));
         }
