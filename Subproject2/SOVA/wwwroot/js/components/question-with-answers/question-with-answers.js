@@ -32,8 +32,11 @@
         }
 
         var toggleAnnotationField = () => {
+            if (!textAreaValue() || annotationText()) {
+                textAreaValue(annotationText());
+            }
             if (!isUserLoggedIn()) {
-                errorMessage("🙊 Please log in or sign up to add your Annotation.");
+                errorMessage("⛔ Please log to add your annotation.");
                 setTimeout(function () {
                     errorMessage("");
                 }, 3500);
@@ -79,14 +82,14 @@
                 ds.saveAnnotation(annotationText(),
                     (data) => {
                         if (data.message && data.message.toLowerCase().includes("not authorized")) {
-                            errorMessage("🙊 Please log in or sign up to add your Annotation.");
+                            errorMessage("⛔ Please log to add your annotation.");
                             setTimeout(function () {
                                 errorMessage("");
                             }, 3500);
                         }
                         response(data);
                     });
-                successMessage("🙈 Annotation saved successfully.");
+                successMessage("📝 Annotation saved successfully.");
                 setTimeout(function () {
                     successMessage("");
                 }, 3500);
@@ -107,7 +110,7 @@
                     (data) => {
                         response(data);
                     });
-                successMessage("🙈 Annotation updated successfully.");
+                successMessage("👍 Annotation updated successfully.");
                 setTimeout(function () {
                     successMessage("");
                 }, 3500);
@@ -129,7 +132,7 @@
             ds.deleteAnnotation((data) => {
                 response(data);
             });
-            successMessage("🙈 Annotation deleted successfully.");
+            successMessage("🏷 Annotation deleted successfully.");
             setTimeout(function () {
                 successMessage("");
             }, 3500);
@@ -142,7 +145,7 @@
         var toggleBookmark = () => {
             ds.toggleBookmarkStatus((data) => {
                 if (data.message.toLowerCase().includes("not authorized")) {
-                    errorMessage("🙊 Please log in or sign up to bookmark this post.");
+                    errorMessage("⛔ Please log in to bookmark this post.");
                     setTimeout(function () {
                         errorMessage("");
                     }, 3500);
@@ -154,7 +157,7 @@
                             successMessage("");
                         }, 3500);
                     } else {
-                        successMessage("🙈 Bookmark removed.");
+                        successMessage("📑 Bookmark removed.");
                         setTimeout(function () {
                             successMessage("");
                         }, 3500);

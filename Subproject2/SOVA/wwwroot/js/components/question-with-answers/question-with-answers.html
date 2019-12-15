@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            <div data-bind="ifnot:$parent.annotationText()">
+            <div class="mt-3" data-bind="ifnot:$parent.annotationText()">
                 <div data-bind="if: !$parent.showAnnotations()">
                     <button type="button" class="btn btn-primary btn-sm" data-bind="click: $parent.toggleAnnotationField">
                         Add an annotation
@@ -65,8 +65,8 @@
                 </div>
             </div>
 
-            <div data-bind="if:$parent.annotationText()">
-                <span data-bind="text: $parent.annotationText()"></span>
+            <div class="mt-3" data-bind="if:$parent.annotationText()">
+                <span data-bind="text: $parent.annotationText()" class="p-1 mb-2 bg-warning text-dark"></span>
                 <span class="ml-2" data-bind="click: $parent.toggleAnnotationField" style="color:#007BFF; font-size:14px; cursor: pointer; user-select: none;">
                     edit
                 </span>
