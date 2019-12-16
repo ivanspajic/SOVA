@@ -62,6 +62,10 @@ a:hover {
     font-size: 13px;
 }
 
+.username {
+    font-size: 1.1rem;
+}
+
 .general-sub-header {
     font-size: 1.2rem;
     margin-left: 40px;
@@ -231,6 +235,27 @@ pre {
 
     .search-list {
         font-size: 14px;
+    }
+
+    .button-small {
+        margin-top: 5px;
+    }
+
+    .registered {
+        margin-top: .8rem !important;
+    }
+
+    .username {
+        font-size: 1rem;
+    }
+
+    .userpic {
+        width: 35px;
+    }
+
+    .userprofile {
+        margin-top: 5px;
+        text-align: left !important;
     }
 }
 
