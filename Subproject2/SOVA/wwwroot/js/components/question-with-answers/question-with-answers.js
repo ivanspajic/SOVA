@@ -89,7 +89,7 @@
                         }
                         response(data);
                     });
-                successMessage("📝 Annotation saved successfully.");
+                successMessage("📝 Annotation saved successfully. You can find it under your profile.");
                 setTimeout(function () {
                     successMessage("");
                 }, 3500);
@@ -118,7 +118,7 @@
                 ds.deleteAnnotation((data) => {
                     response(data);
                 });
-                successMessage("🙈 Annotation deleted successfully.");
+                successMessage("🏷 Annotation deleted.");
                 setTimeout(function () {
                     successMessage("");
                 }, 3500);
@@ -132,7 +132,7 @@
             ds.deleteAnnotation((data) => {
                 response(data);
             });
-            successMessage("🏷 Annotation deleted successfully.");
+            successMessage("🏷 Annotation deleted.");
             setTimeout(function () {
                 successMessage("");
             }, 3500);
