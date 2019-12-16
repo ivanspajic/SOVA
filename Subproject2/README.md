@@ -3,11 +3,14 @@
 
 ## RAWDATA Portfolio Subproject 2 and 3
 
-The goal of portfolio subproject 2 is to add a RESTful web service interface to the SOVA application (Stack Overflow Viewer Application) and to extend the functionality.
-The goal of portfolio subproject 3 is to provide a frontend to the SOVA application.
+The goal of portfolio **subproject 2** is to add a RESTful web service interface to the SOVA application (Stack Overflow Viewer Application) and to extend the functionality.
 
-### [Subproject2 Requirements](Resources/Subproject2_Requiments.pdf)
-### [Subproject3 Requirements](Resources/Subproject3_Requiments.pdf)
+The goal of portfolio **subproject 3** is to provide a frontend to the SOVA application.
+
+### [Subproject 2 Requirements](Resources/Subproject2_Requiments.pdf)
+
+### [Subproject 3 Requirements](Resources/Subproject3_Requiments.pdf)
+
 
 This project is developed by group **raw4** of course RAWDATA (Master's in Computer Science, Roskilde University):
 - [Özge Yaşayan](https://github.com/ozgey99)
@@ -19,6 +22,7 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 
 ## Current status:
 ![#008000](https://placehold.it/15/008000/000000?text=+) Subproject 2 was completed on November 18, 2019 and submitted for review.
+
 ![#008000](https://placehold.it/15/008000/000000?text=+) Subproject 3 was completed on December 16, 2019 and submitted for review.
 
 ----
@@ -39,14 +43,14 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 
     `git clone https://github.com/ivanspajic/SOVA.git`
 
-2. Navigate to Subproject1 folder
+2. Navigate to Subproject2 folder
 
     `cd .\Subproject2\`
 
 3. Setup the connection to the database
 
     - For local database, follow this [Wiki](https://github.com/ivanspajic/SOVA/wiki/Set-up-db-connection)
-    - For database hosted in RUC's server, in file `.\SOVA\Startup.cs`, comment out line 40, comment in line 43.
+    - For database hosted in RUC's server, in file `.\SOVA\Startup.cs`, make sure **line 38** (local db connection string) is _commented out_ and **line 41** in uncommenteded.
 
 ----
 
@@ -54,9 +58,22 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 
 #### Terminal:
 
-4. From the path `.\dotnet watch run`
+4. From the current path, go to folder **SOVA** and execute `dotnet watch run`
+
+- The path and output should look something like this:
+
+    ![2019 December-16 - kl 09 02 19](https://user-images.githubusercontent.com/9460504/70889675-6faf0600-1fe3-11ea-862c-b931eadd24a3.png)
 
 #### Visual Studio:
+
+- Make sure the startup project is setup to SOVA (Right click on "Solution" and click on "Properties")
+    
+    ![2019 December-16 - kl 08 42 37](https://user-images.githubusercontent.com/9460504/70888309-50fb4000-1fe0-11ea-8b5c-ea0ded7f66a2.png)
+
+- On the debug toolbar up top, select "SOVA" instead of `IIS Express`
+
+    ![2019 December-16 - kl 08 43 24](https://user-images.githubusercontent.com/9460504/70888406-90c22780-1fe0-11ea-8757-69f100e0fe42.png)
+
 
 5. "Debug" menu > "Start without Debugging" or `Ctrl` + `F5`
 
@@ -66,7 +83,7 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 
 6. Go to url `https://localhost:5001/` and start exploring.
 
-    - You have to sign up and log in to be able to CRUD operations on annotaions, bookmarks and search history,
+    - You have to sign up and log in to be able to do CRUD operations on annotaions, bookmarks and search history,
 
 ----
 
@@ -76,7 +93,7 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 
 ----
 
-### Starting the server
+### Running the tests
 
 #### Terminal:
 
@@ -84,8 +101,8 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 
 #### Visual Studio GUI:
 
-8. Go to "Test" menu > "Run All Tests"
+9. Go to "Test" menu > "Run All Tests"
 
 ## 🔌 Connecting to local database
 
-The server connects to the database by reading the connection string from a local JSON file. It is **not** checked in to GitHub as it contains passwords. [Follow this wiki to create the json file for connection string.](https://github.com/ivanspajic/SOVA/wiki/Set-up-db-connection)
+The server connects to the database by reading the connection string from a local JSON file. It is **not** checked in to GitHub as it contains sensitive information. [Follow this wiki to create the json file for connection string.](https://github.com/ivanspajic/SOVA/wiki/Set-up-db-connection)

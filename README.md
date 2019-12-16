@@ -26,5 +26,5 @@ This project is developed by group **raw4** of course RAWDATA (Master's in Compu
 ----
 
 ## Additional info:
+- The tasks and their statuses were be managed though GitHub's Project Management. [Link to projects (under "Closed" section)](https://github.com/ivanspajic/SOVA/projects)
 - [To refresh or get started with git, we have a handy wiki.](https://github.com/ivanspajic/SOVA/wiki)
-- The tasks and their statuses are to be managed though GitHub's Project Management. [Link for Portfolio Subproject 2, due on November 18, 2019](https://github.com/ivanspajic/SOVA/projects/2)
