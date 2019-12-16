@@ -86,6 +86,6 @@ require(["knockout"], function (ko) {
     });
 });
 
-require(["knockout", "app", "store"], function (ko, app, store) {
+require(["knockout", "app", "store", "history"], function (ko, app, store, history) {
     ko.applyBindings(app);
 });
