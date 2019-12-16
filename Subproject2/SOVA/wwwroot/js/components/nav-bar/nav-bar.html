@@ -12,9 +12,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav d-block d-sm-block d-md-none">
             <li class="nav-item active">
-                <a class="nav-link" data-bind="if: activeComponent && !(activeComponent() === 'landing-page'), click: goToHome">
-                    <h6 class="text-right pr-1 pt-1">Home</h6>
-                    <span class="sr-only">(current)</span>
+                <a data-bind="if: activeComponent && !(activeComponent() === 'landing-page'), click: goToHome">
+                    <div class="nav-link d-flex align-items-center pt-3 pb-2 pr-2">
+                        <img class="ml-auto" src="../../../assets/images/home.png" width="15" />
+                        <span class="text-right pl-2" style="color: black">Home</span>
+                        <span class="sr-only">(current)</span>
+                    </div>
                 </a>
             </li>
         </ul>
@@ -27,32 +30,32 @@
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0 d-none d-md-block d-lg-block d-xl-block mx-auto" data-bind="if: activeComponent && !(activeComponent() === 'login-page' || activeComponent() ===  'signup-page')">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" style="width:400px" aria-label="Search" data-bind="textInput: queryTerm">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" data-bind="click: search">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" style="width:370px" aria-label="Search" data-bind="textInput: queryTerm">
+            <button class="btn btn-outline-success my-2 my-sm-0 " type="submit" data-bind="click: search">
                 Search
             </button>
         </form>
-        <div class="my-1 pr-3 float-right">
+        <div class="my-1 pr-4 float-right">
             <div class="row">
                 <user-profile></user-profile>
                 <div data-bind="if:!currentUser() && activeComponent() === 'signup-page'">
-                    <p class="mt-2 mr-2" style="margin-bottom: 0px">
+                    <p class="mt-2 mr-2 registered" style="margin-bottom: 0px">
                         Already registered?
                     </p>
                 </div>
                 <div data-bind="if: !currentUser() && activeComponent() !== 'login-page'">
-                    <button type="button" class="btn btn-primary" data-bind="click: login">Login</button>
+                    <button type="button" class="btn btn-primary button-small" data-bind="click: login">Login</button>
                 </div>
                 <div data-bind="if: !currentUser() && activeComponent() === 'login-page'">
-                    <p class="mt-2" style="margin-bottom: 0px">
+                    <p class="my-2 registered" style="margin-bottom: 0px">
                         Not registered yet?
                     </p>
                 </div>
                 <div data-bind="if:!currentUser() && activeComponent() !== 'signup-page'">
-                    <button type="button" class="btn btn-secondary ml-2" data-bind="click: signUp">Sign up</button>
+                    <button type="button" class="btn btn-secondary ml-2 button-small" data-bind="click: signUp">Sign up</button>
                 </div>
                 <div data-bind="if: currentUser()">
-                    <button type="button" class="btn btn-light ml-2" data-bind="click: logout">Logout</button>
+                    <button type="button" class="btn btn-outline-secondary mt-1 btn-light ml-2 col-md button-small" data-bind="click: logout">Logout</button>
                 </div>
             </div>
         </div>

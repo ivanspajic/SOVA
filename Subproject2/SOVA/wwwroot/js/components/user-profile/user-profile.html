@@ -1,4 +1,6 @@
-﻿<div style="cursor: pointer; user-select: none" data-bind="if: currentUser, click: userProfilePage">
-    <img class="mt-1" src="https://dankmemer.lol/40326fed0d1bc75a2688535e70dd31be.png" width="40" alt="User profile picture" />
-    <span class="ml-1 mt-1" style="font-size: 1.1rem" data-bind="text: currentUser()"></span>
+﻿<div class="d-flex align-items-center col-md-1 col-lg-3 userprofile" style="cursor: pointer; user-select: none;" data-bind="if: currentUser, click: userProfilePage">
+    <img class="mt-1 userpic" src="https://dankmemer.lol/40326fed0d1bc75a2688535e70dd31be.png" width="40" alt="User profile picture" />
+    <div class=" d-md-none d-lg-block">
+        <span class="ml-1 mt-1 username" data-bind="text: currentUser()"></span>
+    </div>
 </div>
