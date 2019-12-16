@@ -11,10 +11,10 @@ namespace Tests
     public class DataServiceTests
     {
         //For local database connection
-        //private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
+        private readonly string _connectionString = "host=localhost;db=stackoverflow;uid=postgres;pwd=";
 
         //For RUC's database connection
-        private readonly string _connectionString = "host=rawdata.ruc.dk;db=raw4;uid=raw4;pwd=yzOrEFi)";
+        //private readonly string _connectionString = "host=rawdata.ruc.dk;db=raw4;uid=raw4;pwd=yzOrEFi)";
         public User EnsureTestUserExistsThroughContext_ReturnsTestUser()
         {
             SOVAContext databaseContext = new SOVAContext(_connectionString);
@@ -802,6 +802,47 @@ namespace Tests
 
             // Assert
             Assert.Null(question);
+        }
+
+        [Fact]
+        public void GetNumberOfQuestionSearchResults_ValidArguments_UserIdNull()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            QuestionRepository questionRepository = new QuestionRepository(databaseContext);
+            var query = "test search";
+            int? userId = null;
+            int expectedResultCount = databaseContext.Questions
+                .Include(question => question.Submission)
+                .Count(question => question.Submission.Body.ToLower()
+                .Contains(query.ToLower()) && question.Title.ToLower()
+                .Contains(query.ToLower()));
+
+            // Act
+            int actualResultCount = questionRepository.NoOfResults(query, userId);
+
+            // Assert
+            Assert.Equal(expectedResultCount, actualResultCount);
+        }
+        [Fact]
+        public void GetNumberOfQuestionSearchResults_ValidArguments_UserId()
+        {
+            // Arrange
+            SOVAContext databaseContext = new SOVAContext(_connectionString);
+            QuestionRepository questionRepository = new QuestionRepository(databaseContext);
+            var query = "test search again";
+            int userId = EnsureTestUserExistsThroughContext_ReturnsTestUser().Id;
+            int expectedResultCount = databaseContext.Questions
+                .Include(question => question.Submission)
+                .Count(question => question.Submission.Body.ToLower()
+                                       .Contains(query.ToLower()) && question.Title.ToLower()
+                                       .Contains(query.ToLower()));
+
+            // Act
+            int actualResultCount = questionRepository.NoOfResults(query, userId);
+
+            // Assert
+            Assert.Equal(expectedResultCount, actualResultCount);
         }
 
         [Theory]
