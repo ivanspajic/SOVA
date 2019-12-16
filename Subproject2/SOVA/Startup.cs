@@ -35,10 +35,10 @@ namespace SOVA
                 .Build();
 
             // for local database connection
-            var dbConnectionString = builder.GetSection("StackOverflow:ConnectionString").Value;
+            //var dbConnectionString = builder.GetSection("StackOverflow:ConnectionString").Value;
 
             // for ruc's database connection
-            //var dbConnectionString = "host=rawdata.ruc.dk;db=raw4;uid=raw4;pwd=yzOrEFi)";
+            var dbConnectionString = "host=rawdata.ruc.dk;db=raw4;uid=raw4;pwd=yzOrEFi)";
 
             services.AddControllers().AddNewtonsoftJson(options =>
             {
